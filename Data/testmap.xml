@@ -1,0 +1,133 @@
+<Map>
+    <Name>Test Map</Name>
+    <Height>10</Height>
+    <Width>10</Width>
+    
+    <TileTypes>
+        <TileType>
+            <Name>Ground</Name>
+            <TileId>0</TileId>
+            <Solid>0</Solid>
+            <Tex>Data/Textures/ground.png</Tex>
+        </TileType>
+        <TileType>
+            <Name>Solid Rock</Name>
+            <TileId>1</TileId>
+            <Solid>1</Solid>
+            <Tex>Data/Textures/solidrock.png</Tex>
+        </TileType>
+    </TileTypes>
+
+    <Blocks>
+        <Block ID="0" TileId="1" Height="12.0" />
+        <Block ID="1" TileId="1" Height="10.0" />
+        <Block ID="2" TileId="1" Height="10.0" />
+        <Block ID="3" TileId="1" Height="10.0" />
+        <Block ID="4" TileId="1" Height="10.0" />
+        <Block ID="5" TileId="1" Height="10.0" />
+        <Block ID="6" TileId="1" Height="10.0" />
+        <Block ID="7" TileId="1" Height="10.0" />
+        <Block ID="8" TileId="1" Height="10.0" />
+        <Block ID="9" TileId="1" Height="10.0" />
+        
+        <Block ID="10" TileId="1" Height="10.0" />
+        <Block ID="11" TileId="1" Height="10.0" />
+        <Block ID="12" TileId="0" Height="10.0" />
+        <Block ID="13" TileId="1" Height="10.0" />
+        <Block ID="14" TileId="1" Height="10.0" />
+        <Block ID="15" TileId="0" Height="10.0" />
+        <Block ID="16" TileId="1" Height="10.0" />
+        <Block ID="17" TileId="1" Height="10.0" />
+        <Block ID="18" TileId="0" Height="10.0" />
+        <Block ID="19" TileId="1" Height="10.0" />
+        
+        <Block ID="20" TileId="1" Height="10.0" />
+        <Block ID="21" TileId="1" Height="10.0" />
+        <Block ID="22" TileId="0" Height="10.0" />
+        <Block ID="23" TileId="1" Height="10.0" />
+        <Block ID="24" TileId="1" Height="10.0" />
+        <Block ID="25" TileId="0" Height="10.0" />
+        <Block ID="26" TileId="1" Height="10.0" />
+        <Block ID="27" TileId="1" Height="10.0" />
+        <Block ID="28" TileId="0" Height="10.0" />
+        <Block ID="29" TileId="1" Height="10.0" />
+        
+        <Block ID="30" TileId="1" Height="10.0" />
+        <Block ID="31" TileId="0" Height="10.0" />
+        <Block ID="32" TileId="0" Height="10.0" />
+        <Block ID="33" TileId="0" Height="10.0" />
+        <Block ID="34" TileId="0" Height="10.0" />
+        <Block ID="35" TileId="0" Height="10.0" />
+        <Block ID="36" TileId="0" Height="10.0" />
+        <Block ID="37" TileId="0" Height="10.0" />
+        <Block ID="38" TileId="0" Height="10.0" />
+        <Block ID="39" TileId="1" Height="10.0" />
+        
+        <Block ID="40" TileId="1" Height="10.0" />
+        <Block ID="41" TileId="1" Height="10.0" />
+        <Block ID="42" TileId="1" Height="10.0" />
+        <Block ID="43" TileId="1" Height="10.0" />
+        <Block ID="44" TileId="1" Height="10.0" />
+        <Block ID="45" TileId="1" Height="10.0" />
+        <Block ID="46" TileId="1" Height="10.0" />
+        <Block ID="47" TileId="1" Height="10.0" />
+        <Block ID="48" TileId="1" Height="10.0" />
+        <Block ID="49" TileId="1" Height="10.0" />
+        
+        <Block ID="50" TileId="1" Height="10.0" />
+        <Block ID="51" TileId="1" Height="10.0" />
+        <Block ID="52" TileId="1" Height="10.0" />
+        <Block ID="53" TileId="1" Height="10.0" />
+        <Block ID="54" TileId="1" Height="10.0" />
+        <Block ID="55" TileId="1" Height="10.0" />
+        <Block ID="56" TileId="1" Height="10.0" />
+        <Block ID="57" TileId="1" Height="10.0" />
+        <Block ID="58" TileId="1" Height="10.0" />
+        <Block ID="59" TileId="1" Height="10.0" />
+        
+        <Block ID="60" TileId="1" Height="10.0" />
+        <Block ID="61" TileId="1" Height="10.0" />
+        <Block ID="62" TileId="1" Height="10.0" />
+        <Block ID="63" TileId="1" Height="10.0" />
+        <Block ID="64" TileId="1" Height="10.0" />
+        <Block ID="65" TileId="1" Height="10.0" />
+        <Block ID="66" TileId="1" Height="10.0" />
+        <Block ID="67" TileId="1" Height="10.0" />
+        <Block ID="68" TileId="1" Height="10.0" />
+        <Block ID="69" TileId="1" Height="10.0" />
+        
+        <Block ID="70" TileId="1" Height="10.0" />
+        <Block ID="71" TileId="1" Height="10.0" />
+        <Block ID="72" TileId="1" Height="10.0" />
+        <Block ID="73" TileId="1" Height="10.0" />
+        <Block ID="74" TileId="1" Height="10.0" />
+        <Block ID="75" TileId="1" Height="10.0" />
+        <Block ID="76" TileId="1" Height="10.0" />
+        <Block ID="77" TileId="1" Height="10.0" />
+        <Block ID="78" TileId="1" Height="10.0" />
+        <Block ID="79" TileId="1" Height="10.0" />
+        
+        <Block ID="80" TileId="1" Height="10.0" />
+        <Block ID="81" TileId="1" Height="10.0" />
+        <Block ID="82" TileId="1" Height="10.0" />
+        <Block ID="83" TileId="1" Height="10.0" />
+        <Block ID="84" TileId="1" Height="10.0" />
+        <Block ID="85" TileId="1" Height="10.0" />
+        <Block ID="86" TileId="1" Height="10.0" />
+        <Block ID="87" TileId="1" Height="10.0" />
+        <Block ID="88" TileId="1" Height="10.0" />
+        <Block ID="89" TileId="1" Height="10.0" />
+        
+        <Block ID="90" TileId="1" Height="10.0" />
+        <Block ID="91" TileId="1" Height="10.0" />
+        <Block ID="92" TileId="1" Height="10.0" />
+        <Block ID="93" TileId="1" Height="10.0" />
+        <Block ID="94" TileId="1" Height="10.0" />
+        <Block ID="95" TileId="1" Height="10.0" />
+        <Block ID="96" TileId="1" Height="10.0" />
+        <Block ID="97" TileId="1" Height="10.0" />
+        <Block ID="98" TileId="1" Height="10.0" />
+        <Block ID="99" TileId="1" Height="10.0" />
+        
+    </Blocks>
+</Map>
