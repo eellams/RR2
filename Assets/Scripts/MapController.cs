@@ -29,5 +29,12 @@ public class MapController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// TODO avalanche, corrosion etc.
+
+		if (Input.GetKeyDown (KeyCode.Y)) {
+			map.SetTile (14, 0);
+			map.RecalculateSurround();
+			MapBuilder mb = gameObject.GetComponent<MapBuilder>();
+			mb.ProcessMap (map);
+		}
 	}
 }

@@ -3,6 +3,8 @@
     <Height>10</Height>
     <Width>10</Width>
     
+    <!-- The 0th tile type is the type that a tile becomes when mined
+        this should probably be ground. -->
     <TileTypes>
         <TileType>
             <Name>Ground</Name>

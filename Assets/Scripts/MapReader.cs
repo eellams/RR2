@@ -57,13 +57,16 @@ public class Map {
 	[XmlIgnore]
 	public List<float> HeightBase;
 
+	[XmlIgnore]
+	public Dictionary<int, TileType> TileTypeDict;
+
 	public void Setup(Material mat) {
 		// Make sure the blocks are in the right order
 		// TODO why was this necessary?
 		Array.Sort (Blocks, (x, y) => x.ID.CompareTo (y.ID));
 
 		// A dictionary of the different types of tiles
-		Dictionary<int, TileType> tileTypeDict = new Dictionary<int, TileType>();
+		TileTypeDict = new Dictionary<int, TileType>();
 
 		foreach (TileType tType in TileTypes) {
 			// Read the texture and load it as a texture
@@ -80,8 +83,9 @@ public class Map {
 			tType.Mat = new Material(mat);
 			tType.Mat.SetTexture ("_MainTex", tempTex);
 
-			tileTypeDict.Add (tType.TileId, tType);
-		}	
+			TileTypeDict.Add (tType.TileId, tType);
+		}
+
 
 		// A list of all the tiles on the map
 		Tiles = new TileType[Blocks.Length];
@@ -89,14 +93,14 @@ public class Map {
 		// Overwrite the default value from the ones in the xml file
 		// TODO there must be a better way of doing this
 		for (int i=0; i<Blocks.Length; i++) {
-			Tiles[i] = (TileType)tileTypeDict[Blocks[i].TileId].Clone ();
+			Tiles[i] = (TileType)TileTypeDict[Blocks[i].TileId].Clone ();
 
 			if (Blocks[i].Height > 0)
 				Tiles[i].Height = Blocks[i].Height;
 			if (Blocks[i].EC >= 0)
 				Tiles[i].EC = Blocks[i].EC;
 			if (Blocks[i].ORE >= 0)
-				Tiles[i].ORE = Blocks[i].EC;
+				Tiles[i].ORE = Blocks[i].ORE;
 
    		}
 
@@ -107,9 +111,19 @@ public class Map {
 		RecalculateSurround ();
 	}
 
+	public void SetTile(int tileNumber, int tileType) {
+		TileType temp = Tiles [tileNumber];
+		Tiles [tileNumber] = (TileType)TileTypeDict [tileType].Clone ();
+
+		Tiles [tileNumber].Height = temp.Height;
+		Tiles [tileNumber].EC = temp.EC;
+		Tiles [tileNumber].ORE = temp.ORE;
+	}
+
 	private void CreateHeightBase() {
 		// The list of the heightmap, one value for each corner-point on the map.
 		// These corner points are shared.
+		HeightBase = new List<float> ();
 
 		// The height of the 'bottom' corners of the bottom row have no
 		// calculatable height value. Just use the tile's height value.
@@ -139,7 +153,7 @@ public class Map {
 		}
 	}
 
-	private void RecalculateSurround() {
+	public void RecalculateSurround() {
 		//   1|..|64 
 		//  --------
 		//   2| X|32
@@ -202,7 +216,20 @@ public class Map {
 				if (Tiles[i+Width].Solid) // If solid tile in row above
 					surround |= 0x80;
 			}
-			
+
+			if (Tiles[i].Solid &&
+			    (((surround & 0xAA) == 0x88) ||
+			    ((surround & 0xAA) == 0x22) ||
+			    ((surround & 0xAA) == 0x02) ||
+				((surround & 0xAA) == 0x08) ||
+				((surround & 0xAA) == 0x20) ||
+				((surround & 0xAA) == 0x80) ||
+			 	((surround & 0xAA) == 0x00)))
+			{
+				SetTile (i, 0);
+				RecalculateSurround ();
+			}
+
 			Tiles[i].Surround = (uint)surround;
 		}
 	}

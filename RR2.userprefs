@@ -1,15 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MyStratCamera.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MapBuilder.cs">
     <Files>
-      <File FileName="Assets\Scripts\MapBuilder.cs" Line="124" Column="23" />
-      <File FileName="Assets\Scripts\MapController.cs" Line="31" Column="36" />
-      <File FileName="Assets\Scripts\MapReader.cs" Line="252" Column="60" />
-      <File FileName="Assets\Scripts\MyStratCamera.cs" Line="88" Column="7" />
+      <File FileName="Assets\Scripts\MapController.cs" Line="34" Column="19" />
+      <File FileName="Assets\Scripts\MapBuilder.cs" Line="32" Column="27" />
+      <File FileName="Assets\Scripts\MapReader.cs" Line="227" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Assets\Scripts\MapReader.cs" line="118" offsetX="559" offsetY="1870" expression="i" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>
