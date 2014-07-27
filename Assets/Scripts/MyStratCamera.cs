@@ -9,10 +9,7 @@ public class MyStratCamera : MonoBehaviour {
 	public float ScrollSpeed = 0.5f;
 	public float ZoomSpeed = 50.0f;
 
-	//private Vector3 Target = new Vector3(10,0,10);
-
 	private GameObject RotatePoint;
-	//private Vector3 CurrentRotation;
 	
 	// Use this for initialization
 	void Start () {
@@ -88,7 +85,7 @@ public class MyStratCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		// the translation to be applied
+		// The translation to be applied
 		Vector3 translation = Vector3.zero;
 
 		// Zoom in or out

@@ -18,9 +18,11 @@ public class MapController : MonoBehaviour {
 		MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer> ();
 		MeshCollider meshCollider = gameObject.AddComponent<MeshCollider> ();
 
+		// Load the map
 		map = mapReader.LoadMap (Path.Combine (Environment.CurrentDirectory, "Data/testmap.xml"));
 		map.Setup (baseMaterial);
 
+		// Build the map
 		mapBuilder.ProcessMap (map);
 	}
 	

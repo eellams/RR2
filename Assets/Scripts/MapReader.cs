@@ -7,14 +7,21 @@ using System;
 
 public class MapReader : MonoBehaviour {
 	public Map LoadMap(string mapDir) {
+		// TODO get a more efficient map format
+		
 		XmlSerializer serializer = new XmlSerializer (typeof(Map));
+
+		// TODO work out why these NEVER WORK
 		serializer.UnknownNode += new XmlNodeEventHandler (serializer_UnknownNode);
 		serializer.UnknownAttribute += new XmlAttributeEventHandler (serializer_UnknownAttribute);
-		
+
+		// Open the file
 		FileStream fs = new FileStream (mapDir, FileMode.Open);
 
+		// Deserialise the xml file
 		Map toReturn = (Map)serializer.Deserialize (fs);
 
+		// Close the file
 		fs.Close ();
 
 		return toReturn;
@@ -37,6 +44,7 @@ public class Map {
 	public int Width;
 	public int Height;
 
+	// Wish this wasn't public, but it has to be
 	[XmlArrayAttribute("Blocks")]
 	public Block[] Blocks;
 
@@ -50,11 +58,15 @@ public class Map {
 	public List<float> HeightBase;
 
 	public void Setup(Material mat) {
+		// Make sure the blocks are in the right order
+		// TODO why was this necessary?
 		Array.Sort (Blocks, (x, y) => x.ID.CompareTo (y.ID));
 
+		// A dictionary of the different types of tiles
 		Dictionary<int, TileType> tileTypeDict = new Dictionary<int, TileType>();
 
 		foreach (TileType tType in TileTypes) {
+			// Read the texture and load it as a texture
 			FileStream fs = new FileStream (tType.Tex, FileMode.Open);
 			byte[] imageContents = new byte[fs.Length];
 
@@ -64,14 +76,18 @@ public class Map {
 			Texture2D tempTex = new Texture2D(1,1);
 			tempTex.LoadImage (imageContents);
 
+			// Create a material out of that texture
 			tType.Mat = new Material(mat);
 			tType.Mat.SetTexture ("_MainTex", tempTex);
 
 			tileTypeDict.Add (tType.TileId, tType);
 		}	
 
+		// A list of all the tiles on the map
 		Tiles = new TileType[Blocks.Length];
-			
+
+		// Overwrite the default value from the ones in the xml file
+		// TODO there must be a better way of doing this
 		for (int i=0; i<Blocks.Length; i++) {
 			Tiles[i] = (TileType)tileTypeDict[Blocks[i].TileId].Clone ();
 
@@ -83,37 +99,44 @@ public class Map {
 				Tiles[i].ORE = Blocks[i].EC;
 
    		}
+
+		// Create the height map
 		CreateHeightBase ();
+
+		// Create the first surround map
 		RecalculateSurround ();
 	}
 
 	private void CreateHeightBase() {
-		List<float> heightbase = new List<float> ();
-		heightbase.Add ((float)Tiles[0].Height);
-		
-		for (int i = 0; i<Width; i++) {
-			heightbase.Add (Tiles[i].Height);
+		// The list of the heightmap, one value for each corner-point on the map.
+		// These corner points are shared.
+
+		// The height of the 'bottom' corners of the bottom row have no
+		// calculatable height value. Just use the tile's height value.
+		// Also, the bottom-left corner of the first tile on the second row's
+		// height is not know. Also just use tile's height value.
+		for (int i = 0; i<=Width; i++) {
+			HeightBase.Add (Tiles[i].Height);
 		}
-		
+
+		// For each tile work out the height of the top right corner.
+		// This includes the bottom row.
 		for (int i=0; i<Height-1; i++) {
-			heightbase.Add (Tiles [Width * i].Height);
+			HeightBase.Add (Tiles [Width * i].Height);
 			for (int j=0; j<Width-1; j++) {
+				// The average of the four surrounding tiles
 				float height = (float)(Tiles [Width * i + j].Height +
 				                       Tiles [Width * i + j + 1].Height +
 				                       Tiles [Width * i + j + Width].Height +
 				                       Tiles [Width * i + j + 1 + Width].Height) / 4;
-				heightbase.Add (height);
+				HeightBase.Add (height);
 			}
-			
-			heightbase.Add ((Tiles [Width * i + Width - 1].Height +
-			                 Tiles [Width * i + 2 * Width - 1].Height) / 2.0f);
 		}
-		
+
+		// For the 'top' corners of the top row, also use height value.
 		for (int i = Width; i>0; i--) {
-			heightbase.Add (Tiles[Tiles.Length - i].Height);
+			HeightBase.Add (Tiles[Tiles.Length - i].Height);
 		}
-		
-		HeightBase = heightbase;
 	}
 
 	private void RecalculateSurround() {
@@ -122,7 +145,10 @@ public class Map {
 		//   2| X|32
 		//  --------
 		//   4| 8|16
-		
+
+		// For each tile, work out which tiles are present.
+		// Each bit corresponds to a surrounding point, as shown in diagram above.
+		// A calculator or something may be needed to work this out :P
 		for (int i = 0; i<Tiles.Length; i++) {
 			byte surround = 0;
 			
@@ -223,6 +249,7 @@ public class TileType : ICloneable {
 	[XmlIgnore]
 	public Mesh mesh;
 
+	// Defined function to return a clone of the current class
 	public object  Clone () {
 		return this.MemberwiseClone ();
 	}

@@ -46,13 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\InputOutput\MapReader.cs" />
      <Compile Include="Assets\Scripts\MapBuilder.cs" />
-     <Compile Include="Assets\Scripts\MapBuilder2.cs" />
      <Compile Include="Assets\Scripts\MapController.cs" />
+     <Compile Include="Assets\Scripts\MapReader.cs" />
      <Compile Include="Assets\Scripts\MyStratCamera.cs" />
-     <Compile Include="Assets\Scripts\StratCam.cs" />
-     <None Include="Assets\Scripts\test.shader" />
+     <None Include="Assets\Resources\MapShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

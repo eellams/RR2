@@ -3,31 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MapBuilder : MonoBehaviour {
+	// These are quite imporatant, and shouldn't be able to be changed
 	private float TileSize = 2.0f;
 	private float TileHeight = 3.0f;
 	private float HeightMultiplier = 0.2f;
 
 	public void ProcessMap (Map map) {
+		// Used to create the final map
 		CombineInstance[] combineMesh = new CombineInstance[map.Tiles.Length];
 		Material[] matarray = new Material[map.Tiles.Length];
 
 		MeshFilter mf = GetComponent<MeshFilter> ();
 		mf.mesh = new Mesh ();
 
+		// For each tile, create the relevant mesh
 		for (int i=0; i<map.Tiles.Length; i++) {
 			combineMesh[i].mesh = CreateTile (map,i);
 			matarray[i] = new Material(map.TileTypes[map.Tiles[i].TileId].Mat);
 		}
 
+		// Combine the meshes
 		mf.mesh.CombineMeshes (combineMesh, false, false);
 
+		// Add the mesh to the renderer and collider
 		MeshRenderer mr = GetComponent<MeshRenderer> ();
 		mr.materials = matarray;
-
 		MeshCollider mc = GetComponent<MeshCollider> ();
 		mc.sharedMesh = mf.mesh;
 	}
 
+	// Cretaes the relevant tile mesh
 	public Mesh CreateTile (Map map, int tileNumber) {
 		Mesh finalMesh = new Mesh();
 		List<Vector3> vertices = new List<Vector3> ();
@@ -36,17 +41,20 @@ public class MapBuilder : MonoBehaviour {
 		List<int> triangles = new List<int>();
 		List<Color> colours = new List<Color> ();
 
-
+		// If the tile's triangles should be arranged 'the other way round'
 		bool altTriForm = false;
 
+		// Calculate the position of the tile (used later)
 		int x = tileNumber % map.Width;
 		int y = tileNumber / map.Width;
 
+		// Assign a height to each corner of the tile
 		float height0 = map.HeightBase[tileNumber+map.Width] * HeightMultiplier;
 		float height1 = map.HeightBase[tileNumber] * HeightMultiplier;
 		float height2 = map.HeightBase[tileNumber+1] * HeightMultiplier;
 		float height3 = map.HeightBase[tileNumber+map.Width+1] * HeightMultiplier;
-		
+
+		// If the tile is solid, work out which corners should be 'high'
 		if (map.Tiles [tileNumber].Solid) {
 			if ((map.Tiles [tileNumber].Surround & 0x82) == 0x82)
 				height0 += TileHeight;
@@ -58,6 +66,7 @@ public class MapBuilder : MonoBehaviour {
 				height3 += TileHeight;
 
 			if ((map.Tiles [tileNumber].Surround & 0xAA) == 0xAA) {
+				// TODO is this needed?
 				uint cornerinfo = map.Tiles [tileNumber].Surround & 0x55;
 				if ((cornerinfo & 0x01) == 0x00)
 					height0 -= TileHeight;
@@ -70,17 +79,20 @@ public class MapBuilder : MonoBehaviour {
 
 			}
 		}
-		
+
+		// Assign the vertices
 		vertices.Add (new Vector3 (TileSize * x, height0, TileSize * (y + 1)));
 		vertices.Add (new Vector3 (TileSize * x, height1, TileSize * y));
 		vertices.Add (new Vector3 (TileSize * (x + 1), height2, TileSize * y));
 		vertices.Add (new Vector3 (TileSize * (x + 1), height3, TileSize* (y + 1)));
-		
+
+		// TODO sort out UV for tiles
 		uv.Add (new Vector2 (0.0f, 1.0f));
 		uv.Add (new Vector2 (0.0f, 0.0f));
 		uv.Add ( new Vector2 (1.0f, 0.0f));
 		uv.Add (new Vector2 (1.0f, 1.0f));
 
+		// Work out where the triangles should be (??)
 		if ((altTriForm == true) ||
 		((map.Tiles [tileNumber].Surround & 0x0A) == 0x0A) ||
 	    ((map.Tiles[tileNumber].Surround & 0xE0) == 0xE0)) {
@@ -100,11 +112,16 @@ public class MapBuilder : MonoBehaviour {
 			triangles.Add (2);
 		}
 
-		finalMesh.normals = normals.ToArray ();
+		// Not needed
+		// finalMesh.normals = normals.ToArray ();
+		// TODO smooth normals
+
+		// Assign the required data
 		finalMesh.vertices = vertices.ToArray ();
 		finalMesh.triangles = triangles.ToArray();
 		finalMesh.uv = uv.ToArray ();
 
+		// Recalculate stuff
 		finalMesh.RecalculateBounds ();
 		finalMesh.RecalculateNormals ();
 
