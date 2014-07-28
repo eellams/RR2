@@ -2,11 +2,10 @@
 using System.Collections;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 public class MapController : MonoBehaviour {
 	public Material baseMaterial;
-
-	private Map map;
 
 	// Use this for initialization
 	void Start () {
@@ -18,23 +17,36 @@ public class MapController : MonoBehaviour {
 		MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer> ();
 		MeshCollider meshCollider = gameObject.AddComponent<MeshCollider> ();
 
+		Map map = gameObject.AddComponent<Map> ();
+
 		// Load the map
-		map = mapReader.LoadMap (Path.Combine (Environment.CurrentDirectory, "Data/testmap.xml"));
-		map.Setup (baseMaterial);
+		XmlMap xmlMap = mapReader.LoadMap (Path.Combine (Environment.CurrentDirectory, "Data/testmap.xml"));
+
+		// This is on a sepeate gameobject, it just seemed more sensible at the time
+		GameObject unitGameobject = GameObject.Find ("Units");
+		UnitHandler unitHandler = unitGameobject.GetComponent<UnitHandler> ();
+
+		// Use required data from xmlMap
+		unitHandler.Initialise (xmlMap);
+
+		// Initialise the map (use required data from xmlMap)
+		map.Initialise (baseMaterial, xmlMap);
 
 		// Build the map
-		mapBuilder.ProcessMap (map);
+		mapBuilder.ProcessMap ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		// TODO avalanche, corrosion etc.
 
+		Map map = gameObject.GetComponent<Map> ();
+
 		if (Input.GetKeyDown (KeyCode.Y)) {
 			map.SetTile (14, 0);
 			map.RecalculateSurround();
 			MapBuilder mb = gameObject.GetComponent<MapBuilder>();
-			mb.ProcessMap (map);
+			mb.ProcessMap ();
 		}
 	}
 }

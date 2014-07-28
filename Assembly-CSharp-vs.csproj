@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_2;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_2;UNITY_4_3;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,10 +46,18 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\MapBuilder.cs" />
-     <Compile Include="Assets\Scripts\MapController.cs" />
-     <Compile Include="Assets\Scripts\MapReader.cs" />
-     <Compile Include="Assets\Scripts\MyStratCamera.cs" />
+     <Compile Include="Assets\Scripts\Camera\MyStratCamera.cs" />
+     <Compile Include="Assets\Scripts\Map\Map\Map.cs" />
+     <Compile Include="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" />
+     <Compile Include="Assets\Scripts\Map\MapController.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Block.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\MapReader.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\TileType.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Unit.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\UnitType.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\XmlMap.cs" />
+     <Compile Include="Assets\Scripts\Units\GameUnits\GameUnit.cs" />
+     <Compile Include="Assets\Scripts\Units\UnitHandler.cs" />
      <None Include="Assets\Resources\MapShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

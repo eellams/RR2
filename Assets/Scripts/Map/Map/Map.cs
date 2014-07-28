@@ -1,130 +1,113 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.IO;
-using UnityEngine;
 using System;
+using System.IO;
+using System.Xml.Serialization;
 
-public class MapReader : MonoBehaviour {
-	public Map LoadMap(string mapDir) {
-		// TODO get a more efficient map format
-		
-		XmlSerializer serializer = new XmlSerializer (typeof(Map));
+public class Map : MonoBehaviour {
+	public TileType[] Tiles;
+	public List<float> HeightBase;
+	public Dictionary<int, TileType> TileTypeDict;
+	public Dictionary<int, UnitType> UnitTypeDict;
+	public List<Unit> GameUnits;
 
-		// TODO work out why these NEVER WORK
-		serializer.UnknownNode += new XmlNodeEventHandler (serializer_UnknownNode);
-		serializer.UnknownAttribute += new XmlAttributeEventHandler (serializer_UnknownAttribute);
-
-		// Open the file
-		FileStream fs = new FileStream (mapDir, FileMode.Open);
-
-		// Deserialise the xml file
-		Map toReturn = (Map)serializer.Deserialize (fs);
-
-		// Close the file
-		fs.Close ();
-
-		return toReturn;
-	}
-
-	void serializer_UnknownNode(object sender, XmlNodeEventArgs e)
-	{
-		Debug.Log("Unknown Node:" + e.Name + "\t" +e .Text);
-	}
-	
-	void serializer_UnknownAttribute(object sender, XmlAttributeEventArgs attr)
-	{
-		Debug.Log("Unknown Attribute:" + attr.Attr.Name + "='" + attr.Attr.Value + "'");
-	}
-}
-
-[XmlRoot("Map")]
-public class Map {
-	public string Name;
 	public int Width;
 	public int Height;
+	
+	public void Initialise(Material mat, XmlMap xmlMap) {
+		Width = xmlMap.Width;
+		Height = xmlMap.Height;
 
-	// Wish this wasn't public, but it has to be
-	[XmlArrayAttribute("Blocks")]
-	public Block[] Blocks;
-
-	[XmlArrayAttribute("TileTypes")]
-	public TileType[] TileTypes;
-
-	[XmlIgnore]
-	public TileType[] Tiles;
-
-	[XmlIgnore]
-	public List<float> HeightBase;
-
-	[XmlIgnore]
-	public Dictionary<int, TileType> TileTypeDict;
-
-	public void Setup(Material mat) {
-		// Make sure the blocks are in the right order
-		// TODO why was this necessary?
-		Array.Sort (Blocks, (x, y) => x.ID.CompareTo (y.ID));
-
-		// A dictionary of the different types of tiles
-		TileTypeDict = new Dictionary<int, TileType>();
-
-		foreach (TileType tType in TileTypes) {
-			// Read the texture and load it as a texture
-			FileStream fs = new FileStream (tType.Tex, FileMode.Open);
-			byte[] imageContents = new byte[fs.Length];
-
-			fs.Read (imageContents, 0, imageContents.Length);
-			fs.Close ();
-
-			Texture2D tempTex = new Texture2D(1,1);
-			tempTex.LoadImage (imageContents);
-
-			// Create a material out of that texture
-			tType.Mat = new Material(mat);
-			tType.Mat.SetTexture ("_MainTex", tempTex);
-
-			TileTypeDict.Add (tType.TileId, tType);
-		}
+		SetupTileTypes (mat, xmlMap);
+		InitialiseTiles (xmlMap);
 
 
-		// A list of all the tiles on the map
-		Tiles = new TileType[Blocks.Length];
-
-		// Overwrite the default value from the ones in the xml file
-		// TODO there must be a better way of doing this
-		for (int i=0; i<Blocks.Length; i++) {
-			Tiles[i] = (TileType)TileTypeDict[Blocks[i].TileId].Clone ();
-
-			if (Blocks[i].Height > 0)
-				Tiles[i].Height = Blocks[i].Height;
-			if (Blocks[i].EC >= 0)
-				Tiles[i].EC = Blocks[i].EC;
-			if (Blocks[i].ORE >= 0)
-				Tiles[i].ORE = Blocks[i].ORE;
-
-   		}
 
 		// Create the height map
 		CreateHeightBase ();
-
+		
 		// Create the first surround map
 		RecalculateSurround ();
 	}
-
+	
 	public void SetTile(int tileNumber, int tileType) {
 		TileType temp = Tiles [tileNumber];
 		Tiles [tileNumber] = (TileType)TileTypeDict [tileType].Clone ();
-
+		
 		Tiles [tileNumber].Height = temp.Height;
 		Tiles [tileNumber].EC = temp.EC;
 		Tiles [tileNumber].ORE = temp.ORE;
 	}
 
+	private void SetupTileTypes(Material mat, XmlMap xmlMap) {
+		// Make sure the blocks are in the right order
+		// TODO why was this necessary?
+		Array.Sort (xmlMap.Blocks, (x, y) => x.ID.CompareTo (y.ID));
+		
+		// A dictionary of the different types of tiles
+		TileTypeDict = new Dictionary<int, TileType>();
+
+		foreach (TileType tType in xmlMap.TileTypes) {
+			// Read the texture and load it as a texture
+			FileStream fs = new FileStream (tType.Tex, FileMode.Open);
+			byte[] imageContents = new byte[fs.Length];
+			
+			fs.Read (imageContents, 0, imageContents.Length);
+			fs.Close ();
+			
+			Texture2D tempTex = new Texture2D(1,1);
+			tempTex.LoadImage (imageContents);
+			
+			// Create a material out of that texture
+			tType.Mat = new Material(mat);
+			tType.Mat.SetTexture ("_MainTex", tempTex);
+			
+			TileTypeDict.Add (tType.TileTypeId, tType);
+		}
+
+	}
+
+	private void InitialiseTiles(XmlMap xmlMap) {
+		// A list of all the tiles on the map
+		Tiles = new TileType[xmlMap.Blocks.Length];
+		
+		// Overwrite the default value from the ones in the xml file
+		// TODO there must be a better way of doing this
+		for (int i=0; i<xmlMap.Blocks.Length; i++) {
+			Tiles[i] = (TileType)TileTypeDict[xmlMap.Blocks[i].TileTypeId].Clone ();
+			
+			if (xmlMap.Blocks[i].Height > 0)
+				Tiles[i].Height = xmlMap.Blocks[i].Height;
+			if (xmlMap.Blocks[i].EC >= 0)
+				Tiles[i].EC = xmlMap.Blocks[i].EC;
+			if (xmlMap.Blocks[i].ORE >= 0)
+				Tiles[i].ORE = xmlMap.Blocks[i].ORE;
+			
+		}
+	}
+
+	/*private void SetupUnitTypes() {
+		UnitTypeDict = new Dictionary<int, UnitType> ();
+
+		for (int i=0; i<xmlMap.UnitTypes.Length; i++) {
+			UnitTypeDict.Add(UnitTypes[i].UnitTypeId, UnitTypes[i]);
+		}
+	}
+
+	private void InitialiseUnits() {
+		GameUnits = new List<Unit> ();
+		for (int i=0; i<Units.Length; i++) {
+			Unit toadd = UnitTypeDict[Units[i].UnitTypeId].Clone ();
+			//toadd.
+		}
+	}*/
+
 	private void CreateHeightBase() {
 		// The list of the heightmap, one value for each corner-point on the map.
 		// These corner points are shared.
 		HeightBase = new List<float> ();
-
+		
 		// The height of the 'bottom' corners of the bottom row have no
 		// calculatable height value. Just use the tile's height value.
 		// Also, the bottom-left corner of the first tile on the second row's
@@ -132,7 +115,7 @@ public class Map {
 		for (int i = 0; i<=Width; i++) {
 			HeightBase.Add (Tiles[i].Height);
 		}
-
+		
 		// For each tile work out the height of the top right corner.
 		// This includes the bottom row.
 		for (int i=0; i<Height-1; i++) {
@@ -146,20 +129,20 @@ public class Map {
 				HeightBase.Add (height);
 			}
 		}
-
+		
 		// For the 'top' corners of the top row, also use height value.
 		for (int i = Width; i>0; i--) {
 			HeightBase.Add (Tiles[Tiles.Length - i].Height);
 		}
 	}
-
+	
 	public void RecalculateSurround() {
 		//   1|..|64 
 		//  --------
 		//   2| X|32
 		//  --------
 		//   4| 8|16
-
+		
 		// For each tile, work out which tiles are present.
 		// Each bit corresponds to a surrounding point, as shown in diagram above.
 		// A calculator or something may be needed to work this out :P
@@ -217,67 +200,22 @@ public class Map {
 					surround |= 0x80;
 			}
 
+			// If the tile's surround is 'invalid' (cannot exist), replace the
+			// tile with tile type 0.
 			if (Tiles[i].Solid &&
 			    (((surround & 0xAA) == 0x88) ||
-			    ((surround & 0xAA) == 0x22) ||
-			    ((surround & 0xAA) == 0x02) ||
-				((surround & 0xAA) == 0x08) ||
-				((surround & 0xAA) == 0x20) ||
-				((surround & 0xAA) == 0x80) ||
-			 	((surround & 0xAA) == 0x00)))
+			 ((surround & 0xAA) == 0x22) ||
+			 ((surround & 0xAA) == 0x02) ||
+			 ((surround & 0xAA) == 0x08) ||
+			 ((surround & 0xAA) == 0x20) ||
+			 ((surround & 0xAA) == 0x80) ||
+			 ((surround & 0xAA) == 0x00)))
 			{
 				SetTile (i, 0);
 				RecalculateSurround ();
 			}
-
+			
 			Tiles[i].Surround = (uint)surround;
 		}
-	}
-}
-
-public class Block : TileType {
-	[XmlAttribute("TileId")]
-	public int TileId;
-
-	[XmlAttribute("Height")]
-	public float Height;
-
-	[XmlAttribute("EC")]
-	public int EC;
-
-	[XmlAttribute("ORE")]
-	public int ORE;
-
-	[XmlAttribute("ID")]
-	public int ID;
-
-	[XmlAttribute("Tex")]
-	string Tex;
-
-	// TODO Things like corrosion and avalanche and monster
-}
-
-public class TileType : ICloneable {
-	public string Name;
-	public int TileId;
-	public float Height;
-	public int EC;
-	public int ORE;
-	public bool Solid;
-
-	public string Tex;
-
-	[XmlIgnore]
-	public UInt32 Surround;
-	[XmlIgnore]
-	public int ID;
-	[XmlIgnore]
-	public Material Mat;
-	[XmlIgnore]
-	public Mesh mesh;
-
-	// Defined function to return a clone of the current class
-	public object  Clone () {
-		return this.MemberwiseClone ();
 	}
 }

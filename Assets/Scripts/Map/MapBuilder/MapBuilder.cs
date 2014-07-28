@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class MapBuilder : MonoBehaviour {
 	// These are quite imporatant, and shouldn't be able to be changed
-	private float TileSize = 2.0f;
-	private float TileHeight = 3.0f;
+	private float TileSize = 4.0f;
+	private float TileHeight = 5.0f;
 	private float HeightMultiplier = 0.2f;
 
-	public void ProcessMap (Map map) {
+	public void ProcessMap () {
+		Map map = gameObject.GetComponent<Map> ();
+
 		// Used to create the final map
 		CombineInstance[] combineMesh = new CombineInstance[map.Tiles.Length];
 		Material[] matarray = new Material[map.Tiles.Length];
@@ -18,8 +20,8 @@ public class MapBuilder : MonoBehaviour {
 
 		// For each tile, create the relevant mesh
 		for (int i=0; i<map.Tiles.Length; i++) {
-			combineMesh[i].mesh = CreateTile (map,i);
-			matarray[i] = new Material(map.TileTypes[map.Tiles[i].TileId].Mat);
+			combineMesh[i].mesh = CreateTile (i);
+			matarray[i] = new Material(map.TileTypeDict[map.Tiles[i].TileTypeId].Mat);
 		}
 
 		// Combine the meshes
@@ -33,7 +35,9 @@ public class MapBuilder : MonoBehaviour {
 	}
 
 	// Cretaes the relevant tile mesh
-	public Mesh CreateTile (Map map, int tileNumber) {
+	public Mesh CreateTile (int tileNumber) {
+		Map map = gameObject.GetComponent<Map> ();
+
 		Mesh finalMesh = new Mesh();
 		List<Vector3> vertices = new List<Vector3> ();
 		List<Vector3> normals = new List<Vector3>();
