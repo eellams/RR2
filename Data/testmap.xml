@@ -12,6 +12,7 @@
             <Solid>0</Solid>
             <Tex>Data/Textures/ground.png</Tex>
             <MoveWeight>10.0</MoveWeight>
+            <DrillTime>0</DrillTime>
         </TileType>
         <TileType>
             <Name>Solid Rock</Name>
@@ -19,6 +20,7 @@
             <Solid>1</Solid>
             <Tex>Data/Textures/solidrock.png</Tex>
             <MoveWeight>0</MoveWeight>
+            <DrillTime>0</DrillTime>
         </TileType>
         <TileType>
             <Name>Dirt</Name>
@@ -26,6 +28,7 @@
             <Solid>1</Solid>
             <Tex>Data/Textures/dirt.png</Tex>
             <MoveWeight>0</MoveWeight>
+            <DrillTime>1.0</DrillTime>
         </TileType>
     </TileTypes>
     

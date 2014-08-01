@@ -9,11 +9,11 @@ public class GameUnit : MonoBehaviour {
 	public GameObject Model;
 	public int UnitId;
 
-	private List<Vector3> PointsToMove = new List<Vector3> ();
+	private List<UnitTask> Tasks = new List<UnitTask> ();
 	private bool Selected;
 	private float Gravity = 9.8f;
 	private float vSpeed = 0;
-	
+
 	void Awake () {
 		Deselect ();
 		tag = "Unit";
@@ -23,27 +23,49 @@ public class GameUnit : MonoBehaviour {
 	void Update () {
 		// If selected, billboard the select node so that it always faces
 		// the camera
-		if (Selected) {
+		/*if (Selected) {
 			GameObject cam = GameObject.Find ("Main Camera");
 
 			GameObject select = transform.FindChild ("Select").gameObject;
 			select.transform.LookAt (cam.transform.position);
-		}
+		}*/
 
 		Vector3 dirToMove = Vector3.zero;
 
 		// If the unit has somewhere to move, move to it
-		if (PointsToMove.Count > 0) {
-			dirToMove = PointsToMove [0] - transform.position;
-			dirToMove.y = 0.0f;
+		if (Tasks.Count > 0) {
+			if (Tasks[0].position != Vector3.zero) {
+				dirToMove = Tasks [0].position - transform.position;
+				dirToMove.y = 0.0f;
 
-			Vector3 position = transform.position;
+				Vector3 position = transform.position;
 
-			// If the unit has arrived at a particular destination,
-			// remove it from the list of destinations
-			if ((Mathf.Abs (position.x - PointsToMove [0].x) < 0.2f) &&
-			(Mathf.Abs (position.y = PointsToMove [0].y) < 0.2f)) {
-				PointsToMove.RemoveAt (0);
+				// If the unit has arrived at a particular destination,
+				// remove it from the list of destinations
+				if ((Mathf.Abs (position.x - Tasks [0].position.x) < 0.2f) &&
+				(Mathf.Abs (position.y = Tasks [0].position.y) < 0.2f)) {
+					Tasks.RemoveAt (0);
+				}
+			}
+
+			else if (Tasks[0].pickup >= 0) {
+				// TODO pickup object
+			}
+
+			else if (Tasks[0].drill >= 0) {
+				// TODO drill object
+				Map map = GameObject.Find ("Map").GetComponent<Map>() ;
+
+				map.Tiles[Tasks[0].drill].DrillTime -= Time.deltaTime;
+
+				if (map.Tiles[Tasks[0].drill].DrillTime < 0.0f) {
+					map.SetTile (Tasks[0].drill, 0);
+					map.RecalculateSurround ();
+					MapBuilder mb = GameObject.Find ("Map").GetComponent<MapBuilder> ();
+					mb.ProcessMap ();
+
+					Tasks.RemoveAt (0);
+				}
 			}
 		}
 
@@ -53,7 +75,7 @@ public class GameUnit : MonoBehaviour {
 
 		// If the unit has stopped moving, ensure it is stopped
 		// otherwuse move the unit.
-		if ((dirToMove.magnitude <= 0.1f) && (cc.grounded)) {
+		if ((dirToMove.magnitude < 0.2f) && (cc.grounded)) {
 			cc.Stop ();
 		} else {
 			dirToMove.Normalize ();
@@ -61,14 +83,20 @@ public class GameUnit : MonoBehaviour {
 		}
 	}
 
+	public void AddTask(UnitTask unitTask) {
+		Tasks.Add (unitTask);
+	}
+
 	// Add a destination that this unit should move to
 	public void AddMove (Vector3 position) {
-		PointsToMove.Add (position);
+		UnitTask toadd = new UnitTask ();
+		toadd.position = position;
+		AddTask (toadd);
 	}
 
 	// Clear the list of destinations
 	public void ClearMove () {
-		PointsToMove.Clear ();
+		Tasks.Clear ();
 	}
 
 	// Does what it says on the tin
@@ -91,3 +119,16 @@ public class GameUnit : MonoBehaviour {
 		transform.Find ("Select").gameObject.SetActive (false);
 	}
 }
+
+public class UnitTask {
+	public Vector3 position;
+	public int pickup;
+	public int drill;
+
+	// TODO closeness?
+	
+	public UnitTask() {
+		this.pickup = -1;
+		this.drill = -1;
+	}
+};

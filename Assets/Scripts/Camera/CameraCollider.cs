@@ -33,17 +33,8 @@ public class CameraCollider : MonoBehaviour {
 					int tileNumber = Mathf.FloorToInt (hit.point.z / 4.0f) * map.Width
 						+ Mathf.FloorToInt (hit.point.x / 4.0f);
 
-					// If the map tile is not solid
-					if (!map.Tiles[tileNumber].Solid) {
-						// Move the selected unit(s) etc.
-						UnitHandler uh = GameObject.Find ("Units").GetComponent<UnitHandler>();
-						uh.MapClick(tileNumber, hit.point);
-					}
-
-					// If the tile is solid
-					else {
-						// TODO clicking on solid tiles
-					}
+					UnitHandler uh = GameObject.Find ("Units").GetComponent<UnitHandler>();
+					uh.MapClick(tileNumber, hit.point);
 				}
 			}
 		}

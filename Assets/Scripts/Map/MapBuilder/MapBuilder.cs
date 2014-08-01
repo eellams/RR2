@@ -36,6 +36,15 @@ public class MapBuilder : MonoBehaviour {
 		GameObject cam = GameObject.Find ("Main Camera");
 		MyStratCamera msc = cam.GetComponent<MyStratCamera> ();
 		msc.PanLimits = new Vector3 (map.Width * TileSize, 0, map.Height * TileSize);
+
+
+		// Recalculate the A* nodes
+		NewAstar aStar = GameObject.Find ("Units").GetComponent<NewAstar> ();
+		
+		// But only if the A* controller has been initialised
+		if (aStar.Initialised)
+			aStar.CalculateGraph ();
+
 	}
 
 	// Cretaes the relevant tile mesh

@@ -201,13 +201,5 @@ public class Map : MonoBehaviour {
 			
 			Tiles[i].Surround = (uint)surround;
 		}
-
-		// Recalculate the A* nodes
-		GameObject unitGameobject = GameObject.Find ("Units");
-		NewAstar aStar = unitGameobject.GetComponent<NewAstar> ();
-
-		// But only if the A* controller has been initialised
-		if (aStar.Initialised)
-			aStar.CalculateGraph ();
 	}
 }

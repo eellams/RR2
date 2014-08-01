@@ -73,6 +73,8 @@ public class NewAstar : MonoBehaviour {
 		GameObject mapGameObject = GameObject.Find ("Map");
 		Map map = mapGameObject.GetComponent<Map> ();
 
+		Debug.Log ("Start");
+
 		// Set all the nodes to be passable
 		// The ones which are impassable will be calculated in a sec...
 		foreach (Node n in AStarNodes) {
@@ -107,6 +109,7 @@ public class NewAstar : MonoBehaviour {
 		for (int i=0; i<map.Tiles.Length; i++) {
 			G.Nodes[i] = AStarNodes[i];
 		}
+		Debug.Log ("End");
 	}
 
 	// Calculate a path from start to end

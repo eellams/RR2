@@ -65,7 +65,7 @@ public class UnitHandler : MonoBehaviour {
 		GameUnits[UnitId] = gameUnit;
 	}
 
-	public void MoveAStar (int GameUnitId, Vector3 endPos, bool addToList) {
+	public void MoveAStar (int GameUnitId, Vector3 endPos, bool addToList, bool addLast) {
 		NewAstar nas = GetComponent<NewAstar> ();
 
 		// Get the start position
@@ -86,7 +86,7 @@ public class UnitHandler : MonoBehaviour {
 
 		// Add the movement from the end of the A* nodes to our final
 		// destination
-		if (list.Length > 0)
+		if ((list.Length > 0) && addLast)
 			GameUnits[GameUnitId].AddMove (endPos);
 	}
 
@@ -99,9 +99,16 @@ public class UnitHandler : MonoBehaviour {
 	public void MapClick (int tileNumber, Vector3 position) {
 		Map map = GameObject.Find ("Map").GetComponent<Map> ();
 
-		if ((Selected.Count > 0) && !map.Tiles[tileNumber].Solid) {
-			foreach (int i in Selected) {
-				MoveAStar (i, position, false);
+		if (Selected.Count > 0) {
+		    if (!map.Tiles [tileNumber].Solid) {
+				foreach (int i in Selected) {
+					MoveAStar (i, position, false, true);
+				}
+			} else if (map.Tiles [tileNumber].DrillTime > 0.0f) {
+				foreach (int i in Selected) {
+					MoveAStar (i, position, false, false);
+					DrillWall (i, tileNumber);
+				}
 			}
 		}
 
@@ -115,6 +122,12 @@ public class UnitHandler : MonoBehaviour {
 		if (!addToList)
 			GameUnits [GameUnitId].ClearMove ();
 		GameUnits [GameUnitId].AddMove (position);
+	}
+
+	public void DrillWall(int GameUnitId, int tileNumber) {
+		UnitTask toadd = new UnitTask ();
+		toadd.drill = tileNumber;
+		GameUnits [GameUnitId].AddTask (toadd);
 	}
 
 	// Various ways of selecting a unit

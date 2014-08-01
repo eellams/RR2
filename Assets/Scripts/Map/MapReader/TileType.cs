@@ -11,6 +11,7 @@ public class TileType : ICloneable {
 	public int ORE;
 	public bool Solid;
 	public float MoveWeight;
+	public float DrillTime;
 	
 	public string Tex;
 	
