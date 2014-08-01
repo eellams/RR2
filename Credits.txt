@@ -1,1 +1,5 @@
 The amazing LEGO Minifig Rig was created by Graeme "Littlebrick" Allen from his thread here: http://www.bricksinmotion.com/forums/topic/14737/the-minifig-rig-v12-is-up/
+
+Also a big thanks to Ninth from the Panda3D forums for his strategy camera script. It helped a lot when trying to work out the mathsy camera stuff
+
+Eric Marchesin's A-Star pathfinding example was a great help http://www.codeproject.com/Articles/4391/C-A-Star-is-born

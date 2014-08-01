@@ -1,16 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Units\UnitHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Units\CharacterControls.cs">
     <Files>
-      <File FileName="Assets\Scripts\Map\MapController.cs" Line="27" Column="35" />
-      <File FileName="Assets\Scripts\Units\UnitHandler.cs" Line="6" Column="35" />
+      <File FileName="Assets\Scripts\Units\AStar\NewAstar.cs" Line="103" Column="69" />
+      <File FileName="Assets\Scripts\Units\UnitHandler.cs" Line="29" Column="38" />
+      <File FileName="Assets\Scripts\Map\MapController.cs" Line="35" Column="1" />
+      <File FileName="Assets\Scripts\Units\GameUnits\GameUnit.cs" Line="42" Column="31" />
+      <File FileName="Assets\Scripts\Units\CharacterControls.cs" Line="49" Column="27" />
+      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="63" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Scripts" expanded="True">
-              <Node name="Units" expanded="True" selected="True" />
+              <Node name="Camera" expanded="True" />
+              <Node name="Map" expanded="True">
+                <Node name="Map" expanded="True" />
+              </Node>
+              <Node name="Units" expanded="True">
+                <Node name="GameUnits" expanded="True" />
+                <Node name="CharacterControls.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -20,7 +31,7 @@
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State>
-          <Value>ColladaFile</Value>
+          <Value>G</Value>
         </State>
       </Pad>
     </Pads>
@@ -30,9 +41,20 @@
       <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\objReaderCSharpV4.cs" line="120" />
       <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\DaeLoader\test.cs" line="123" />
       <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\DaeLoader\test.cs" line="136" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\AStar.cs" line="84" />
+      <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="144" />
+      <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="137" />
+      <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="133" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Units\UnitHandler.cs" line="83" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Units\CharacterControls.cs" line="50" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Assets\Scripts\MapController.cs" line="28" offsetX="1488" offsetY="432" expression="x" liveUpdate="False" />
+    <Watch file="Assets\Scripts\Map\AStar\NewAstar.cs" line="36" offsetX="410" offsetY="538" expression="i" liveUpdate="False" />
+    <Watch file="Assets\Scripts\Map\AStar\NewAstar.cs" line="37" offsetX="527" offsetY="564" expression="j" liveUpdate="False" />
+    <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="31" offsetX="528" offsetY="480" expression="AStarNodes" liveUpdate="False" />
+    <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="68" offsetX="475" offsetY="1082" expression="i" liveUpdate="False" />
+    <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="76" offsetX="616" offsetY="1200" expression="G.Arcs" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>

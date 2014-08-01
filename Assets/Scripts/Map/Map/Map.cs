@@ -14,7 +14,7 @@ public class Map : MonoBehaviour {
 
 	public int Width;
 	public int Height;
-	
+
 	public void Initialise(Material mat, XmlMap xmlMap) {
 		Width = xmlMap.Width;
 		Height = xmlMap.Height;
@@ -22,7 +22,7 @@ public class Map : MonoBehaviour {
 		SetupTileTypes (mat, xmlMap);
 		InitialiseTiles (xmlMap);
 
-
+		tag = "Map";
 
 		// Create the height map
 		CreateHeightBase ();
@@ -86,22 +86,6 @@ public class Map : MonoBehaviour {
 			
 		}
 	}
-
-	/*private void SetupUnitTypes() {
-		UnitTypeDict = new Dictionary<int, UnitType> ();
-
-		for (int i=0; i<xmlMap.UnitTypes.Length; i++) {
-			UnitTypeDict.Add(UnitTypes[i].UnitTypeId, UnitTypes[i]);
-		}
-	}
-
-	private void InitialiseUnits() {
-		GameUnits = new List<Unit> ();
-		for (int i=0; i<Units.Length; i++) {
-			Unit toadd = UnitTypeDict[Units[i].UnitTypeId].Clone ();
-			//toadd.
-		}
-	}*/
 
 	private void CreateHeightBase() {
 		// The list of the heightmap, one value for each corner-point on the map.
@@ -217,5 +201,10 @@ public class Map : MonoBehaviour {
 			
 			Tiles[i].Surround = (uint)surround;
 		}
+
+		GameObject unitGameobject = GameObject.Find ("Units");
+		NewAstar aStar = unitGameobject.GetComponent<NewAstar> ();
+		if (aStar.Initialised)
+			aStar.CalculateGraph ();
 	}
 }

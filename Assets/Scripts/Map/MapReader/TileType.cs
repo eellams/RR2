@@ -10,6 +10,7 @@ public class TileType : ICloneable {
 	public int EC;
 	public int ORE;
 	public bool Solid;
+	public float MoveWeight;
 	
 	public string Tex;
 	

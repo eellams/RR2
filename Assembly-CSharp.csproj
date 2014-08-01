@@ -46,7 +46,16 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Camera\CameraCollider.cs" />
      <Compile Include="Assets\Scripts\Camera\MyStratCamera.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Cartography\AStar.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Cartography\Arc.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Cartography\Graph.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Cartography\Node.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Cartography\Point3D.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Cartography\Track.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Cartography\Vector3D.cs" />
+     <Compile Include="Assets\Scripts\EMK\EMK_Collections\SortableList.cs" />
      <Compile Include="Assets\Scripts\Map\Map\Map.cs" />
      <Compile Include="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" />
      <Compile Include="Assets\Scripts\Map\MapController.cs" />
@@ -56,7 +65,10 @@
      <Compile Include="Assets\Scripts\Map\MapReader\Unit.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\UnitType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\XmlMap.cs" />
+     <Compile Include="Assets\Scripts\Units\AStar\NewAstar.cs" />
+     <Compile Include="Assets\Scripts\Units\CharacterControls.cs" />
      <Compile Include="Assets\Scripts\Units\GameUnits\GameUnit.cs" />
+     <Compile Include="Assets\Scripts\Units\ImpactReceiver.cs" />
      <Compile Include="Assets\Scripts\Units\UnitHandler.cs" />
      <None Include="Assets\Resources\MapShader.shader" />
   </ItemGroup>

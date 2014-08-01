@@ -32,6 +32,10 @@ public class MapBuilder : MonoBehaviour {
 		mr.materials = matarray;
 		MeshCollider mc = GetComponent<MeshCollider> ();
 		mc.sharedMesh = mf.mesh;
+
+		GameObject cam = GameObject.Find ("Main Camera");
+		MyStratCamera msc = cam.GetComponent<MyStratCamera> ();
+		msc.PanLimits = new Vector3 (map.Width * TileSize, 0, map.Height * TileSize);
 	}
 
 	// Cretaes the relevant tile mesh

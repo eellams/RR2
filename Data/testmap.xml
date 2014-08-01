@@ -11,12 +11,21 @@
             <TileTypeId>0</TileTypeId>
             <Solid>0</Solid>
             <Tex>Data/Textures/ground.png</Tex>
+            <MoveWeight>10.0</MoveWeight>
         </TileType>
         <TileType>
             <Name>Solid Rock</Name>
             <TileTypeId>1</TileTypeId>
             <Solid>1</Solid>
             <Tex>Data/Textures/solidrock.png</Tex>
+            <MoveWeight>0</MoveWeight>
+        </TileType>
+        <TileType>
+            <Name>Dirt</Name>
+            <TileTypeId>2</TileTypeId>
+            <Solid>1</Solid>
+            <Tex>Data/Textures/dirt.png</Tex>
+            <MoveWeight>0</MoveWeight>
         </TileType>
     </TileTypes>
     
@@ -30,6 +39,7 @@
     
     <Units>
         <Unit UnitId="0" UnitTypeId="0" PosX="10" PosY="10" PosZ="10"/>
+        <Unit UnitId="1" UnitTypeId="0" PosX="12" PosY="50" PosZ="11"/>
     </Units>
 
     <Blocks>
@@ -81,9 +91,9 @@
         <Block ID="41" TileTypeId="1" Height="10.0" />
         <Block ID="42" TileTypeId="1" Height="10.0" />
         <Block ID="43" TileTypeId="1" Height="10.0" />
-        <Block ID="44" TileTypeId="1" Height="10.0" />
-        <Block ID="45" TileTypeId="1" Height="10.0" />
-        <Block ID="46" TileTypeId="1" Height="10.0" />
+        <Block ID="44" TileTypeId="2" Height="10.0" />
+        <Block ID="45" TileTypeId="2" Height="10.0" />
+        <Block ID="46" TileTypeId="2" Height="10.0" />
         <Block ID="47" TileTypeId="1" Height="10.0" />
         <Block ID="48" TileTypeId="1" Height="10.0" />
         <Block ID="49" TileTypeId="1" Height="10.0" />
