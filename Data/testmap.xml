@@ -11,26 +11,50 @@
             <TileTypeId>0</TileTypeId>
             <Solid>0</Solid>
             <Tex>Data/Textures/ground.png</Tex>
-            <MoveWeight>10.0</MoveWeight>
-            <DrillTime>0</DrillTime>
         </TileType>
         <TileType>
             <Name>Solid Rock</Name>
             <TileTypeId>1</TileTypeId>
             <Solid>1</Solid>
             <Tex>Data/Textures/solidrock.png</Tex>
-            <MoveWeight>0</MoveWeight>
-            <DrillTime>0</DrillTime>
+            <PathTypeWhenDrilled>1</PathTypeWhenDrilled>
         </TileType>
         <TileType>
             <Name>Dirt</Name>
             <TileTypeId>2</TileTypeId>
             <Solid>1</Solid>
             <Tex>Data/Textures/dirt.png</Tex>
-            <MoveWeight>0</MoveWeight>
             <DrillTime>1.0</DrillTime>
+            <PathTypeWhenDrilled>1</PathTypeWhenDrilled>
         </TileType>
     </TileTypes>
+    
+    <PathTypes>
+        <PathType>
+            <Name>Rubble4</Name>
+            <PathTypeId>1</PathTypeId>
+            <Tex>Data/Textures/rubble4.png</Tex>
+            <!-- move speed etc. -->
+        </PathType>
+        <PathType>
+            <Name>Rubble3</Name>
+            <PathTypeId>2</PathTypeId>
+            <Tex>Data/Textures/rubble3.png</Tex>
+            <!-- move speed etc. -->
+        </PathType>
+        <PathType>
+            <Name>Rubble2</Name>
+            <PathTypeId>3</PathTypeId>
+            <Tex>Data/Textures/rubble2.png</Tex>
+            <!-- move speed etc. -->
+        </PathType>
+        <PathType>
+            <Name>Rubble1</Name>
+            <PathTypeId>4</PathTypeId>
+            <Tex>Data/Textures/rubble1.png</Tex>
+            <!-- move speed etc. -->
+        </PathType>
+    </PathTypes>
     
     <UnitTypes>
         <UnitType>
@@ -59,7 +83,7 @@
         
         <Block ID="10" TileTypeId="1" Height="10.0" />
         <Block ID="11" TileTypeId="1" Height="10.0" />
-        <Block ID="12" TileTypeId="0" Height="10.0" />
+        <Block ID="12" TileTypeId="0" Height="10.0" PathTypeId="1" />
         <Block ID="13" TileTypeId="1" Height="10.0" />
         <Block ID="14" TileTypeId="1" Height="10.0" />
         <Block ID="15" TileTypeId="0" Height="10.0" />
@@ -70,7 +94,7 @@
         
         <Block ID="20" TileTypeId="1" Height="10.0" />
         <Block ID="21" TileTypeId="1" Height="10.0" />
-        <Block ID="22" TileTypeId="0" Height="10.0" />
+        <Block ID="22" TileTypeId="0" Height="10.0" PathTypeId="2"/>
         <Block ID="23" TileTypeId="1" Height="10.0" />
         <Block ID="24" TileTypeId="1" Height="10.0" />
         <Block ID="25" TileTypeId="0" Height="10.0" />
@@ -81,8 +105,8 @@
         
         <Block ID="30" TileTypeId="1" Height="10.0" />
         <Block ID="31" TileTypeId="0" Height="10.0" />
-        <Block ID="32" TileTypeId="0" Height="10.0" />
-        <Block ID="33" TileTypeId="0" Height="10.0" />
+        <Block ID="32" TileTypeId="0" Height="10.0" PathTypeId="3" />
+        <Block ID="33" TileTypeId="0" Height="10.0" PathTypeId="4" />
         <Block ID="34" TileTypeId="0" Height="10.0" />
         <Block ID="35" TileTypeId="0" Height="10.0" />
         <Block ID="36" TileTypeId="0" Height="10.0" />
@@ -102,12 +126,12 @@
         <Block ID="49" TileTypeId="1" Height="10.0" />
         
         <Block ID="50" TileTypeId="1" Height="10.0" />
-        <Block ID="51" TileTypeId="1" Height="10.0" />
-        <Block ID="52" TileTypeId="1" Height="10.0" />
+        <Block ID="51" TileTypeId="0" Height="10.0" />
+        <Block ID="52" TileTypeId="0" Height="10.0" />
         <Block ID="53" TileTypeId="1" Height="10.0" />
         <Block ID="54" TileTypeId="1" Height="10.0" />
-        <Block ID="55" TileTypeId="1" Height="10.0" />
-        <Block ID="56" TileTypeId="1" Height="10.0" />
+        <Block ID="55" TileTypeId="0" Height="10.0" />
+        <Block ID="56" TileTypeId="0" Height="10.0" />
         <Block ID="57" TileTypeId="1" Height="10.0" />
         <Block ID="58" TileTypeId="1" Height="10.0" />
         <Block ID="59" TileTypeId="1" Height="10.0" />

@@ -9,8 +9,7 @@ public class Map : MonoBehaviour {
 	public TileType[] Tiles;
 	public List<float> HeightBase;
 	public Dictionary<int, TileType> TileTypeDict;
-	public Dictionary<int, UnitType> UnitTypeDict;
-	public List<Unit> GameUnits;
+	public Dictionary<int, PathType> PathTypeDict;
 
 	public int Width;
 	public int Height;
@@ -18,6 +17,8 @@ public class Map : MonoBehaviour {
 	public void Initialise(Material mat, XmlMap xmlMap) {
 		Width = xmlMap.Width;
 		Height = xmlMap.Height;
+
+		SetupPathTypes (mat, xmlMap);
 
 		SetupTileTypes (mat, xmlMap);
 		InitialiseTiles (xmlMap);
@@ -34,10 +35,39 @@ public class Map : MonoBehaviour {
 	public void SetTile(int tileNumber, int tileType) {
 		TileType temp = Tiles [tileNumber];
 		Tiles [tileNumber] = (TileType)TileTypeDict [tileType].Clone ();
-		
+
+		// TODO this isn't right
 		Tiles [tileNumber].Height = temp.Height;
 		Tiles [tileNumber].EC = temp.EC;
 		Tiles [tileNumber].ORE = temp.ORE;
+
+		if (TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled > 0) {
+			Tiles[tileNumber].PathTypeId = TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled;
+		}
+	}
+
+	private void SetupPathTypes(Material mat, XmlMap xmlMap) {
+		PathTypeDict = new Dictionary<int, PathType> ();
+
+		foreach (PathType pType in xmlMap.PathTypes) {
+			//Texture2D tempTex = LoadTexture (pType.Tex);
+			pType.LoadedTex = LoadTexture (pType.Tex);
+
+			PathTypeDict.Add (pType.PathTypeId, pType);
+		}
+	}
+
+	private Texture2D LoadTexture (string dir) {
+		// Read the texture and load it as a texture
+		FileStream fs = new FileStream (dir, FileMode.Open);
+		byte[] imageContents = new byte[fs.Length];
+		
+		fs.Read (imageContents, 0, imageContents.Length);
+		fs.Close ();
+		
+		Texture2D tempTex = new Texture2D(1,1);
+		tempTex.LoadImage (imageContents);
+		return tempTex;
 	}
 
 	private void SetupTileTypes(Material mat, XmlMap xmlMap) {
@@ -49,15 +79,7 @@ public class Map : MonoBehaviour {
 		TileTypeDict = new Dictionary<int, TileType>();
 
 		foreach (TileType tType in xmlMap.TileTypes) {
-			// Read the texture and load it as a texture
-			FileStream fs = new FileStream (tType.Tex, FileMode.Open);
-			byte[] imageContents = new byte[fs.Length];
-			
-			fs.Read (imageContents, 0, imageContents.Length);
-			fs.Close ();
-			
-			Texture2D tempTex = new Texture2D(1,1);
-			tempTex.LoadImage (imageContents);
+			Texture2D tempTex = LoadTexture (tType.Tex);
 			
 			// Create a material out of that texture
 			tType.Mat = new Material(mat);
@@ -83,7 +105,8 @@ public class Map : MonoBehaviour {
 				Tiles[i].EC = xmlMap.Blocks[i].EC;
 			if (xmlMap.Blocks[i].ORE >= 0)
 				Tiles[i].ORE = xmlMap.Blocks[i].ORE;
-			
+			if (xmlMap.Blocks[i].PathTypeId >= 0)
+				Tiles[i].PathTypeId = xmlMap.Blocks[i].PathTypeId;
 		}
 	}
 

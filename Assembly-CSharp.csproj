@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\Map\MapController.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\Block.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\MapReader.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\PathType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\TileType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\Unit.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\UnitType.cs" />

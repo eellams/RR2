@@ -16,6 +16,9 @@ public class XmlMap {
 	
 	[XmlArrayAttribute("UnitTypes")]
 	public UnitType[] UnitTypes;
+
+	[XmlArrayAttribute("PathTypes")]
+	public PathType[] PathTypes;
 	
 	[XmlArrayAttribute("Units")]
 	public Unit[] Units;

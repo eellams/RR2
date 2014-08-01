@@ -21,7 +21,16 @@ public class MapBuilder : MonoBehaviour {
 		// For each tile, create the relevant mesh
 		for (int i=0; i<map.Tiles.Length; i++) {
 			combineMesh[i].mesh = CreateTile (i);
-			matarray[i] = new Material(map.TileTypeDict[map.Tiles[i].TileTypeId].Mat);
+
+			Material toadd = new Material(map.TileTypeDict[map.Tiles[i].TileTypeId].Mat);
+			if (map.Tiles[i].PathTypeId > 0) {
+				toadd.SetTexture ("_PathTex", map.PathTypeDict[map.Tiles[i].PathTypeId].LoadedTex);
+			}
+			//Material toadd = map.TileTypeDict[map.Tiles[i].TileTypeId].Mat;
+			//toadd.SetTexture ("_PathTex", map.PathTypeDict[1].LoadedTex);
+
+			//matarray[i] = new Material(map.TileTypeDict[map.Tiles[i].TileTypeId].Mat);
+			matarray[i] = toadd;
 		}
 
 		// Combine the meshes

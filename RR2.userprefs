@@ -1,32 +1,29 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Map\Map\Map.cs">
     <Files>
-      <File FileName="Assets\Scripts\Units\CharacterControls\CharacterControls.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Units\GameUnits\GameUnit.cs" Line="27" Column="4" />
-      <File FileName="Assets\Scripts\Map\MapController.cs" Line="64" Column="17" />
-      <File FileName="Assets\Scripts\Camera\CameraCollider.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Units\UnitHandler.cs" Line="1" Column="2" />
-      <File FileName="Assets\Scripts\Map\MapReader\TileType.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Etc\LookAtCamera.cs" Line="15" Column="44" />
-      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="171" Column="4" />
-      <File FileName="Assets\Scripts\Units\AStar\NewAstar.cs" Line="105" Column="5" />
+      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="45" Column="63" />
+      <File FileName="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" Line="27" Column="2" />
+      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="228" Column="2" />
+      <File FileName="Assets\Scripts\Map\MapReader\PathType.cs" Line="8" Column="24" />
+      <File FileName="Assets\Scripts\Map\MapReader\TileType.cs" Line="14" Column="33" />
+      <File FileName="Assets\Scripts\Map\MapController.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Resources" expanded="True" />
             <Node name="Scripts" expanded="True">
-              <Node name="Camera" expanded="True" />
-              <Node name="Etc" expanded="True" />
               <Node name="Map" expanded="True">
                 <Node name="Map" expanded="True">
                   <Node name="Map.cs" selected="True" />
                 </Node>
+                <Node name="MapBuilder" expanded="True" />
+                <Node name="MapReader" expanded="True" />
               </Node>
               <Node name="Units" expanded="True">
                 <Node name="AStar" expanded="True" />
-                <Node name="GameUnits" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -52,6 +49,9 @@
       <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="137" />
       <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="133" />
       <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Units\GameUnits\GameUnit.cs" line="57" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\Map\Map.cs" line="111" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\Map\Map.cs" line="44" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\MapBuilder\MapBuilder.cs" line="27" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
@@ -61,5 +61,7 @@
     <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="31" offsetX="528" offsetY="480" expression="AStarNodes" liveUpdate="False" />
     <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="68" offsetX="475" offsetY="1082" expression="i" liveUpdate="False" />
     <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="76" offsetX="616" offsetY="1200" expression="G.Arcs" liveUpdate="False" />
+    <Watch file="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" line="22" offsetX="440" offsetY="336" expression="i" liveUpdate="False" />
+    <Watch file="Assets\Scripts\Map\Map\Map.cs" line="104" offsetX="584" offsetY="1648" expression="xmlMap.Blocks" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>

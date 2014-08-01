@@ -10,8 +10,8 @@ public class TileType : ICloneable {
 	public int EC;
 	public int ORE;
 	public bool Solid;
-	public float MoveWeight;
 	public float DrillTime;
+	public int PathTypeWhenDrilled;
 	
 	public string Tex;
 	
@@ -23,6 +23,8 @@ public class TileType : ICloneable {
 	public Material Mat;
 	[XmlIgnore]
 	public Mesh mesh;
+	[XmlIgnore]
+	public int PathTypeId;
 	
 	// Defined function to return a clone of the current class
 	public object  Clone () {

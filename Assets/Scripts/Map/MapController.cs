@@ -38,9 +38,9 @@ public class MapController : MonoBehaviour {
 
 		// Initialise the A* path finding
 		aStar.Initialise ();
-		//aStar.CalculateGraph ();
 
 		// Build the map
+		// Also recalculates A*, which is nice ^_^
 		mapBuilder.ProcessMap ();
 	}
 	

@@ -20,6 +20,9 @@ public class Block : TileType {
 	
 	[XmlAttribute("Tex")]
 	string Tex;
+
+	[XmlAttribute("PathTypeId")]
+	public int PathTypeId;
 	
 	// TODO Things like corrosion and avalanche and monster
 }
