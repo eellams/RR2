@@ -44,56 +44,81 @@ public class UnitHandler : MonoBehaviour {
 	public void AddUnit (int UnitId, int unitTypeId, Vector3 position) {
 		GameObject unit = new GameObject ();
 
+		// This is really annoying - Unity doesn't like loading external models
+		// therefore models and prefabs have to be used.
 		switch (UnitTypes [unitTypeId].Model) {
 			case "Minifig":
 				unit = (GameObject)Instantiate (Resources.Load ("Models/Minifig/Minifig"));
 				break;
 		}
 
+		// Add the gameunit
 		GameUnit gameUnit = unit.AddComponent<GameUnit> ();
+
+		// Reparent it
 		unit.transform.parent = this.transform;
 		unit.transform.position = position;
 		
 		gameUnit.UnitId = UnitId;
-		
+
+		// Add it to the list of game units
 		GameUnits[UnitId] = gameUnit;
 	}
 
 	public void MoveAStar (int GameUnitId, Vector3 endPos, bool addToList) {
 		NewAstar nas = GetComponent<NewAstar> ();
+
+		// Get the start position
 		Vector3 startPos = GameUnits [GameUnitId].transform.position;
 
+		// Calculate the A* nodes between the start and end
 		Arc[] list = nas.Calculate (startPos, endPos);
 
+		// If we are not adding the movement to the list of movements,
+		// clear the current list (??)
 		if (!addToList)
 			GameUnits [GameUnitId].ClearMove ();
 
+		// Add the points individually
 		foreach (Arc arc in list) {
 			GameUnits[GameUnitId].AddMove (ArcEndToVector(arc));
 		}
+
+		// Add the movement from the end of the A* nodes to our final
+		// destination
 		if (list.Length > 0)
 			GameUnits[GameUnitId].AddMove (endPos);
 	}
 
+	// Does what it says on the tin
 	private Vector3 ArcEndToVector (Arc a) {
 		return new Vector3 ((float)a.EndNode.X, 0.0f, (float)a.EndNode.Y);
 	}
 
+	// If the map is clicked on
 	public void MapClick (int tileNumber, Vector3 position) {
 		Map map = GameObject.Find ("Map").GetComponent<Map> ();
+
 		if ((Selected.Count > 0) && !map.Tiles[tileNumber].Solid) {
 			foreach (int i in Selected) {
 				MoveAStar (i, position, false);
 			}
 		}
+
+		// TODO mining walls etc.
 	}
 
+	// Moves a unit from A to B, regardless of what is in the way
+	//
+	// Why do I need this?
 	public void MoveUnit (int GameUnitId, Vector3 position, bool addToList) {
 		if (!addToList)
 			GameUnits [GameUnitId].ClearMove ();
 		GameUnits [GameUnitId].AddMove (position);
 	}
 
+	// Various ways of selecting a unit
+	// TODO simplify this
 	public void SelectUnit (int GameUnitId) {
 		Selected.Add (GameUnitId);
 		GameUnits [GameUnitId].Select ();

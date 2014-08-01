@@ -1,24 +1,23 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Units\CharacterControls.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Units\GameUnits\GameUnit.cs">
     <Files>
-      <File FileName="Assets\Scripts\Units\AStar\NewAstar.cs" Line="103" Column="69" />
-      <File FileName="Assets\Scripts\Units\UnitHandler.cs" Line="29" Column="38" />
-      <File FileName="Assets\Scripts\Map\MapController.cs" Line="35" Column="1" />
-      <File FileName="Assets\Scripts\Units\GameUnits\GameUnit.cs" Line="42" Column="31" />
-      <File FileName="Assets\Scripts\Units\CharacterControls.cs" Line="49" Column="27" />
-      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="63" Column="1" />
+      <File FileName="Assets\Scripts\Map\MapController.cs" Line="41" Column="3" />
+      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="207" Column="1" />
+      <File FileName="Assets\Scripts\Units\AStar\NewAstar.cs" Line="62" Column="22" />
+      <File FileName="Assets\Scripts\Units\UnitHandler.cs" Line="16" Column="17" />
+      <File FileName="Assets\Scripts\Units\GameUnits\GameUnit.cs" Line="48" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Scripts" expanded="True">
-              <Node name="Camera" expanded="True" />
               <Node name="Map" expanded="True">
                 <Node name="Map" expanded="True" />
               </Node>
               <Node name="Units" expanded="True">
+                <Node name="AStar" expanded="True" />
                 <Node name="GameUnits" expanded="True" />
                 <Node name="CharacterControls.cs" selected="True" />
               </Node>
@@ -45,8 +44,7 @@
       <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="144" />
       <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="137" />
       <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="133" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Units\UnitHandler.cs" line="83" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Units\CharacterControls.cs" line="50" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Units\GameUnits\GameUnit.cs" line="48" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

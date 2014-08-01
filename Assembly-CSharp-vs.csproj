@@ -66,9 +66,8 @@
      <Compile Include="Assets\Scripts\Map\MapReader\UnitType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\XmlMap.cs" />
      <Compile Include="Assets\Scripts\Units\AStar\NewAstar.cs" />
-     <Compile Include="Assets\Scripts\Units\CharacterControls.cs" />
+     <Compile Include="Assets\Scripts\Units\CharacterControls\CharacterControls.cs" />
      <Compile Include="Assets\Scripts\Units\GameUnits\GameUnit.cs" />
-     <Compile Include="Assets\Scripts\Units\ImpactReceiver.cs" />
      <Compile Include="Assets\Scripts\Units\UnitHandler.cs" />
      <None Include="Assets\Resources\MapShader.shader" />
   </ItemGroup>

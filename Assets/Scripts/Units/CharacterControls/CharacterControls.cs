@@ -35,6 +35,7 @@ public class CharacterControls : MonoBehaviour {
 			velocityChange.y = 0;
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 		}
+		grounded = false;
 	}
 
 	public void Stop() {
