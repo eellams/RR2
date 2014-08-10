@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Resources\boom.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraCollider.cs" />
      <Compile Include="Assets\Scripts\Camera\MyStratCamera.cs" />
      <Compile Include="Assets\Scripts\EMK\EMK_Cartography\AStar.cs" />
@@ -60,18 +61,23 @@
      <Compile Include="Assets\Scripts\Map\Map\Map.cs" />
      <Compile Include="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" />
      <Compile Include="Assets\Scripts\Map\MapController.cs" />
-     <Compile Include="Assets\Scripts\Map\MapReader\Block.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\MapReader.cs" />
-     <Compile Include="Assets\Scripts\Map\MapReader\PathType.cs" />
-     <Compile Include="Assets\Scripts\Map\MapReader\TileType.cs" />
-     <Compile Include="Assets\Scripts\Map\MapReader\Unit.cs" />
-     <Compile Include="Assets\Scripts\Map\MapReader\UnitType.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\Block.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\ObjectType.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\Object_.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\PathType.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\TileType.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\Unit.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\UnitType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\XmlMap.cs" />
      <Compile Include="Assets\Scripts\Units\AStar\NewAstar.cs" />
-     <Compile Include="Assets\Scripts\Units\CharacterControls\CharacterControls.cs" />
      <Compile Include="Assets\Scripts\Units\GameUnits\GameUnit.cs" />
+     <Compile Include="Assets\Scripts\Units\UnitController\UnitController.cs" />
      <Compile Include="Assets\Scripts\Units\UnitHandler.cs" />
+     <Compile Include="Assets\Scripts\World\GameObject_\GameObject_.cs" />
+     <Compile Include="Assets\Scripts\World\ObjectController.cs" />
      <None Include="Assets\Resources\MapShader.shader" />
+     <None Include="Assets\Resources\Models\World\ECShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -42,18 +42,14 @@ public class UnitHandler : MonoBehaviour {
 	}
 
 	public void AddUnit (int UnitId, int unitTypeId, Vector3 position) {
-		GameObject unit = new GameObject ();
-
 		// This is really annoying - Unity doesn't like loading external models
 		// therefore models and prefabs have to be used.
-		switch (UnitTypes [unitTypeId].Model) {
-			case "Minifig":
-				unit = (GameObject)Instantiate (Resources.Load ("Models/Minifig/Minifig"));
-				break;
-		}
 
-		// Add the gameunit
-		GameUnit gameUnit = unit.AddComponent<GameUnit> ();
+		GameObject unit = (GameObject)Instantiate (Resources.Load (UnitTypes [unitTypeId].Model));
+
+		//// Add the gameunit
+		//GameUnit gameUnit = unit.AddComponent<GameUnit> ();
+		GameUnit gameUnit = unit.GetComponent<GameUnit> ();
 
 		// Reparent it
 		unit.transform.parent = this.transform;
@@ -106,6 +102,7 @@ public class UnitHandler : MonoBehaviour {
 				}
 			} else if (map.Tiles [tileNumber].DrillTime > 0.0f) {
 				foreach (int i in Selected) {
+					// TODO actually reach the wall
 					MoveAStar (i, position, false, false);
 					DrillWall (i, tileNumber);
 				}

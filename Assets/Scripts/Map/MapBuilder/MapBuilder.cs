@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class MapBuilder : MonoBehaviour {
 	// These are quite imporatant, and shouldn't be able to be changed
 	private float TileSize = 4.0f;
-	private float TileHeight = 5.0f;
-	private float HeightMultiplier = 0.2f;
+	private float TileHeight = 4.0f;
+	public float HeightMultiplier = 0.2f;
 
 	public void ProcessMap () {
 		Map map = gameObject.GetComponent<Map> ();

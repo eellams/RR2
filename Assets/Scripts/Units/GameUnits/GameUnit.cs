@@ -2,50 +2,59 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent (typeof (CharacterControls))]
+//[RequireComponent (typeof (CharacterControls))]
 
 public class GameUnit : MonoBehaviour {
 	public UnitType unitType;
 	public GameObject Model;
 	public int UnitId;
+	public float PathMoveMulti = 1.0f;
 
 	private List<UnitTask> Tasks = new List<UnitTask> ();
 	private bool Selected;
+	private bool Moving = false;
 	private float Gravity = 9.8f;
 	private float vSpeed = 0;
 
-	void Awake () {
+	void Start () {
 		Deselect ();
 		tag = "Unit";
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// If selected, billboard the select node so that it always faces
-		// the camera
-		/*if (Selected) {
-			GameObject cam = GameObject.Find ("Main Camera");
-
-			GameObject select = transform.FindChild ("Select").gameObject;
-			select.transform.LookAt (cam.transform.position);
-		}*/
-
 		Vector3 dirToMove = Vector3.zero;
+
+		Map map = GameObject.Find ("Map").GetComponent<Map> ();
+		int tileNumber = Mathf.FloorToInt (transform.position.z / 4) * map.Width
+						+ Mathf.FloorToInt (transform.position.x / 4);
+
+		UnitController mu = GetComponent<UnitController> ();
+
+		if (map.Initialised) {
+			if (map.Tiles [tileNumber].PathTypeId > 0) {
+				PathMoveMulti = map.PathTypeDict [map.Tiles [tileNumber].PathTypeId].MoveMulti;
+			} else {
+				PathMoveMulti = 1.0f;
+
+			}
+			mu.PathMulti = PathMoveMulti;
+		}
 
 		// If the unit has somewhere to move, move to it
 		if (Tasks.Count > 0) {
 			if (Tasks[0].position != Vector3.zero) {
-				dirToMove = Tasks [0].position - transform.position;
-				dirToMove.y = 0.0f;
-
 				Vector3 position = transform.position;
 
-				// If the unit has arrived at a particular destination,
-				// remove it from the list of destinations
-				if ((Mathf.Abs (position.x - Tasks [0].position.x) < 0.2f) &&
-				(Mathf.Abs (position.y = Tasks [0].position.y) < 0.2f)) {
-					Tasks.RemoveAt (0);
+				if ((!mu.moveToTarget) && (!Moving)) {
+					mu.targetPosition = Tasks[0].position;
+					mu.moveToTarget = true;
+					Moving = true;
+				} else if ((Moving) && (!mu.moveToTarget)) {
+					Tasks.RemoveAt(0);
+					Moving = false;
 				}
+
 			}
 
 			else if (Tasks[0].pickup >= 0) {
@@ -54,7 +63,6 @@ public class GameUnit : MonoBehaviour {
 
 			else if (Tasks[0].drill >= 0) {
 				// TODO drill object
-				Map map = GameObject.Find ("Map").GetComponent<Map>() ;
 
 				map.Tiles[Tasks[0].drill].DrillTime -= Time.deltaTime;
 
@@ -67,19 +75,6 @@ public class GameUnit : MonoBehaviour {
 					Tasks.RemoveAt (0);
 				}
 			}
-		}
-
-		// The character controls controls the movement of the character
-		// (duh ??)
-		CharacterControls cc = GetComponent<CharacterControls> ();
-
-		// If the unit has stopped moving, ensure it is stopped
-		// otherwuse move the unit.
-		if ((dirToMove.magnitude < 0.2f) && (cc.grounded)) {
-			cc.Stop ();
-		} else {
-			dirToMove.Normalize ();
-			cc.targetVelocity = dirToMove;
 		}
 	}
 

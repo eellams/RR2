@@ -10,9 +10,12 @@ public class Map : MonoBehaviour {
 	public List<float> HeightBase;
 	public Dictionary<int, TileType> TileTypeDict;
 	public Dictionary<int, PathType> PathTypeDict;
+	public Dictionary<int, ObjectType> ObjectTypeDict;
 
 	public int Width;
 	public int Height;
+
+	public bool Initialised = false;
 
 	public void Initialise(Material mat, XmlMap xmlMap) {
 		Width = xmlMap.Width;
@@ -30,6 +33,8 @@ public class Map : MonoBehaviour {
 		
 		// Create the first surround map
 		RecalculateSurround ();
+
+		Initialised = true;
 	}
 	
 	public void SetTile(int tileNumber, int tileType) {
@@ -38,8 +43,26 @@ public class Map : MonoBehaviour {
 
 		// TODO this isn't right
 		Tiles [tileNumber].Height = temp.Height;
-		Tiles [tileNumber].EC = temp.EC;
-		Tiles [tileNumber].ORE = temp.ORE;
+		//Tiles [tileNumber].EC = temp.EC;
+		//Tiles [tileNumber].ORE = temp.ORE;
+
+		ObjectController oc = GameObject.Find ("World").GetComponent<ObjectController> ();
+
+		System.Random rnd = new System.Random();
+		/*int month = rnd.Next(1, 13); // creates a number between 1 and 12
+		int dice = rnd.Next(1, 7); // creates a number between 1 and 6
+		int card = rnd.Next(52);*/
+		Vector3 pos = Vector3.zero;
+
+
+		for (int i=0; i<temp.Drops.Length; i++) {
+			pos.x = 4.0f * (tileNumber % Width) + (float)rnd.NextDouble () * 4.0f;
+			// TODO work out height properly
+			pos.y = temp.Height * 0.2f + 3.0f;
+			pos.z = 4.0f * (tileNumber / Width) + (float)rnd.NextDouble () * 4.0f;
+
+			oc.AddObject (-1, temp.Drops[i].ObjectTypeId, pos);
+		}
 
 		if (TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled > 0) {
 			Tiles[tileNumber].PathTypeId = TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled;

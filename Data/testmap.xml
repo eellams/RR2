@@ -11,6 +11,7 @@
             <TileTypeId>0</TileTypeId>
             <Solid>0</Solid>
             <Tex>Data/Textures/ground.png</Tex>
+            <Drops />
         </TileType>
         <TileType>
             <Name>Solid Rock</Name>
@@ -18,6 +19,7 @@
             <Solid>1</Solid>
             <Tex>Data/Textures/solidrock.png</Tex>
             <PathTypeWhenDrilled>1</PathTypeWhenDrilled>
+            <Drops />
         </TileType>
         <TileType>
             <Name>Dirt</Name>
@@ -26,6 +28,10 @@
             <Tex>Data/Textures/dirt.png</Tex>
             <DrillTime>1.0</DrillTime>
             <PathTypeWhenDrilled>1</PathTypeWhenDrilled>
+            <Drops>
+                <Drop ObjectTypeId="1" Min="1" Max="2" />
+                <Drop ObjectTypeId="2" Min="1" Max="2" />
+            </Drops>
         </TileType>
     </TileTypes>
     
@@ -34,40 +40,65 @@
             <Name>Rubble4</Name>
             <PathTypeId>1</PathTypeId>
             <Tex>Data/Textures/rubble4.png</Tex>
-            <!-- move speed etc. -->
+            <MoveMulti>0.4</MoveMulti>
+            <!-- power etc. -->
         </PathType>
         <PathType>
             <Name>Rubble3</Name>
             <PathTypeId>2</PathTypeId>
             <Tex>Data/Textures/rubble3.png</Tex>
-            <!-- move speed etc. -->
+            <MoveMulti>0.5</MoveMulti>
         </PathType>
         <PathType>
             <Name>Rubble2</Name>
             <PathTypeId>3</PathTypeId>
             <Tex>Data/Textures/rubble2.png</Tex>
-            <!-- move speed etc. -->
+            <MoveMulti>0.6</MoveMulti>
         </PathType>
         <PathType>
             <Name>Rubble1</Name>
             <PathTypeId>4</PathTypeId>
             <Tex>Data/Textures/rubble1.png</Tex>
-            <!-- move speed etc. -->
+            <MoveMulti>0.7</MoveMulti>
         </PathType>
     </PathTypes>
+    
+    <ObjectTypes>
+        <ObjectType>
+            <Name>Energy Crystal</Name>
+            <ObjectTypeId>1</ObjectTypeId>
+            <ORE>0</ORE>
+            <EC>1</EC>
+            <Model>Models/World/EnergyCrystal</Model>
+        </ObjectType>
+        <ObjectType>
+            <Name>Big Ore</Name>
+            <ObjectTypeId>2</ObjectTypeId>
+            <ORE>5</ORE>
+            <EC>0</EC>
+            <Model>Models/World/BigOre</Model>
+        </ObjectType>
+    </ObjectTypes>
     
     <UnitTypes>
         <UnitType>
             <UnitTypeId>0</UnitTypeId>
             <Name>Rock Raider</Name>
-            <Model>Minifig</Model>
+            <Model>Models/Minifig/Minifig</Model>
         </UnitType>
     </UnitTypes>
     
     <Units>
-        <Unit UnitId="0" UnitTypeId="0" PosX="10" PosY="10" PosZ="10"/>
-        <Unit UnitId="1" UnitTypeId="0" PosX="12" PosY="50" PosZ="11"/>
+        <Unit UnitId="0" UnitTypeId="0" PosX="10" PosY="10" PosZ="10">
+        </Unit>
+        <Unit UnitId="1" UnitTypeId="0" PosX="12" PosY="50" PosZ="11">
+        </Unit>
     </Units>
+    
+    <Objects>
+        <Object_ ObjectId="1" ObjectTypeId="1" PosX="10" PosY="10" PosZ="12" />
+        <Object_ ObjectId="2" ObjectTypeId="2" PosX="15" PosY="15" PosZ="15" />
+    </Objects>
 
     <Blocks>
         <Block ID="0" TileTypeId="1" Height="12.0" />
@@ -116,7 +147,7 @@
         
         <Block ID="40" TileTypeId="1" Height="10.0" />
         <Block ID="41" TileTypeId="1" Height="10.0" />
-        <Block ID="42" TileTypeId="1" Height="10.0" />
+        <Block ID="42" TileTypeId="2" Height="10.0" />
         <Block ID="43" TileTypeId="1" Height="10.0" />
         <Block ID="44" TileTypeId="2" Height="10.0" />
         <Block ID="45" TileTypeId="2" Height="10.0" />
@@ -126,12 +157,12 @@
         <Block ID="49" TileTypeId="1" Height="10.0" />
         
         <Block ID="50" TileTypeId="1" Height="10.0" />
-        <Block ID="51" TileTypeId="0" Height="10.0" />
-        <Block ID="52" TileTypeId="0" Height="10.0" />
+        <Block ID="51" TileTypeId="1" Height="10.0" />
+        <Block ID="52" TileTypeId="2" Height="10.0" />
         <Block ID="53" TileTypeId="1" Height="10.0" />
         <Block ID="54" TileTypeId="1" Height="10.0" />
-        <Block ID="55" TileTypeId="0" Height="10.0" />
-        <Block ID="56" TileTypeId="0" Height="10.0" />
+        <Block ID="55" TileTypeId="2" Height="10.0" />
+        <Block ID="56" TileTypeId="1" Height="10.0" />
         <Block ID="57" TileTypeId="1" Height="10.0" />
         <Block ID="58" TileTypeId="1" Height="10.0" />
         <Block ID="59" TileTypeId="1" Height="10.0" />

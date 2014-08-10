@@ -33,6 +33,11 @@ public class MapController : MonoBehaviour {
 		// Use required data from xmlMap
 		unitHandler.Initialise (xmlMap);
 
+		GameObject worldGameobject = GameObject.Find ("World");
+		ObjectController objectController = worldGameobject.GetComponent<ObjectController> ();
+
+		objectController.Initialise (xmlMap);
+
 		// Initialise the map (use required data from xmlMap)
 		map.Initialise (baseMaterial, xmlMap);
 

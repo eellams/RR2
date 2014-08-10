@@ -14,6 +14,9 @@ public class TileType : ICloneable {
 	public int PathTypeWhenDrilled;
 	
 	public string Tex;
+
+	[XmlArrayAttribute("Drops")]
+	public Drop[] Drops;
 	
 	[XmlIgnore]
 	public UInt32 Surround;
@@ -30,4 +33,15 @@ public class TileType : ICloneable {
 	public object  Clone () {
 		return this.MemberwiseClone ();
 	}
+}
+
+public class Drop {
+	[XmlAttribute]
+	public int ObjectTypeId;
+
+	[XmlAttribute]
+	public int Min;
+
+	[XmlAttribute]
+	public int Max;
 }

@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 public class PathType : ICloneable {
 	public string Name;
 	public int PathTypeId;
+	public float MoveMulti;
 	
 	public string Tex;
 

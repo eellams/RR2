@@ -13,13 +13,19 @@ public class XmlMap {
 	
 	[XmlArrayAttribute("TileTypes")]
 	public TileType[] TileTypes;
+
+	[XmlArrayAttribute("ObjectTypes")]
+	public ObjectType[] ObjectTypes;
 	
 	[XmlArrayAttribute("UnitTypes")]
 	public UnitType[] UnitTypes;
 
 	[XmlArrayAttribute("PathTypes")]
 	public PathType[] PathTypes;
-	
+
+	[XmlArrayAttribute("Objects")]
+	public Object_[] Objects;
+
 	[XmlArrayAttribute("Units")]
 	public Unit[] Units;
 }

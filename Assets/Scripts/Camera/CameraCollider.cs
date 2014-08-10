@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraCollider : MonoBehaviour {
 	// Update is called once per frame
+
 	void Update () {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
@@ -37,6 +38,15 @@ public class CameraCollider : MonoBehaviour {
 					uh.MapClick(tileNumber, hit.point);
 				}
 			}
+
+			if (Input.GetMouseButtonDown (2)) {
+				GameObject x = (GameObject)Instantiate (Resources.Load ("boomy"));
+				boom y = x.GetComponent<boom>();
+				x.transform.position = hit.point;
+				y.pow ();
+			}
 		}
+
+
 	}
 }

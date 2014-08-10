@@ -1,67 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Map\Map\Map.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Map\MapBuilder\MapBuilder.cs">
     <Files>
-      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="45" Column="63" />
-      <File FileName="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" Line="27" Column="2" />
-      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="228" Column="2" />
-      <File FileName="Assets\Scripts\Map\MapReader\PathType.cs" Line="8" Column="24" />
-      <File FileName="Assets\Scripts\Map\MapReader\TileType.cs" Line="14" Column="33" />
+      <File FileName="Assets\Scripts\Units\GameUnits\GameUnit.cs" Line="70" Column="14" />
+      <File FileName="Assets\Scripts\Units\UnitController\UnitController.cs" Line="79" Column="6" />
+      <File FileName="Assets\Scripts\Map\Map\Map.cs" Line="61" Column="34" />
+      <File FileName="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" Line="8" Column="30" />
+      <File FileName="Assets\Scripts\World\ObjectController.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Map\MapController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Units\UnitHandler.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="Resources" expanded="True" />
-            <Node name="Scripts" expanded="True">
-              <Node name="Map" expanded="True">
-                <Node name="Map" expanded="True">
-                  <Node name="Map.cs" selected="True" />
-                </Node>
-                <Node name="MapBuilder" expanded="True" />
-                <Node name="MapReader" expanded="True" />
-              </Node>
-              <Node name="Units" expanded="True">
-                <Node name="AStar" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>G</Value>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\objReaderCSharpV4.cs" line="120" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\DaeLoader\test.cs" line="123" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\DaeLoader\test.cs" line="136" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\AStar.cs" line="84" />
-      <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="144" />
-      <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="137" />
-      <Breakpoint enabled="false" file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\AStar\NewAstar.cs" line="133" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Units\GameUnits\GameUnit.cs" line="57" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\Map\Map.cs" line="111" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\Map\Map.cs" line="44" />
-      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\MapBuilder\MapBuilder.cs" line="27" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
-    <Watch file="Assets\Scripts\MapController.cs" line="28" offsetX="1488" offsetY="432" expression="x" liveUpdate="False" />
-    <Watch file="Assets\Scripts\Map\AStar\NewAstar.cs" line="36" offsetX="410" offsetY="538" expression="i" liveUpdate="False" />
-    <Watch file="Assets\Scripts\Map\AStar\NewAstar.cs" line="37" offsetX="527" offsetY="564" expression="j" liveUpdate="False" />
-    <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="31" offsetX="528" offsetY="480" expression="AStarNodes" liveUpdate="False" />
-    <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="68" offsetX="475" offsetY="1082" expression="i" liveUpdate="False" />
-    <Watch file="Assets\Scripts\Units\AStar\NewAstar.cs" line="76" offsetX="616" offsetY="1200" expression="G.Arcs" liveUpdate="False" />
-    <Watch file="Assets\Scripts\Map\MapBuilder\MapBuilder.cs" line="22" offsetX="440" offsetY="336" expression="i" liveUpdate="False" />
-    <Watch file="Assets\Scripts\Map\Map\Map.cs" line="104" offsetX="584" offsetY="1648" expression="xmlMap.Blocks" liveUpdate="False" />
-  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
