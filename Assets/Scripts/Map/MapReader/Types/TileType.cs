@@ -7,8 +7,6 @@ public class TileType : ICloneable {
 	public string Name;
 	public int TileTypeId;
 	public float Height;
-	public int EC;
-	public int ORE;
 	public bool Solid;
 	public float DrillTime;
 	public int PathTypeWhenDrilled;

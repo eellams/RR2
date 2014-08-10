@@ -25,11 +25,11 @@ public class GameUnit : MonoBehaviour {
 	void Update () {
 		Vector3 dirToMove = Vector3.zero;
 
-		Map map = GameObject.Find ("Map").GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 		int tileNumber = Mathf.FloorToInt (transform.position.z / 4) * map.Width
 						+ Mathf.FloorToInt (transform.position.x / 4);
 
-		UnitController mu = GetComponent<UnitController> ();
+		UnitMover um = GetComponent<UnitMover> ();
 
 		if (map.Initialised) {
 			if (map.Tiles [tileNumber].PathTypeId > 0) {
@@ -38,7 +38,7 @@ public class GameUnit : MonoBehaviour {
 				PathMoveMulti = 1.0f;
 
 			}
-			mu.PathMulti = PathMoveMulti;
+			um.PathMulti = PathMoveMulti;
 		}
 
 		// If the unit has somewhere to move, move to it
@@ -46,11 +46,11 @@ public class GameUnit : MonoBehaviour {
 			if (Tasks[0].position != Vector3.zero) {
 				Vector3 position = transform.position;
 
-				if ((!mu.moveToTarget) && (!Moving)) {
-					mu.targetPosition = Tasks[0].position;
-					mu.moveToTarget = true;
+				if ((!um.moveToTarget) && (!Moving)) {
+					um.targetPosition = Tasks[0].position;
+					um.moveToTarget = true;
 					Moving = true;
-				} else if ((Moving) && (!mu.moveToTarget)) {
+				} else if ((Moving) && (!um.moveToTarget)) {
 					Tasks.RemoveAt(0);
 					Moving = false;
 				}

@@ -15,28 +15,43 @@ using System.Collections.Generic;
 public class MapController : MonoBehaviour {
 	public Material baseMaterial;
 
+	private static MapController instance = null;
+	public static MapController Instance {
+		get
+		{
+			if (instance == null)
+			{
+				instance = (MapController)FindObjectOfType(typeof(MapController));
+			}
+			return instance;
+		}
+	}
+
+	public Map GetMap() {
+		return (Map)FindObjectOfType (typeof(Map));
+	}
+
 	// Use this for initialization
 	void Start () {
 		// Get the required components
 		MapReader mapReader = GetComponent<MapReader> ();
-		Map map = GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 		MapBuilder mapBuilder = GetComponent<MapBuilder> ();
 
 		// Load the map
 		XmlMap xmlMap = mapReader.LoadMap (Path.Combine (Environment.CurrentDirectory, "Data/testmap.xml"));
 
-		// This is on a sepeate gameobject, it just seemed more sensible at the time
 		GameObject unitGameobject = GameObject.Find ("Units");
-		UnitHandler unitHandler = unitGameobject.GetComponent<UnitHandler> ();
+
 		NewAstar aStar = unitGameobject.GetComponent<NewAstar> ();
 
 		// Use required data from xmlMap
-		unitHandler.Initialise (xmlMap);
+		UnitController.Instance.Initialise (xmlMap);
 
 		GameObject worldGameobject = GameObject.Find ("World");
-		ObjectController objectController = worldGameobject.GetComponent<ObjectController> ();
+		//ObjectController objectController = worldGameobject.GetComponent<ObjectController> ();
 
-		objectController.Initialise (xmlMap);
+		ObjectController.Instance.Initialise (xmlMap);
 
 		// Initialise the map (use required data from xmlMap)
 		map.Initialise (baseMaterial, xmlMap);
@@ -53,7 +68,7 @@ public class MapController : MonoBehaviour {
 	void Update () {
 		// TODO avalanche, corrosion etc.
 
-		Map map = gameObject.GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 
 		if (Input.GetKeyDown (KeyCode.Y)) {
 			map.SetTile (14, 0);

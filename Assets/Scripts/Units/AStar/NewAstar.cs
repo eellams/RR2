@@ -12,8 +12,7 @@ public class NewAstar : MonoBehaviour {
 
 	public void Initialise () {
 		// Get the map component
-		GameObject mapGameObject = GameObject.Find ("Map");
-		Map map = mapGameObject.GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 
 		G = new Graph ();
 
@@ -70,8 +69,7 @@ public class NewAstar : MonoBehaviour {
 
 	// Determine which nodes can be passed through
 	public void CalculateGraph() {
-		GameObject mapGameObject = GameObject.Find ("Map");
-		Map map = mapGameObject.GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 
 		// Set all the nodes to be passable
 		// The ones which are impassable will be calculated in a sec...

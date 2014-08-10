@@ -21,21 +21,19 @@ public class CameraCollider : MonoBehaviour {
 					GameUnit unitHit = hit.collider.gameObject.GetComponent<GameUnit>();
 
 					// Select (or deselect) the unit
-					UnitHandler uh = GameObject.Find ("Units").GetComponent<UnitHandler>();
-					uh.MouseSelect (unitHit.UnitId);
+					UnitController.Instance.MouseSelect(unitHit.UnitId);
 				}
 
 				// If hits part of the map
 				else if (hit.collider.CompareTag ("Map")) {
 					// Get the map
-					Map map = GameObject.Find ("Map").GetComponent<Map>();
+					Map map = MapController.Instance.GetMap ();
 
 					// Calculate the tile number
 					int tileNumber = Mathf.FloorToInt (hit.point.z / 4.0f) * map.Width
 						+ Mathf.FloorToInt (hit.point.x / 4.0f);
 
-					UnitHandler uh = GameObject.Find ("Units").GetComponent<UnitHandler>();
-					uh.MapClick(tileNumber, hit.point);
+					UnitController.Instance.MapClick(tileNumber, hit.point);
 				}
 			}
 

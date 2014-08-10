@@ -1,85 +1,83 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using System.IO;
-using System.Xml.Serialization;
+using System;
 
 public class Map : MonoBehaviour {
+	[HideInInspector]
 	public TileType[] Tiles;
+
+	[HideInInspector]
 	public List<float> HeightBase;
+
 	public Dictionary<int, TileType> TileTypeDict;
 	public Dictionary<int, PathType> PathTypeDict;
 	public Dictionary<int, ObjectType> ObjectTypeDict;
-
+	
 	public int Width;
 	public int Height;
-
+	
 	public bool Initialised = false;
-
+	
 	public void Initialise(Material mat, XmlMap xmlMap) {
 		Width = xmlMap.Width;
 		Height = xmlMap.Height;
-
+		
 		SetupPathTypes (mat, xmlMap);
-
+		
 		SetupTileTypes (mat, xmlMap);
 		InitialiseTiles (xmlMap);
-
+		
 		tag = "Map";
-
+		
 		// Create the height map
 		CreateHeightBase ();
 		
 		// Create the first surround map
 		RecalculateSurround ();
-
+		
 		Initialised = true;
 	}
 	
 	public void SetTile(int tileNumber, int tileType) {
 		TileType temp = Tiles [tileNumber];
 		Tiles [tileNumber] = (TileType)TileTypeDict [tileType].Clone ();
-
+		
 		// TODO this isn't right
 		Tiles [tileNumber].Height = temp.Height;
-		//Tiles [tileNumber].EC = temp.EC;
-		//Tiles [tileNumber].ORE = temp.ORE;
-
-		ObjectController oc = GameObject.Find ("World").GetComponent<ObjectController> ();
-
+		
+	//	ObjectController oc = GameObject.Find ("World").GetComponent<ObjectController> ();
+		
 		System.Random rnd = new System.Random();
-		/*int month = rnd.Next(1, 13); // creates a number between 1 and 12
-		int dice = rnd.Next(1, 7); // creates a number between 1 and 6
-		int card = rnd.Next(52);*/
+		
 		Vector3 pos = Vector3.zero;
-
-
+		
+		
 		for (int i=0; i<temp.Drops.Length; i++) {
 			pos.x = 4.0f * (tileNumber % Width) + (float)rnd.NextDouble () * 4.0f;
 			// TODO work out height properly
 			pos.y = temp.Height * 0.2f + 3.0f;
 			pos.z = 4.0f * (tileNumber / Width) + (float)rnd.NextDouble () * 4.0f;
-
-			oc.AddObject (-1, temp.Drops[i].ObjectTypeId, pos);
+			
+			ObjectController.Instance.AddObject (-1, temp.Drops[i].ObjectTypeId, pos);
 		}
-
+		
 		if (TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled > 0) {
 			Tiles[tileNumber].PathTypeId = TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled;
 		}
 	}
-
+	
 	private void SetupPathTypes(Material mat, XmlMap xmlMap) {
 		PathTypeDict = new Dictionary<int, PathType> ();
-
+		
 		foreach (PathType pType in xmlMap.PathTypes) {
-			//Texture2D tempTex = LoadTexture (pType.Tex);
 			pType.LoadedTex = LoadTexture (pType.Tex);
-
+			
 			PathTypeDict.Add (pType.PathTypeId, pType);
 		}
 	}
-
+	
 	private Texture2D LoadTexture (string dir) {
 		// Read the texture and load it as a texture
 		FileStream fs = new FileStream (dir, FileMode.Open);
@@ -92,7 +90,7 @@ public class Map : MonoBehaviour {
 		tempTex.LoadImage (imageContents);
 		return tempTex;
 	}
-
+	
 	private void SetupTileTypes(Material mat, XmlMap xmlMap) {
 		// Make sure the blocks are in the right order
 		// TODO why was this necessary?
@@ -100,7 +98,7 @@ public class Map : MonoBehaviour {
 		
 		// A dictionary of the different types of tiles
 		TileTypeDict = new Dictionary<int, TileType>();
-
+		
 		foreach (TileType tType in xmlMap.TileTypes) {
 			Texture2D tempTex = LoadTexture (tType.Tex);
 			
@@ -110,9 +108,9 @@ public class Map : MonoBehaviour {
 			
 			TileTypeDict.Add (tType.TileTypeId, tType);
 		}
-
+		
 	}
-
+	
 	private void InitialiseTiles(XmlMap xmlMap) {
 		// A list of all the tiles on the map
 		Tiles = new TileType[xmlMap.Blocks.Length];
@@ -124,15 +122,11 @@ public class Map : MonoBehaviour {
 			
 			if (xmlMap.Blocks[i].Height > 0)
 				Tiles[i].Height = xmlMap.Blocks[i].Height;
-			if (xmlMap.Blocks[i].EC >= 0)
-				Tiles[i].EC = xmlMap.Blocks[i].EC;
-			if (xmlMap.Blocks[i].ORE >= 0)
-				Tiles[i].ORE = xmlMap.Blocks[i].ORE;
 			if (xmlMap.Blocks[i].PathTypeId >= 0)
 				Tiles[i].PathTypeId = xmlMap.Blocks[i].PathTypeId;
 		}
 	}
-
+	
 	private void CreateHeightBase() {
 		// The list of the heightmap, one value for each corner-point on the map.
 		// These corner points are shared.
@@ -229,7 +223,7 @@ public class Map : MonoBehaviour {
 				if (Tiles[i+Width].Solid) // If solid tile in row above
 					surround |= 0x80;
 			}
-
+			
 			// If the tile's surround is 'invalid' (cannot exist), replace the
 			// tile with tile type 0.
 			if (Tiles[i].Solid &&

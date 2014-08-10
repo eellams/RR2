@@ -3,7 +3,7 @@ using System.Collections;
 
 
 
-public class UnitController : MonoBehaviour {
+public class UnitMover : MonoBehaviour {
     public bool moveToTarget = false;
 	public Vector3 targetPosition = Vector3.zero;
 
@@ -45,7 +45,6 @@ public class UnitController : MonoBehaviour {
             } else {
                 moveMode = MoveModeType.FORWARD;
             }
-			//moveMode = MoveModeType.FORWARD;
 
             // check the distance
             distanceToDestiantion = Vector3.Distance(tempTargetPosition, transform.position);

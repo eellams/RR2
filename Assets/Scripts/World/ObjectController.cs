@@ -8,14 +8,16 @@ public class ObjectController : MonoBehaviour {
 
 	private int NextObjId = 0;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	private static ObjectController instance = null;
+	public static ObjectController Instance {
+		get
+		{
+			if (instance == null)
+			{
+				instance = (ObjectController)FindObjectOfType(typeof(ObjectController));
+			}
+			return instance;
+		}
 	}
 
 	public void Initialise(XmlMap xmlMap) {
@@ -34,27 +36,23 @@ public class ObjectController : MonoBehaviour {
 
 	public void AddObject(int objectId, int objectTypeId, Vector3 position) {
 		GameObject obj = (GameObject)Instantiate (Resources.Load (ObjectTypeDict [objectTypeId].Model));
-		
-		//// Add the gameunit
-		//GameUnit gameUnit = unit.AddComponent<> ();
-		GameObject_ gameUnit = obj.GetComponent<GameObject_> ();
+
+		GameObject_ go = obj.GetComponent<GameObject_> ();
 		
 		// Reparent it
 		obj.transform.parent = this.transform;
 		obj.transform.position = position;
 
 		if (objectId > -1) {
-			gameUnit.ObjectId = objectId;
+			go.ObjectId = objectId;
 			if (objectId > NextObjId) {
 					NextObjId = objectId;
 			}
 		} else {
-			gameUnit.ObjectId = NextObjId++;
+			go.ObjectId = NextObjId++;
 		}
-
-
 		
 		// Add it to the list of game units
-		GameObjects_ [objectId] = gameUnit;
+		GameObjects_ [objectId] = go;
 	}
 }

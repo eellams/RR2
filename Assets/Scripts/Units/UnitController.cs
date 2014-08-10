@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using EMK.Cartography;
 
 [RequireComponent (typeof (NewAstar))]
-public class UnitHandler : MonoBehaviour {
+public class UnitController : MonoBehaviour {
 	public Dictionary<int, UnitType> UnitTypes;
 
 	public Dictionary<int, GameUnit> GameUnits;
@@ -12,18 +12,25 @@ public class UnitHandler : MonoBehaviour {
 	private int UnitId;
 	private List<int> Selected;
 
-	// Use this for initialization
-	void Start () {
-		Selected = new List<int>();
+	private static UnitController instance = null;
+	public static UnitController Instance {
+		get
+		{
+			if (instance == null)
+			{
+				instance = (UnitController)FindObjectOfType(typeof(UnitController));
+				if (instance == null)
+					instance = (new GameObject("Map")).AddComponent<UnitController>();
+			}
+			return instance;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
+
 
 	public void Initialise (XmlMap xmlMap) {
 		UnitTypes = new Dictionary<int, UnitType> ();
 		GameUnits = new Dictionary<int, GameUnit> ();
+		Selected = new List<int> ();
 
 		// Add the different unit types to the dictionary
 		for (int i=0; i<xmlMap.UnitTypes.Length; i++) {
@@ -93,7 +100,7 @@ public class UnitHandler : MonoBehaviour {
 
 	// If the map is clicked on
 	public void MapClick (int tileNumber, Vector3 position) {
-		Map map = GameObject.Find ("Map").GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 
 		if (Selected.Count > 0) {
 		    if (!map.Tiles [tileNumber].Solid) {

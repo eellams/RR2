@@ -9,7 +9,7 @@ public class MapBuilder : MonoBehaviour {
 	public float HeightMultiplier = 0.2f;
 
 	public void ProcessMap () {
-		Map map = gameObject.GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 
 		// Used to create the final map
 		CombineInstance[] combineMesh = new CombineInstance[map.Tiles.Length];
@@ -26,10 +26,6 @@ public class MapBuilder : MonoBehaviour {
 			if (map.Tiles[i].PathTypeId > 0) {
 				toadd.SetTexture ("_PathTex", map.PathTypeDict[map.Tiles[i].PathTypeId].LoadedTex);
 			}
-			//Material toadd = map.TileTypeDict[map.Tiles[i].TileTypeId].Mat;
-			//toadd.SetTexture ("_PathTex", map.PathTypeDict[1].LoadedTex);
-
-			//matarray[i] = new Material(map.TileTypeDict[map.Tiles[i].TileTypeId].Mat);
 			matarray[i] = toadd;
 		}
 
@@ -58,7 +54,7 @@ public class MapBuilder : MonoBehaviour {
 
 	// Cretaes the relevant tile mesh
 	public Mesh CreateTile (int tileNumber) {
-		Map map = gameObject.GetComponent<Map> ();
+		Map map = MapController.Instance.GetMap ();
 
 		Mesh finalMesh = new Mesh();
 		List<Vector3> vertices = new List<Vector3> ();

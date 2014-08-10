@@ -72,8 +72,8 @@
      <Compile Include="Assets\Scripts\Map\MapReader\XmlMap.cs" />
      <Compile Include="Assets\Scripts\Units\AStar\NewAstar.cs" />
      <Compile Include="Assets\Scripts\Units\GameUnits\GameUnit.cs" />
-     <Compile Include="Assets\Scripts\Units\UnitController\UnitController.cs" />
-     <Compile Include="Assets\Scripts\Units\UnitHandler.cs" />
+     <Compile Include="Assets\Scripts\Units\UnitController.cs" />
+     <Compile Include="Assets\Scripts\Units\UnitMover\UnitMover.cs" />
      <Compile Include="Assets\Scripts\World\GameObject_\GameObject_.cs" />
      <Compile Include="Assets\Scripts\World\ObjectController.cs" />
      <None Include="Assets\Resources\MapShader.shader" />
