@@ -6,7 +6,7 @@ public class MapBuilder : MonoBehaviour {
 	// These are quite imporatant, and shouldn't be able to be changed
 	private float TileSize = 4.0f;
 	private float TileHeight = 4.0f;
-	public float HeightMultiplier = 0.2f;
+	public float HeightMultiplier = 0.2f;//1.0f;//0.2f;
 
 	public void ProcessMap () {
 		Map map = MapController.Instance.GetMap ();
@@ -44,7 +44,7 @@ public class MapBuilder : MonoBehaviour {
 
 
 		// Recalculate the A* nodes
-		NewAstar aStar = GameObject.Find ("Units").GetComponent<NewAstar> ();
+		NewAstar aStar = GameObject.Find ("Unit").GetComponent<NewAstar> ();
 		
 		// But only if the A* controller has been initialised
 		if (aStar.Initialised)

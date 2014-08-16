@@ -61,6 +61,18 @@
             <Tex>Data/Textures/rubble1.png</Tex>
             <MoveMulti>0.7</MoveMulti>
         </PathType>
+        <PathType>
+            <Name>Powerpath</Name>
+            <PathTypeId>5</PathTypeId>
+            <Tex>Data/Textures/powerpath.png</Tex>
+            <MoveMulti>1.2</MoveMulti>
+        </PathType>
+        <PathType>
+            <Name>Building Powerpath</Name>
+            <PathTypeId>6</PathTypeId>
+            <Tex>Data/Textures/buildingpowerpath.png</Tex>
+            <MoveMulti>1.2</MoveMulti>
+        </PathType>
     </PathTypes>
     
     <ObjectTypes>
@@ -80,6 +92,15 @@
         </ObjectType>
     </ObjectTypes>
     
+    <BuildingTypes>
+        <BuildingType>
+            <BuildingTypeId>1</BuildingTypeId>
+            <Name>Generic Building</Name>
+            <Model>Models/Buildings/GenericBuildingPrefab</Model>
+            <BasePath>6</BasePath>
+        </BuildingType>
+    </BuildingTypes>
+    
     <UnitTypes>
         <UnitType>
             <UnitTypeId>0</UnitTypeId>
@@ -89,16 +110,19 @@
     </UnitTypes>
     
     <Units>
-        <Unit UnitId="0" UnitTypeId="0" PosX="10" PosY="10" PosZ="10">
-        </Unit>
-        <Unit UnitId="1" UnitTypeId="0" PosX="12" PosY="50" PosZ="11">
-        </Unit>
+        <Unit UnitId="0" UnitTypeId="0" PosX="10" PosY="10" PosZ="10" />
+        <Unit UnitId="1" UnitTypeId="0" PosX="12" PosY="50" PosZ="11" />
     </Units>
     
     <Objects>
         <Object_ ObjectId="1" ObjectTypeId="1" PosX="10" PosY="10" PosZ="12" />
         <Object_ ObjectId="2" ObjectTypeId="2" PosX="15" PosY="15" PosZ="15" />
     </Objects>
+    
+    <!-- don't know if I should be using Y or Z here - decided to use Z -->
+    <Buildings>
+        <Building BuildingId="1" BuildingTypeId="1" TileX="3" TileZ="3" />
+    </Buildings>
 
     <Blocks>
         <Block ID="0" TileTypeId="1" Height="12.0" />
@@ -148,8 +172,8 @@
         <Block ID="40" TileTypeId="1" Height="10.0" />
         <Block ID="41" TileTypeId="1" Height="10.0" />
         <Block ID="42" TileTypeId="2" Height="10.0" />
-        <Block ID="43" TileTypeId="1" Height="10.0" />
-        <Block ID="44" TileTypeId="2" Height="10.0" />
+        <Block ID="43" TileTypeId="1" Height="15.0" />
+        <Block ID="44" TileTypeId="2" Height="15.0" />
         <Block ID="45" TileTypeId="2" Height="10.0" />
         <Block ID="46" TileTypeId="2" Height="10.0" />
         <Block ID="47" TileTypeId="1" Height="10.0" />

@@ -39,6 +39,11 @@ public class Map : MonoBehaviour {
 		
 		Initialised = true;
 	}
+
+	public void SetPath(int tileNumber, int pathTypeId) {
+		Tiles [tileNumber].PathTypeId = pathTypeId;
+		GetComponent<MapBuilder> ().ProcessMap ();
+	}
 	
 	public void SetTile(int tileNumber, int tileType) {
 		TileType temp = Tiles [tileNumber];
@@ -46,8 +51,6 @@ public class Map : MonoBehaviour {
 		
 		// TODO this isn't right
 		Tiles [tileNumber].Height = temp.Height;
-		
-	//	ObjectController oc = GameObject.Find ("World").GetComponent<ObjectController> ();
 		
 		System.Random rnd = new System.Random();
 		
@@ -62,10 +65,8 @@ public class Map : MonoBehaviour {
 			
 			ObjectController.Instance.AddObject (-1, temp.Drops[i].ObjectTypeId, pos);
 		}
-		
-		if (TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled > 0) {
-			Tiles[tileNumber].PathTypeId = TileTypeDict[temp.TileTypeId].PathTypeWhenDrilled;
-		}
+
+		SetPath(tileNumber, temp.PathTypeWhenDrilled);
 	}
 	
 	private void SetupPathTypes(Material mat, XmlMap xmlMap) {

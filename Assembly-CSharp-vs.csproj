@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Resources\boom.cs" />
+     <Compile Include="Assets\Scripts\Building\BuildingController.cs" />
+     <Compile Include="Assets\Scripts\Building\GameBuilding\GameBuilding.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraCollider.cs" />
      <Compile Include="Assets\Scripts\Camera\MyStratCamera.cs" />
      <Compile Include="Assets\Scripts\EMK\EMK_Cartography\AStar.cs" />
@@ -63,6 +65,8 @@
      <Compile Include="Assets\Scripts\Map\MapController.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\MapReader.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\Types\Block.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\Building.cs" />
+     <Compile Include="Assets\Scripts\Map\MapReader\Types\BuildingType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\Types\ObjectType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\Types\Object_.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\Types\PathType.cs" />
@@ -70,10 +74,10 @@
      <Compile Include="Assets\Scripts\Map\MapReader\Types\Unit.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\Types\UnitType.cs" />
      <Compile Include="Assets\Scripts\Map\MapReader\XmlMap.cs" />
-     <Compile Include="Assets\Scripts\Units\AStar\NewAstar.cs" />
-     <Compile Include="Assets\Scripts\Units\GameUnits\GameUnit.cs" />
-     <Compile Include="Assets\Scripts\Units\UnitController.cs" />
-     <Compile Include="Assets\Scripts\Units\UnitMover\UnitMover.cs" />
+     <Compile Include="Assets\Scripts\Unit\AStar\NewAstar.cs" />
+     <Compile Include="Assets\Scripts\Unit\GameUnits\GameUnit.cs" />
+     <Compile Include="Assets\Scripts\Unit\UnitController.cs" />
+     <Compile Include="Assets\Scripts\Unit\UnitMover\UnitMover.cs" />
      <Compile Include="Assets\Scripts\World\GameObject_\GameObject_.cs" />
      <Compile Include="Assets\Scripts\World\ObjectController.cs" />
      <None Include="Assets\Resources\MapShader.shader" />

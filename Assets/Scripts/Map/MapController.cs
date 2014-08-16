@@ -41,7 +41,8 @@ public class MapController : MonoBehaviour {
 		// Load the map
 		XmlMap xmlMap = mapReader.LoadMap (Path.Combine (Environment.CurrentDirectory, "Data/testmap.xml"));
 
-		GameObject unitGameobject = GameObject.Find ("Units");
+		// TODO this doesn't seem right
+		GameObject unitGameobject = GameObject.Find ("Unit");
 
 		NewAstar aStar = unitGameobject.GetComponent<NewAstar> ();
 
@@ -49,12 +50,15 @@ public class MapController : MonoBehaviour {
 		UnitController.Instance.Initialise (xmlMap);
 
 		GameObject worldGameobject = GameObject.Find ("World");
-		//ObjectController objectController = worldGameobject.GetComponent<ObjectController> ();
 
 		ObjectController.Instance.Initialise (xmlMap);
 
+
+
 		// Initialise the map (use required data from xmlMap)
 		map.Initialise (baseMaterial, xmlMap);
+
+		BuildingController.Instance.Initialise (xmlMap);
 
 		// Initialise the A* path finding
 		aStar.Initialise ();

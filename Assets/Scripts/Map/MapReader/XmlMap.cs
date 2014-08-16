@@ -23,9 +23,15 @@ public class XmlMap {
 	[XmlArrayAttribute("PathTypes")]
 	public PathType[] PathTypes;
 
+	[XmlArrayAttribute("BuildingTypes")]
+	public BuildingType[] BuildingTypes;
+
 	[XmlArrayAttribute("Objects")]
 	public Object_[] Objects;
 
 	[XmlArrayAttribute("Units")]
 	public Unit[] Units;
+
+	[XmlArrayAttribute("Buildings")]
+	public Building[] Buildings;
 }

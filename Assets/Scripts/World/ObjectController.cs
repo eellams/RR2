@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ObjectController : MonoBehaviour {
-	public Dictionary<int, ObjectType> ObjectTypeDict;
+	public Dictionary<int, ObjectType> ObjectTypes;
 	public Dictionary<int, GameObject_> GameObjects_;
 
 	private int NextObjId = 0;
@@ -21,11 +21,11 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	public void Initialise(XmlMap xmlMap) {
-		ObjectTypeDict = new Dictionary<int, ObjectType> ();
+		ObjectTypes = new Dictionary<int, ObjectType> ();
 		GameObjects_ = new Dictionary<int, GameObject_> ();
 		
 		foreach (ObjectType oType in xmlMap.ObjectTypes) {
-			ObjectTypeDict.Add (oType.ObjectTypeId, oType);
+			ObjectTypes.Add (oType.ObjectTypeId, oType);
 		}
 
 		foreach (Object_ oType in xmlMap.Objects) {
@@ -35,7 +35,7 @@ public class ObjectController : MonoBehaviour {
 	}
 
 	public void AddObject(int objectId, int objectTypeId, Vector3 position) {
-		GameObject obj = (GameObject)Instantiate (Resources.Load (ObjectTypeDict [objectTypeId].Model));
+		GameObject obj = (GameObject)Instantiate (Resources.Load (ObjectTypes [objectTypeId].Model));
 
 		GameObject_ go = obj.GetComponent<GameObject_> ();
 		
