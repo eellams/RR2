@@ -12,6 +12,18 @@ namespace RR2.Raider_ {
 
 		void Awake() {
 			GR = new _GameRaider (ApplicationModel.Instance.MapData.RockRaider);
+			GameObject selectGO = transform.FindChild ("Select").gameObject;
+			selectGO.SetActive (false);
+		}
+
+		public void Select() {
+			Debug.Log(string.Format("Selecting Raider {0}", RaiderId));
+			transform.FindChild ("Select").gameObject.SetActive (true);
+		}
+
+		public void Deselect() {
+			Debug.Log (string.Format ("Deselecting Raider {0}", RaiderId));
+			transform.FindChild ("Select").gameObject.SetActive (false);
 		}
 
 		void Update() {

@@ -10,6 +10,8 @@ public class RaiderController : Singleton<RaiderController> {
 
 	public Dictionary<int, GameObject> GameRaiders;
 
+	public List<int> RaidersSelected;
+
 	private int NextRaiderId = 1;
 
 
@@ -18,37 +20,18 @@ public class RaiderController : Singleton<RaiderController> {
 		Raider[] raiders = ApplicationModel.Instance.MapData.MapData.Raiders;
 
 		GameRaiders = new Dictionary<int, GameObject> ();
+		RaidersSelected = new List<int> ();
+
+		Debug.Log (string.Format ("Adding {0} raiders from file", raiders.Length));
 
 		foreach (Raider raider in raiders) {
-			/*GameObject toadd = (GameObject)Instantiate(Resources.Load(rockRaider.ModelPath));
-
-			toadd.AddComponent<GameRaider>();
-
-			toadd.GetComponent<GameRaider>().GR.InheritFromRaider(raider);
-			Debug.Log(toadd.GetComponent<GameRaider>().GR.Name);*/
-			//GameObject toadd = CreateRaider(rockRaider.ModelPath);
-
 			UnityEngine.Vector3 addpos = Vector3.zero;
 			addpos.x = raider.Position.x;
 			addpos.y = raider.Position.y;
 			addpos.z = raider.Position.z;
 
 			AddNewRaider(addpos, raider.RaiderId);
-
-			//toadd.transform.position = addpos;
-			//toadd.transform.parent = transform;
-
-			//GameRaiders.Add(toadd.GetComponent<GameRaider>().RaiderId, toadd);
-
-			/*GameRaider toAdd = new GameTileType(tileType);
-			
-			toAdd.Texture = LoadTexture(toAdd.TexturePath);
-			
-			GameTileTypes.Add(toAdd.TileTypeId, toAdd);*/
-			//AddNewRaider
 		}
-		Vector3 temp = Vector3.zero;
-		AddNewRaider (temp);
 	}
 	
 	// Update is called once per frame
@@ -56,7 +39,32 @@ public class RaiderController : Singleton<RaiderController> {
 	
 	}
 
+	public void SelectRaider(int raiderId, bool addSelect=false) {
+		if (!addSelect)
+			DeselectAll ();
+		GameRaiders [raiderId].GetComponent<GameRaider> ().Select ();
+		RaidersSelected.Add (raiderId);
+	}
+
+	public void DeselectRaider(int raiderId, bool addSelect=false) {
+		if (!addSelect) {
+			DeselectAll();
+		} else {
+			GameRaiders [raiderId].GetComponent<GameRaider> ().Deselect ();
+			RaidersSelected.Remove (raiderId);
+		}
+	}
+
+	public void DeselectAll() {
+		Debug.Log ("Deselecting all raiders");
+		while (RaidersSelected.Count > 0) {
+			DeselectRaider(RaidersSelected[0], true);
+		}
+	}
+
 	public void AddNewRaider(Vector3 position, int raiderId = 0) {
+		Debug.Log (string.Format ("Adding new raider {0} at {1}", raiderId, position));
+
 		GameObject toAdd = CreateRaider (ApplicationModel.Instance.MapData.RockRaider.ModelPath);
 		
 		toAdd.transform.position = position;
@@ -74,10 +82,12 @@ public class RaiderController : Singleton<RaiderController> {
 	}
 
 	private GameObject CreateRaider(string ResourcePath) {
+		Debug.Log ("Creating Raider");
 		GameObject toReturn = (GameObject)Instantiate(Resources.Load(ResourcePath));
 		toReturn.AddComponent<GameRaider>();
 		toReturn.transform.position = UnityEngine.Vector3.zero;
 		toReturn.transform.parent = this.transform;
+		toReturn.tag = "Raider";
 		return toReturn;
 	}
 }

@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Resources\boom.cs" />
      <Compile Include="Assets\Scripts\Game\Camera\MyStratCamera.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\LookAtCamera.cs" />
      <Compile Include="Assets\Scripts\Game\Etc\MonoBehaviourExtended.cs" />
      <Compile Include="Assets\Scripts\Game\Etc\Singleton.cs" />
      <Compile Include="Assets\Scripts\Game\Interface\CameraCollider.cs" />

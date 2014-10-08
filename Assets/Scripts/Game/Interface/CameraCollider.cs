@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using RR2.Map;
+using RR2.Raider_;
 
 public class CameraCollider : MonoBehaviour {
 	// Update is called once per frame
@@ -13,16 +14,42 @@ public class CameraCollider : MonoBehaviour {
 
 		// Do the raycasting
 		if (Physics.Raycast (ray, out hit)) {
+
 			// If left mouse button
 			if (Input.GetMouseButtonDown (0) && !Input.GetMouseButton(1)) {
+				Debug.Log("Mouse button 0 pressed");
 
+				// Calculates the tile number from the clicked position
+				int tileNumber = Mathf.FloorToInt (hit.point.z / MapController.Instance.TileSize) *
+					MapController.Instance.Width +
+					Mathf.FloorToInt (hit.point.x / MapController.Instance.TileSize);
+
+				// Clicked on a map tile
 				if (hit.collider.CompareTag("Map")) {
-					int tileNumber = Mathf.FloorToInt (hit.point.z / MapController.Instance.TileSize) * MapController.Instance.Width
-						+ Mathf.FloorToInt (hit.point.x / MapController.Instance.TileSize);
+					Debug.Log(string.Format("Clicked on tile {0}", tileNumber));
+
+					RaiderController.Instance.DeselectAll();
+
+					// TODO some tiles should be 'unselectable'
+
 					if (MapController.Instance.TileSelected != tileNumber) {
 						MapController.Instance.SelectTile(tileNumber);
 					} else {
-						MapController.Instance.DeselectTile(tileNumber);
+						MapController.Instance.DeselectTile();
+					}
+				} else if (hit.collider.CompareTag("Raider")) {
+					int raiderId = hit.collider.gameObject.GetComponent<GameRaider>().RaiderId;
+
+					Debug.Log(string.Format("Clicked on raider {0}", raiderId));
+
+					MapController.Instance.DeselectTile();
+
+					bool addSelect = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+
+					if (!RaiderController.Instance.RaidersSelected.Contains(raiderId)) {
+						RaiderController.Instance.SelectRaider(raiderId, addSelect);
+					} else {
+						RaiderController.Instance.DeselectRaider(raiderId, addSelect);
 					}
 				}
 

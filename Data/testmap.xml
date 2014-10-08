@@ -137,6 +137,9 @@
             <Raider RaiderId="1" Name="Randumb">
                 <Position x="10" y="10" z="10"/>
             </Raider>
+            <Raider RaiderId="2" Name="Anon">
+                <Position x="10" y="10" z="12"/>
+            </Raider>
         </Raiders>
         <Buildings>
             <Building BuildingTypeId="1" BuildingId="1" ParentTile="25">

@@ -75,28 +75,18 @@ namespace RR2.Map {
 		}
 
 		public void SetTile(int tileNumber, int tileType) {
+			Debug.Log (string.Format ("Setting tile {0} to type {1}", tileNumber, tileType));
+
 			GameTileType temp = Tiles [tileNumber];
 			Tiles [tileNumber] = (GameTileType)GameTileTypes [tileType].Clone ();
 
-
 			// TODO this isn't right
+			// Later note - what isn't right?
 			Tiles [tileNumber].Height = temp.Height;
-			
-			//System.Random rnd = new System.Random();
-			
-			/*Vector3 pos = Vector3.zero;
-			
-			
-			for (int i=0; i<temp.Drops.Length; i++) {
-				pos.x = 4.0f * (tileNumber % Width) + (float)rnd.NextDouble () * 4.0f;
-				// TODO work out height properly
-				pos.y = temp.Height * 0.2f + 3.0f;
-				pos.z = 4.0f * (tileNumber / Width) + (float)rnd.NextDouble () * 4.0f;
-				
-				ObjectController.Instance.AddObject (-1, temp.Drops[i].ObjectTypeId, pos);
-			}
-			
-			SetPath(tileNumber, temp.PathTypeWhenDrilled);*/
+
+			RecalculateSurround ();
+			ProcessMap ();
+
 		}
 
 		public void RecalculateSurround() {
@@ -105,7 +95,9 @@ namespace RR2.Map {
 			//   2| X|32
 			//  --------
 			//   4| 8|16
-			
+
+			Debug.Log ("Recalculating surround");
+
 			// For each tile, work out which tiles are present.
 			// Each bit corresponds to a surrounding point, as shown in diagram above.
 			// A calculator or something may be needed to work this out :P
@@ -174,6 +166,7 @@ namespace RR2.Map {
 				 ((surround & 0xAA) == 0x80) ||
 				 ((surround & 0xAA) == 0x00)))
 				{
+					Debug.Log (string.Format("Invalide tile at {0}", i));
 					SetTile (i, 0);
 					RecalculateSurround ();
 				}
@@ -183,7 +176,7 @@ namespace RR2.Map {
 		}
 
 		public void ProcessMap () {
-			//Map map = MapController.Instance.GetMap ();
+			Debug.Log ("Processing Map");
 			
 			// Used to create the final map
 			CombineInstance[] combineMesh = new CombineInstance[Tiles.Length];
@@ -212,24 +205,13 @@ namespace RR2.Map {
 			mr.materials = matarray;
 			MeshCollider mc = GetComponent<MeshCollider> ();
 			mc.sharedMesh = mf.mesh;
-
-			/*GameObject cam = GameObject.Find ("Main Camera");
-			MyStratCamera msc = cam.GetComponent<MyStratCamera> ();
-			msc.PanLimits = new Vector3 (map.Width * TileSize, 0, map.Height * TileSize);
-			
-			
-			// Recalculate the A* nodes
-			NewAstar aStar = GameObject.Find ("Unit").GetComponent<NewAstar> ();
-			
-			// But only if the A* controller has been initialised
-			if (aStar.Initialised)
-				aStar.CalculateGraph ();*/
-			
 		}
 		
 		// Cretaes the relevant tile mesh
 		public Mesh CreateTile (int tileNumber) {
 			//Map map = .Instance.GetMap ();
+
+			//Debug.Log (string.Format ("Creating tile {0}", tileNumber));
 			
 			Mesh finalMesh = new Mesh();
 			List<UnityEngine.Vector3> vertices = new List<UnityEngine.Vector3> ();
@@ -326,6 +308,8 @@ namespace RR2.Map {
 		}
 
 		private void CreateHeightBase() {
+			Debug.Log ("Creating Height Base");
+
 			// The list of the heightmap, one value for each corner-point on the map.
 			// These corner points are shared.
 			HeightBase = new List<float> ();
@@ -359,6 +343,7 @@ namespace RR2.Map {
 		}
 
 		private Texture2D LoadTexture (string dir) {
+			Debug.Log (string.Format ("Loading texture {0}", dir));
 			// Read the texture and load it as a texture
 			FileStream fs = new FileStream (dir, FileMode.Open);
 			byte[] imageContents = new byte[fs.Length];
