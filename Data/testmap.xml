@@ -1,239 +1,264 @@
-<Map>
-    <Name>Test Map</Name>
-    <Height>10</Height>
-    <Width>10</Width>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Map xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/mapformat.xsd">
+    <BuildingTypes>
+        <BuildingType BuildingTypeId="1" Name="Generic Test Building" ModelPath="Generic/Model/Path" Health="100">
+            <Requires>
+                <RequiredObjects>0 0 0</RequiredObjects>
+                <RequiredBuildings>
+                    <RequiredBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds>0 1 2</BuildingUpgradeIds>
+                    </RequiredBuilding>
+                    <RequiredBuilding BuildingTypeId="2">
+                        <BuildingUpgradeIds>3 2 1</BuildingUpgradeIds>
+                    </RequiredBuilding>
+                </RequiredBuildings>
+            </Requires>
+        </BuildingType>
+    </BuildingTypes>
     
-    <!-- The 0th tile type is the type that a tile becomes when mined
-        this should probably be ground. -->
+    <VehicleTypes>
+        <VehicleType VehicleTypeId="1" Name="Generic Test Vehicle" ModelPath="Generic/Vehicle/Model/Path"
+        Mass="100.0" Speed="10.0" SurveyRadius="5.0" SizeType="Large" MoveType="Land" Health="100">
+            <TeleportedByIds>1 2 3</TeleportedByIds>
+            <Requires>
+                <RequiredObjects>0 0 0</RequiredObjects>
+                <RequiredBuildings>
+                    <RequiredBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds>0 1 2</BuildingUpgradeIds>
+                    </RequiredBuilding>
+                    <RequiredBuilding BuildingTypeId="2">
+                        <BuildingUpgradeIds>3 2 1</BuildingUpgradeIds>
+                    </RequiredBuilding>
+                </RequiredBuildings>
+            </Requires>
+        </VehicleType>
+    </VehicleTypes>
+    
+    <ObjectTypes>
+        <ObjectType ObjectTypeId="1" Name="Energy Crystal" EC="1" Ore="0" Mass="1.0" ModelPath="Models/World/EnergyCrystal">
+            <DropRequires>
+                <RequiredRaiderUpgrades/>
+                <AcceptBuildings>
+                    <AcceptBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds/>
+                    </AcceptBuilding>
+                </AcceptBuildings>
+                <DropBuildings>
+                    <DropBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds/>
+                    </DropBuilding>
+                </DropBuildings>
+            </DropRequires>
+        </ObjectType>
+        <ObjectType ObjectTypeId="2" Name="Big Ore" EC="0" Ore="3" Mass="1.0" ModelPath="Models/World/BigOre">
+            <DropRequires>
+                <RequiredRaiderUpgrades/>
+                <AcceptBuildings>
+                    <AcceptBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds/>
+                    </AcceptBuilding>
+                </AcceptBuildings>
+                <DropBuildings>
+                    <DropBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds/>
+                    </DropBuilding>
+                </DropBuildings>
+            </DropRequires>
+        </ObjectType>
+        <ObjectType ObjectTypeId="3" Name="Generic Test Object" EC="1" Ore="1" Mass="1.0" ModelPath="Some/Random/Path">
+            <DropRequires>
+                <RequiredRaiderUpgrades>2 3</RequiredRaiderUpgrades>
+                <AcceptBuildings>
+                    <AcceptBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds>0 1 2</BuildingUpgradeIds>
+                    </AcceptBuilding>
+                </AcceptBuildings>
+                <DropBuildings>
+                    <DropBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds>0 1 2</BuildingUpgradeIds>
+                    </DropBuilding>
+                </DropBuildings>
+            </DropRequires>
+        </ObjectType>
+    </ObjectTypes>
+    
     <TileTypes>
-        <TileType>
-            <Name>Ground</Name>
-            <TileTypeId>0</TileTypeId>
-            <Solid>0</Solid>
-            <Tex>Data/Textures/ground.png</Tex>
-            <Drops />
-        </TileType>
-        <TileType>
-            <Name>Solid Rock</Name>
-            <TileTypeId>1</TileTypeId>
-            <Solid>1</Solid>
-            <Tex>Data/Textures/solidrock.png</Tex>
-            <PathTypeWhenDrilled>1</PathTypeWhenDrilled>
-            <Drops />
-        </TileType>
-        <TileType>
-            <Name>Dirt</Name>
-            <TileTypeId>2</TileTypeId>
-            <Solid>1</Solid>
-            <Tex>Data/Textures/dirt.png</Tex>
-            <DrillTime>1.0</DrillTime>
-            <PathTypeWhenDrilled>1</PathTypeWhenDrilled>
+        <TileType TileTypeId="0" Name="Ground" Solid="false" TexturePath="Data/Textures/ground.png" MoveMulti="1.0" DrillTime="0.0" MoveType="Land">
             <Drops>
-                <Drop ObjectTypeId="1" Min="1" Max="2" />
-                <Drop ObjectTypeId="2" Min="1" Max="2" />
+                <Drop ObjectTypeId="1" Minimum="1" Maximum="2"/>
             </Drops>
+        </TileType>
+        <TileType TileTypeId="1" Name="Solid Rock" Solid="true" TexturePath="Data/Textures/solidrock.png" MoveMulti="0.0" DrillTime="0.0" MoveType="None">
+            <Drops>
+                <Drop ObjectTypeId="1" Minimum="1" Maximum="2"/>
+            </Drops>
+        </TileType>
+        <TileType TileTypeId="2" Name="Dirt" Solid="true" TexturePath="Data/Textures/dirt.png" MoveMulti="1.0" DrillTime="0.0" MoveType="None">
+            <Drops/>
         </TileType>
     </TileTypes>
     
     <PathTypes>
-        <PathType>
-            <Name>Rubble4</Name>
-            <PathTypeId>1</PathTypeId>
-            <Tex>Data/Textures/rubble4.png</Tex>
-            <MoveMulti>0.4</MoveMulti>
-            <!-- power etc. -->
-        </PathType>
-        <PathType>
-            <Name>Rubble3</Name>
-            <PathTypeId>2</PathTypeId>
-            <Tex>Data/Textures/rubble3.png</Tex>
-            <MoveMulti>0.5</MoveMulti>
-        </PathType>
-        <PathType>
-            <Name>Rubble2</Name>
-            <PathTypeId>3</PathTypeId>
-            <Tex>Data/Textures/rubble2.png</Tex>
-            <MoveMulti>0.6</MoveMulti>
-        </PathType>
-        <PathType>
-            <Name>Rubble1</Name>
-            <PathTypeId>4</PathTypeId>
-            <Tex>Data/Textures/rubble1.png</Tex>
-            <MoveMulti>0.7</MoveMulti>
-        </PathType>
-        <PathType>
-            <Name>Powerpath</Name>
-            <PathTypeId>5</PathTypeId>
-            <Tex>Data/Textures/powerpath.png</Tex>
-            <MoveMulti>1.2</MoveMulti>
-        </PathType>
-        <PathType>
-            <Name>Building Powerpath</Name>
-            <PathTypeId>6</PathTypeId>
-            <Tex>Data/Textures/buildingpowerpath.png</Tex>
-            <MoveMulti>1.2</MoveMulti>
-        </PathType>
+        <PathType PathTypeId="1" Name="Rubble 1" TexturePath="Data/Textures/rubble4.png" MoveMulti="0.7" CanBePowered="false"/>
+        <PathType PathTypeId="2" Name="Rubble 2" TexturePath="Data/Textures/rubble3.png" MoveMulti="0.6" CanBePowered="false" DestroysInto="1"/>
+        <PathType PathTypeId="3" Name="Rubble 3" TexturePath="Data/Textures/rubble2.png" MoveMulti="0.5" CanBePowered="false" DestroysInto="2"/>
+        <PathType PathTypeId="4" Name="Rubble 4" TexturePath="Data/Textures/rubble4.png" MoveMulti="0.4" CanBePowered="false" DestroysInto="3"/>
+        <PathType PathTypeId="5" Name="Powerpath" TexturePath="Data/Textures/powerpath.png" MoveMulti="1.2" CanBePowered="true" DestroysInto="3"/>
+        <PathType PathTypeId="6" Name="Building Powerpath" TexturePath="Data/Textures/buildingpowerpath.png" MoveMulti="1.2" CanBePowered="true" DestroysInto="4"/>
     </PathTypes>
     
-    <ObjectTypes>
-        <ObjectType>
-            <Name>Energy Crystal</Name>
-            <ObjectTypeId>1</ObjectTypeId>
-            <ORE>0</ORE>
-            <EC>1</EC>
-            <Model>Models/World/EnergyCrystal</Model>
-        </ObjectType>
-        <ObjectType>
-            <Name>Big Ore</Name>
-            <ObjectTypeId>2</ObjectTypeId>
-            <ORE>5</ORE>
-            <EC>0</EC>
-            <Model>Models/World/BigOre</Model>
-        </ObjectType>
-    </ObjectTypes>
+    <RockRaider Speed="1.0" SurveyRadius="3.0" AwarenessRange="2.0" DrillMulti="1.0" RepairMulti="1.0" TirednessRate="1.0" Health="80"
+    NumberOfToolsCanCarry="2" MoveType="Land" OxygenDrain="10.0" DrillRadius="1.0" ModelPath="Models/Minifig/Minifig">
+        <TeleportedByIds>1 2</TeleportedByIds>
+    </RockRaider>
     
-    <BuildingTypes>
-        <BuildingType>
-            <BuildingTypeId>1</BuildingTypeId>
-            <Name>Generic Building</Name>
-            <Model>Models/Buildings/GenericBuildingPrefab</Model>
-            <BasePath>6</BasePath>
-        </BuildingType>
-    </BuildingTypes>
+    <!-- Not implemented yet -->
+    <ToolTypes>
+        <ToolType ToolTypeId="1" Name="Generic Test Tool" ModelPath="Some/Random/Model/Path">
+            <DropRequires>
+                <RequiredRaiderUpgrades>2 3</RequiredRaiderUpgrades>
+                <AcceptBuildings>
+                    <AcceptBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds>0 1 2</BuildingUpgradeIds>
+                    </AcceptBuilding>
+                </AcceptBuildings>
+                <DropBuildings>
+                    <DropBuilding BuildingTypeId="1">
+                        <BuildingUpgradeIds>0 1 2</BuildingUpgradeIds>
+                    </DropBuilding>
+                </DropBuildings>
+            </DropRequires>
+        </ToolType>
+    </ToolTypes>
     
-    <UnitTypes>
-        <UnitType>
-            <UnitTypeId>0</UnitTypeId>
-            <Name>Rock Raider</Name>
-            <Model>Models/Minifig/Minifig</Model>
-        </UnitType>
-    </UnitTypes>
-    
-    <Units>
-        <Unit UnitId="0" UnitTypeId="0" PosX="10" PosY="10" PosZ="10" />
-        <Unit UnitId="1" UnitTypeId="0" PosX="12" PosY="50" PosZ="11" />
-    </Units>
-    
-    <Objects>
-        <Object_ ObjectId="1" ObjectTypeId="1" PosX="10" PosY="10" PosZ="12" />
-        <Object_ ObjectId="2" ObjectTypeId="2" PosX="15" PosY="15" PosZ="15" />
-    </Objects>
-    
-    <!-- don't know if I should be using Y or Z here - decided to use Z -->
-    <Buildings>
-        <Building BuildingId="1" BuildingTypeId="1" TileX="3" TileZ="3" />
-    </Buildings>
-
-    <Blocks>
-        <Block ID="0" TileTypeId="1" Height="12.0" />
-        <Block ID="1" TileTypeId="1" Height="10.0" />
-        <Block ID="2" TileTypeId="1" Height="10.0" />
-        <Block ID="3" TileTypeId="1" Height="10.0" />
-        <Block ID="4" TileTypeId="1" Height="10.0" />
-        <Block ID="5" TileTypeId="1" Height="10.0" />
-        <Block ID="6" TileTypeId="1" Height="10.0" />
-        <Block ID="7" TileTypeId="1" Height="10.0" />
-        <Block ID="8" TileTypeId="1" Height="10.0" />
-        <Block ID="9" TileTypeId="1" Height="10.0" />
+    <MapData Width="10" Height="10">
+        <Raiders>
+            <Raider RaiderId="1" Name="Randumb">
+                <Position x="10" y="10" z="10"/>
+            </Raider>
+        </Raiders>
+        <Buildings>
+            <Building BuildingTypeId="1" BuildingId="1" ParentTile="25">
+                <BuildingUpgradeIds>0 1 2</BuildingUpgradeIds>
+            </Building>
+        </Buildings>
+        <Objects>
+            <Object ObjectTypeId="1" ObjectId="1">
+                <Position x="12" y="12" z="12"/>
+            </Object>
+        </Objects>
         
-        <Block ID="10" TileTypeId="1" Height="10.0" />
-        <Block ID="11" TileTypeId="1" Height="10.0" />
-        <Block ID="12" TileTypeId="0" Height="10.0" PathTypeId="1" />
-        <Block ID="13" TileTypeId="1" Height="10.0" />
-        <Block ID="14" TileTypeId="1" Height="10.0" />
-        <Block ID="15" TileTypeId="0" Height="10.0" />
-        <Block ID="16" TileTypeId="1" Height="10.0" />
-        <Block ID="17" TileTypeId="1" Height="10.0" />
-        <Block ID="18" TileTypeId="0" Height="10.0" />
-        <Block ID="19" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="20" TileTypeId="1" Height="10.0" />
-        <Block ID="21" TileTypeId="1" Height="10.0" />
-        <Block ID="22" TileTypeId="0" Height="10.0" PathTypeId="2"/>
-        <Block ID="23" TileTypeId="1" Height="10.0" />
-        <Block ID="24" TileTypeId="1" Height="10.0" />
-        <Block ID="25" TileTypeId="0" Height="10.0" />
-        <Block ID="26" TileTypeId="1" Height="10.0" />
-        <Block ID="27" TileTypeId="1" Height="10.0" />
-        <Block ID="28" TileTypeId="0" Height="10.0" />
-        <Block ID="29" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="30" TileTypeId="1" Height="10.0" />
-        <Block ID="31" TileTypeId="0" Height="10.0" />
-        <Block ID="32" TileTypeId="0" Height="10.0" PathTypeId="3" />
-        <Block ID="33" TileTypeId="0" Height="10.0" PathTypeId="4" />
-        <Block ID="34" TileTypeId="0" Height="10.0" />
-        <Block ID="35" TileTypeId="0" Height="10.0" />
-        <Block ID="36" TileTypeId="0" Height="10.0" />
-        <Block ID="37" TileTypeId="0" Height="10.0" />
-        <Block ID="38" TileTypeId="0" Height="10.0" />
-        <Block ID="39" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="40" TileTypeId="1" Height="10.0" />
-        <Block ID="41" TileTypeId="1" Height="10.0" />
-        <Block ID="42" TileTypeId="2" Height="10.0" />
-        <Block ID="43" TileTypeId="1" Height="15.0" />
-        <Block ID="44" TileTypeId="2" Height="15.0" />
-        <Block ID="45" TileTypeId="2" Height="10.0" />
-        <Block ID="46" TileTypeId="2" Height="10.0" />
-        <Block ID="47" TileTypeId="1" Height="10.0" />
-        <Block ID="48" TileTypeId="1" Height="10.0" />
-        <Block ID="49" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="50" TileTypeId="1" Height="10.0" />
-        <Block ID="51" TileTypeId="1" Height="10.0" />
-        <Block ID="52" TileTypeId="2" Height="10.0" />
-        <Block ID="53" TileTypeId="1" Height="10.0" />
-        <Block ID="54" TileTypeId="1" Height="10.0" />
-        <Block ID="55" TileTypeId="2" Height="10.0" />
-        <Block ID="56" TileTypeId="1" Height="10.0" />
-        <Block ID="57" TileTypeId="1" Height="10.0" />
-        <Block ID="58" TileTypeId="1" Height="10.0" />
-        <Block ID="59" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="60" TileTypeId="1" Height="10.0" />
-        <Block ID="61" TileTypeId="1" Height="10.0" />
-        <Block ID="62" TileTypeId="1" Height="10.0" />
-        <Block ID="63" TileTypeId="1" Height="10.0" />
-        <Block ID="64" TileTypeId="1" Height="10.0" />
-        <Block ID="65" TileTypeId="1" Height="10.0" />
-        <Block ID="66" TileTypeId="1" Height="10.0" />
-        <Block ID="67" TileTypeId="1" Height="10.0" />
-        <Block ID="68" TileTypeId="1" Height="10.0" />
-        <Block ID="69" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="70" TileTypeId="1" Height="10.0" />
-        <Block ID="71" TileTypeId="1" Height="10.0" />
-        <Block ID="72" TileTypeId="1" Height="10.0" />
-        <Block ID="73" TileTypeId="1" Height="10.0" />
-        <Block ID="74" TileTypeId="1" Height="10.0" />
-        <Block ID="75" TileTypeId="1" Height="10.0" />
-        <Block ID="76" TileTypeId="1" Height="10.0" />
-        <Block ID="77" TileTypeId="1" Height="10.0" />
-        <Block ID="78" TileTypeId="1" Height="10.0" />
-        <Block ID="79" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="80" TileTypeId="1" Height="10.0" />
-        <Block ID="81" TileTypeId="1" Height="10.0" />
-        <Block ID="82" TileTypeId="1" Height="10.0" />
-        <Block ID="83" TileTypeId="1" Height="10.0" />
-        <Block ID="84" TileTypeId="1" Height="10.0" />
-        <Block ID="85" TileTypeId="1" Height="10.0" />
-        <Block ID="86" TileTypeId="1" Height="10.0" />
-        <Block ID="87" TileTypeId="1" Height="10.0" />
-        <Block ID="88" TileTypeId="1" Height="10.0" />
-        <Block ID="89" TileTypeId="1" Height="10.0" />
-        
-        <Block ID="90" TileTypeId="1" Height="10.0" />
-        <Block ID="91" TileTypeId="1" Height="10.0" />
-        <Block ID="92" TileTypeId="1" Height="10.0" />
-        <Block ID="93" TileTypeId="1" Height="10.0" />
-        <Block ID="94" TileTypeId="1" Height="10.0" />
-        <Block ID="95" TileTypeId="1" Height="10.0" />
-        <Block ID="96" TileTypeId="1" Height="10.0" />
-        <Block ID="97" TileTypeId="1" Height="10.0" />
-        <Block ID="98" TileTypeId="1" Height="10.0" />
-        <Block ID="99" TileTypeId="1" Height="10.0" />
-        
-    </Blocks>
+        <Tiles>
+            <Tile TileId="0" TileTypeId="1" Height="12.0" />
+            <Tile TileId="1" TileTypeId="1" Height="10.0" />
+            <Tile TileId="2" TileTypeId="1" Height="10.0" />
+            <Tile TileId="3" TileTypeId="1" Height="10.0" />
+            <Tile TileId="4" TileTypeId="1" Height="10.0" />
+            <Tile TileId="5" TileTypeId="1" Height="10.0" />
+            <Tile TileId="6" TileTypeId="1" Height="10.0" />
+            <Tile TileId="7" TileTypeId="1" Height="10.0" />
+            <Tile TileId="8" TileTypeId="1" Height="10.0" />
+            <Tile TileId="9" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="10" TileTypeId="1" Height="10.0" />
+            <Tile TileId="11" TileTypeId="1" Height="10.0" />
+            <Tile TileId="12" TileTypeId="0" Height="10.0" PathTypeId="1" />
+            <Tile TileId="13" TileTypeId="1" Height="10.0" />
+            <Tile TileId="14" TileTypeId="1" Height="10.0" />
+            <Tile TileId="15" TileTypeId="0" Height="10.0" />
+            <Tile TileId="16" TileTypeId="1" Height="10.0" />
+            <Tile TileId="17" TileTypeId="1" Height="10.0" />
+            <Tile TileId="18" TileTypeId="0" Height="10.0" />
+            <Tile TileId="19" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="20" TileTypeId="1" Height="10.0" />
+            <Tile TileId="21" TileTypeId="1" Height="10.0" />
+            <Tile TileId="22" TileTypeId="0" Height="10.0" PathTypeId="2"/>
+            <Tile TileId="23" TileTypeId="1" Height="10.0" />
+            <Tile TileId="24" TileTypeId="1" Height="10.0" />
+            <Tile TileId="25" TileTypeId="0" Height="10.0" />
+            <Tile TileId="26" TileTypeId="1" Height="10.0" />
+            <Tile TileId="27" TileTypeId="1" Height="10.0" />
+            <Tile TileId="28" TileTypeId="0" Height="10.0" />
+            <Tile TileId="29" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="30" TileTypeId="1" Height="10.0" />
+            <Tile TileId="31" TileTypeId="0" Height="10.0" />
+            <Tile TileId="32" TileTypeId="0" Height="10.0" PathTypeId="3" />
+            <Tile TileId="33" TileTypeId="0" Height="10.0" PathTypeId="4" />
+            <Tile TileId="34" TileTypeId="0" Height="10.0" />
+            <Tile TileId="35" TileTypeId="0" Height="10.0" />
+            <Tile TileId="36" TileTypeId="0" Height="10.0" />
+            <Tile TileId="37" TileTypeId="0" Height="10.0" />
+            <Tile TileId="38" TileTypeId="0" Height="10.0" />
+            <Tile TileId="39" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="40" TileTypeId="1" Height="10.0" />
+            <Tile TileId="41" TileTypeId="1" Height="10.0" />
+            <Tile TileId="42" TileTypeId="2" Height="10.0" />
+            <Tile TileId="43" TileTypeId="1" Height="15.0" />
+            <Tile TileId="44" TileTypeId="2" Height="15.0" />
+            <Tile TileId="45" TileTypeId="2" Height="10.0" />
+            <Tile TileId="46" TileTypeId="2" Height="10.0" />
+            <Tile TileId="47" TileTypeId="1" Height="10.0" />
+            <Tile TileId="48" TileTypeId="1" Height="10.0" />
+            <Tile TileId="49" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="50" TileTypeId="1" Height="10.0" />
+            <Tile TileId="51" TileTypeId="1" Height="10.0" />
+            <Tile TileId="52" TileTypeId="2" Height="10.0" />
+            <Tile TileId="53" TileTypeId="1" Height="10.0" />
+            <Tile TileId="54" TileTypeId="1" Height="10.0" />
+            <Tile TileId="55" TileTypeId="2" Height="10.0" />
+            <Tile TileId="56" TileTypeId="1" Height="10.0" />
+            <Tile TileId="57" TileTypeId="1" Height="10.0" />
+            <Tile TileId="58" TileTypeId="1" Height="10.0" />
+            <Tile TileId="59" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="60" TileTypeId="1" Height="10.0" />
+            <Tile TileId="61" TileTypeId="1" Height="10.0" />
+            <Tile TileId="62" TileTypeId="1" Height="10.0" />
+            <Tile TileId="63" TileTypeId="1" Height="10.0" />
+            <Tile TileId="64" TileTypeId="1" Height="10.0" />
+            <Tile TileId="65" TileTypeId="1" Height="10.0" />
+            <Tile TileId="66" TileTypeId="1" Height="10.0" />
+            <Tile TileId="67" TileTypeId="1" Height="10.0" />
+            <Tile TileId="68" TileTypeId="1" Height="10.0" />
+            <Tile TileId="69" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="70" TileTypeId="1" Height="10.0" />
+            <Tile TileId="71" TileTypeId="1" Height="10.0" />
+            <Tile TileId="72" TileTypeId="1" Height="10.0" />
+            <Tile TileId="73" TileTypeId="1" Height="10.0" />
+            <Tile TileId="74" TileTypeId="1" Height="10.0" />
+            <Tile TileId="75" TileTypeId="1" Height="10.0" />
+            <Tile TileId="76" TileTypeId="1" Height="10.0" />
+            <Tile TileId="77" TileTypeId="1" Height="10.0" />
+            <Tile TileId="78" TileTypeId="1" Height="10.0" />
+            <Tile TileId="79" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="80" TileTypeId="1" Height="10.0" />
+            <Tile TileId="81" TileTypeId="1" Height="10.0" />
+            <Tile TileId="82" TileTypeId="1" Height="10.0" />
+            <Tile TileId="83" TileTypeId="1" Height="10.0" />
+            <Tile TileId="84" TileTypeId="1" Height="10.0" />
+            <Tile TileId="85" TileTypeId="1" Height="10.0" />
+            <Tile TileId="86" TileTypeId="1" Height="10.0" />
+            <Tile TileId="87" TileTypeId="1" Height="10.0" />
+            <Tile TileId="88" TileTypeId="1" Height="10.0" />
+            <Tile TileId="89" TileTypeId="1" Height="10.0" />
+            
+            <Tile TileId="90" TileTypeId="1" Height="10.0" />
+            <Tile TileId="91" TileTypeId="1" Height="10.0" />
+            <Tile TileId="92" TileTypeId="1" Height="10.0" />
+            <Tile TileId="93" TileTypeId="1" Height="10.0" />
+            <Tile TileId="94" TileTypeId="1" Height="10.0" />
+            <Tile TileId="95" TileTypeId="1" Height="10.0" />
+            <Tile TileId="96" TileTypeId="1" Height="10.0" />
+            <Tile TileId="97" TileTypeId="1" Height="10.0" />
+            <Tile TileId="98" TileTypeId="1" Height="10.0" />
+            <Tile TileId="99" TileTypeId="1" Height="10.0" />
+        </Tiles>
+    </MapData>
 </Map>
