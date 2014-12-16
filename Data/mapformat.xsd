@@ -10,15 +10,20 @@
     <xs:attribute type="xs:float" name="z" use="required"/>
 </xs:complexType>
 
+
+<!-- NewMoveType: 1 land, 2 water, 3 air -->
 <xs:simpleType name="MoveType">
     <xs:restriction base="xs:string">
         <xs:enumeration value="Land"/>
         <xs:enumeration value="Air"/>
         <xs:enumeration value="Water"/>
+        <xs:enumeration value="LandWater"/>
+        <xs:enumeration value="LandAir"/>
+        <xs:enumeration value="AirWater"/>
+        <xs:enumeration value="All"/>
         <xs:enumeration value="None"/>
     </xs:restriction>
 </xs:simpleType>
-
 
 <xs:complexType name="RequiredBuilding">
     <xs:sequence>
@@ -94,6 +99,7 @@
         <!-- Surely this should be part of the prefab? -->
         <!-- <xs:element type="Pos3" name="RaiderSeat"/> -->
         <xs:element type="Requires" name="Requires"/>
+        <xs:element name="NewMoveType" type="IntValueList"/>
     </xs:all>
     <xs:attribute type="xs:int" name="VehicleTypeId" use="required"/>
     <xs:attribute type="xs:token" name="Name" use="required"/>
@@ -141,9 +147,11 @@
                 </xs:sequence>
             </xs:complexType>
         </xs:element>
+        <xs:element name="NewMoveType" type="IntValueList"/>
         <xs:element name="ExtraDropIds" type="IntValueList" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute type="xs:int" name="TileTypeId" use="required"/>
+    <xs:attribute type="xs:int" name="PathTypeId"/>
     <xs:attribute type="xs:token" name="Name" use="required"/>
     <xs:attribute type="xs:boolean" name="Solid" use="required"/>
     <xs:attribute type="xs:token" name="TexturePath" use="required"/>
@@ -151,7 +159,8 @@
     <xs:attribute type="xs:float" name="DrillTime" use="required"/>
     <!--<xs:attribute type="xs:token" name="MovementType" use="required"/>-->
     <xs:attribute name="MoveType" type="MoveType" use="required"/>
-    <xs:attribute type="xs:int" name="PathTypeId"/>
+    <xs:attribute type="xs:int" name="PathTypeDestroysInto"/>
+    <xs:attribute type="xs:int" name="TileTypeDestroysInto"/>
     <xs:attribute type="xs:float" name="Height"/>
     <xs:attribute type="xs:int" name="TileId"/>
 </xs:complexType>
@@ -174,6 +183,7 @@
     <xs:attribute type="xs:token" name="Name" use="required"/>
     <xs:attribute type="xs:token" name="TexturePath" use="required"/>
     <xs:attribute type="xs:float" name="MoveMulti" use="required"/>
+    <xs:attribute type="xs:boolean" name="Shoveled" use="required"/>
     <xs:attribute type="xs:boolean" name="CanBePowered"/>
     <xs:attribute type="xs:int" name="DestroysInto"/>
 </xs:complexType>
@@ -183,6 +193,7 @@
     <xs:all>
         <xs:element name="TeleportedByIds" type="IntValueList"/>
         <xs:element type="Pos3" name="Position" maxOccurs="0"/>
+        <xs:element name="NewMoveType" type="IntValueList"/>
     </xs:all>
     <xs:attribute type="xs:float" name="Speed" use="required"/>
     <xs:attribute type="xs:float" name="SurveyRadius" use="required"/>

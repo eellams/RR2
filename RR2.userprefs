@@ -1,15 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game\Raider\RaiderController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game\Map\GameMap.cs">
     <Files>
-      <File FileName="Assets\Scripts\Game\Raider\GameRaider.cs" Line="26" Column="7" />
-      <File FileName="Assets\Scripts\Game\Logic\LogicController.cs" Line="63" Column="2" />
-      <File FileName="Assets\Scripts\Game\Map\GameMap.cs" Line="354" Column="3" />
-      <File FileName="Assets\Scripts\Game\Map\MapController.cs" Line="43" Column="2" />
-      <File FileName="Assets\Scripts\Game\Raider\RaiderController.cs" Line="56" Column="3" />
-      <File FileName="Assets\Scripts\Game\Raider\GameRaider.cs" Line="30" Column="4" />
-      <File FileName="Assets\Scripts\Game\Interface\CameraCollider.cs" Line="44" Column="6" />
-      <File FileName="Assets\Scripts\Game\Camera\MyStratCamera.cs" Line="89" Column="4" />
+      <File FileName="Assets\Scripts\Game\Logic\LogicController.cs" Line="89" Column="1" />
+      <File FileName="Assets\Scripts\Game\Logic\LogicController.cs" Line="89" Column="1" />
+      <File FileName="Assets\Scripts\Game\Raider\RaiderController.cs" Line="94" Column="1" />
+      <File FileName="Assets\Scripts\Game\Raider\GameRaider.cs" Line="62" Column="2" />
+      <File FileName="Assets\Scripts\Game\Map\GameMap.cs" Line="29" Column="1" />
+      <File FileName="Assets\Scripts\Game\Map\MapController.cs" Line="88" Column="32" />
+      <File FileName="Assets\Scripts\Game\Interface\CameraCollider.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Game\Camera\MyStratCamera.cs" Line="118" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -17,6 +17,7 @@
       <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\GameMap.cs" line="337" />
       <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Map\GameMap.cs" line="193" />
       <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Game\Raider\RaiderController.cs" line="80" />
+      <Breakpoint file="C:\Users\Eddie\Documents\Programming\unity\MyRR_2\RR2\Assets\Scripts\Game\Map\GameMap.cs" line="30" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

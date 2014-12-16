@@ -48,11 +48,20 @@
   <ItemGroup>
      <Compile Include="Assets\Resources\boom.cs" />
      <Compile Include="Assets\Scripts\Game\Camera\MyStratCamera.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Cartography\AStar.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Cartography\Arc.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Cartography\Graph.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Cartography\Node.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Cartography\Point3D.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Cartography\Track.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Cartography\Vector3D.cs" />
+     <Compile Include="Assets\Scripts\Game\Etc\EMK\EMK_Collections\SortableList.cs" />
      <Compile Include="Assets\Scripts\Game\Etc\LookAtCamera.cs" />
      <Compile Include="Assets\Scripts\Game\Etc\MonoBehaviourExtended.cs" />
      <Compile Include="Assets\Scripts\Game\Etc\Singleton.cs" />
      <Compile Include="Assets\Scripts\Game\Interface\CameraCollider.cs" />
      <Compile Include="Assets\Scripts\Game\Logic\LogicController.cs" />
+     <Compile Include="Assets\Scripts\Game\Logic\RrAStar.cs" />
      <Compile Include="Assets\Scripts\Game\Map\GameMap.cs" />
      <Compile Include="Assets\Scripts\Game\Map\MapController.cs" />
      <Compile Include="Assets\Scripts\Game\Raider\GameRaider.cs" />

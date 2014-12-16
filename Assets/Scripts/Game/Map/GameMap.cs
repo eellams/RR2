@@ -22,7 +22,7 @@ namespace RR2.Map {
 		public int Width;
 		public int Height;
 
-		private List<float> HeightBase;
+		public List<float> HeightBase;
 		private float TileHeight = 4.0f;
 		public float TileSize = 4.0f;
 
@@ -82,6 +82,7 @@ namespace RR2.Map {
 
 			// TODO this isn't right
 			// Later note - what isn't right?
+			// Even later note - wow, such commenting
 			Tiles [tileNumber].Height = temp.Height;
 
 			RecalculateSurround ();
@@ -166,9 +167,10 @@ namespace RR2.Map {
 				 ((surround & 0xAA) == 0x80) ||
 				 ((surround & 0xAA) == 0x00)))
 				{
-					Debug.Log (string.Format("Invalide tile at {0}", i));
-					SetTile (i, 0);
-					RecalculateSurround ();
+					Debug.Log (string.Format("Invalid tile at {0}", i));
+					//SetTile (i, 0);
+					MapController.Instance.DrillTile(i);
+					//RecalculateSurround ();
 				}
 				
 				Tiles[i].Surround = (uint)surround;
@@ -191,6 +193,7 @@ namespace RR2.Map {
 				
 				Material toadd = new Material(DefaultMaterial);
 				toadd.SetTexture ("_MainTex", Tiles[i].Texture);
+				// TODO tidy this up
 				if (Tiles[i].PathTypeId > 0) {
 					toadd.SetTexture ("_PathTex", GamePathTypes[Tiles[i].PathTypeId].Texture);
 				}
@@ -215,7 +218,7 @@ namespace RR2.Map {
 			
 			Mesh finalMesh = new Mesh();
 			List<UnityEngine.Vector3> vertices = new List<UnityEngine.Vector3> ();
-			List<UnityEngine.Vector3> normals = new List<UnityEngine.Vector3>();
+			//List<UnityEngine.Vector3> normals = new List<UnityEngine.Vector3>();
 			List<Vector2> uv = new List<Vector2>();
 			List<int> triangles = new List<int>();
 			//List<Color> colours = new List<Color> ();

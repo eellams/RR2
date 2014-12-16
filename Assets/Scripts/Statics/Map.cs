@@ -776,6 +776,8 @@ namespace RR2.Statics {
         
         private Pos3 positionField;
         
+        private string newMoveTypeField;
+        
         private float speedField;
         
         private float surveyRadiusField;
@@ -823,6 +825,16 @@ namespace RR2.Statics {
             }
             set {
                 this.positionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string NewMoveType {
+            get {
+                return this.newMoveTypeField;
+            }
+            set {
+                this.newMoveTypeField = value;
             }
         }
         
@@ -1007,6 +1019,18 @@ namespace RR2.Statics {
         Water,
         
         /// <remarks/>
+        LandWater,
+        
+        /// <remarks/>
+        LandAir,
+        
+        /// <remarks/>
+        AirWater,
+        
+        /// <remarks/>
+        All,
+        
+        /// <remarks/>
         None,
     }
     
@@ -1024,6 +1048,8 @@ namespace RR2.Statics {
         private string texturePathField;
         
         private float moveMultiField;
+        
+        private bool shoveledField;
         
         private bool canBePoweredField;
         
@@ -1074,6 +1100,17 @@ namespace RR2.Statics {
             }
             set {
                 this.moveMultiField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool Shoveled {
+            get {
+                return this.shoveledField;
+            }
+            set {
+                this.shoveledField = value;
             }
         }
         
@@ -1178,9 +1215,15 @@ namespace RR2.Statics {
         
         private Drop[] dropsField;
         
+        private string newMoveTypeField;
+        
         private string[] extraDropIdsField;
         
         private int tileTypeIdField;
+        
+        private int pathTypeIdField;
+        
+        private bool pathTypeIdFieldSpecified;
         
         private string nameField;
         
@@ -1194,9 +1237,13 @@ namespace RR2.Statics {
         
         private MoveType moveTypeField;
         
-        private int pathTypeIdField;
+        private int pathTypeDestroysIntoField;
         
-        private bool pathTypeIdFieldSpecified;
+        private bool pathTypeDestroysIntoFieldSpecified;
+        
+        private int tileTypeDestroysIntoField;
+        
+        private bool tileTypeDestroysIntoFieldSpecified;
         
         private float heightField;
         
@@ -1214,6 +1261,16 @@ namespace RR2.Statics {
             }
             set {
                 this.dropsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string NewMoveType {
+            get {
+                return this.newMoveTypeField;
+            }
+            set {
+                this.newMoveTypeField = value;
             }
         }
         
@@ -1236,6 +1293,28 @@ namespace RR2.Statics {
             }
             set {
                 this.tileTypeIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int PathTypeId {
+            get {
+                return this.pathTypeIdField;
+            }
+            set {
+                this.pathTypeIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool PathTypeIdSpecified {
+            get {
+                return this.pathTypeIdFieldSpecified;
+            }
+            set {
+                this.pathTypeIdFieldSpecified = value;
             }
         }
         
@@ -1307,23 +1386,45 @@ namespace RR2.Statics {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int PathTypeId {
+        public int PathTypeDestroysInto {
             get {
-                return this.pathTypeIdField;
+                return this.pathTypeDestroysIntoField;
             }
             set {
-                this.pathTypeIdField = value;
+                this.pathTypeDestroysIntoField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool PathTypeIdSpecified {
+        public bool PathTypeDestroysIntoSpecified {
             get {
-                return this.pathTypeIdFieldSpecified;
+                return this.pathTypeDestroysIntoFieldSpecified;
             }
             set {
-                this.pathTypeIdFieldSpecified = value;
+                this.pathTypeDestroysIntoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int TileTypeDestroysInto {
+            get {
+                return this.tileTypeDestroysIntoField;
+            }
+            set {
+                this.tileTypeDestroysIntoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool TileTypeDestroysIntoSpecified {
+            get {
+                return this.tileTypeDestroysIntoFieldSpecified;
+            }
+            set {
+                this.tileTypeDestroysIntoFieldSpecified = value;
             }
         }
         
@@ -1481,6 +1582,8 @@ namespace RR2.Statics {
         
         private Requires requiresField;
         
+        private string newMoveTypeField;
+        
         private int vehicleTypeIdField;
         
         private string nameField;
@@ -1516,6 +1619,16 @@ namespace RR2.Statics {
             }
             set {
                 this.requiresField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string NewMoveType {
+            get {
+                return this.newMoveTypeField;
+            }
+            set {
+                this.newMoveTypeField = value;
             }
         }
         

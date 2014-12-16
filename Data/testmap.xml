@@ -20,6 +20,7 @@
     <VehicleTypes>
         <VehicleType VehicleTypeId="1" Name="Generic Test Vehicle" ModelPath="Generic/Vehicle/Model/Path"
         Mass="100.0" Speed="10.0" SurveyRadius="5.0" SizeType="Large" MoveType="Land" Health="100">
+            <NewMoveType>1</NewMoveType>
             <TeleportedByIds>1 2 3</TeleportedByIds>
             <Requires>
                 <RequiredObjects>0 0 0</RequiredObjects>
@@ -84,26 +85,30 @@
     </ObjectTypes>
     
     <TileTypes>
+        <!-- This [0] needs to be the ground tile! -->
         <TileType TileTypeId="0" Name="Ground" Solid="false" TexturePath="Data/Textures/ground.png" MoveMulti="1.0" DrillTime="0.0" MoveType="Land">
+            <NewMoveType>1</NewMoveType>
             <Drops>
                 <Drop ObjectTypeId="1" Minimum="1" Maximum="2"/>
             </Drops>
         </TileType>
-        <TileType TileTypeId="1" Name="Solid Rock" Solid="true" TexturePath="Data/Textures/solidrock.png" MoveMulti="0.0" DrillTime="0.0" MoveType="None">
+        <TileType TileTypeId="1" Name="Solid Rock" Solid="true" TexturePath="Data/Textures/solidrock.png" MoveMulti="0.0" DrillTime="0.0" MoveType="None" TileTypeDestroysInto="0" PathTypeDestroysInto="2">
+            <NewMoveType/>
             <Drops>
                 <Drop ObjectTypeId="1" Minimum="1" Maximum="2"/>
             </Drops>
         </TileType>
-        <TileType TileTypeId="2" Name="Dirt" Solid="true" TexturePath="Data/Textures/dirt.png" MoveMulti="1.0" DrillTime="0.0" MoveType="None">
+        <TileType TileTypeId="2" Name="Dirt" Solid="true" TexturePath="Data/Textures/dirt.png" MoveMulti="1.0" DrillTime="0.0" MoveType="None" TileTypeDestroysInto="0" PathTypeDestroysInto="2">
+            <NewMoveType/>
             <Drops/>
         </TileType>
     </TileTypes>
     
     <PathTypes>
-        <PathType PathTypeId="1" Name="Rubble 1" TexturePath="Data/Textures/rubble4.png" MoveMulti="0.7" CanBePowered="false"/>
-        <PathType PathTypeId="2" Name="Rubble 2" TexturePath="Data/Textures/rubble3.png" MoveMulti="0.6" CanBePowered="false" DestroysInto="1"/>
-        <PathType PathTypeId="3" Name="Rubble 3" TexturePath="Data/Textures/rubble2.png" MoveMulti="0.5" CanBePowered="false" DestroysInto="2"/>
-        <PathType PathTypeId="4" Name="Rubble 4" TexturePath="Data/Textures/rubble4.png" MoveMulti="0.4" CanBePowered="false" DestroysInto="3"/>
+        <PathType PathTypeId="1" Name="Rubble 1" TexturePath="Data/Textures/rubble4.png" MoveMulti="0.7" Shoveled="true" CanBePowered="false"/>
+        <PathType PathTypeId="2" Name="Rubble 2" TexturePath="Data/Textures/rubble3.png" MoveMulti="0.6" Shoveled="true" CanBePowered="false" DestroysInto="1"/>
+        <PathType PathTypeId="3" Name="Rubble 3" TexturePath="Data/Textures/rubble2.png" MoveMulti="0.5" Shoveled="true" CanBePowered="false" DestroysInto="2"/>
+        <PathType PathTypeId="4" Name="Rubble 4" TexturePath="Data/Textures/rubble4.png" MoveMulti="0.4" Shoveled="true" CanBePowered="false" DestroysInto="3"/>
         <PathType PathTypeId="5" Name="Powerpath" TexturePath="Data/Textures/powerpath.png" MoveMulti="1.2" CanBePowered="true" DestroysInto="3"/>
         <PathType PathTypeId="6" Name="Building Powerpath" TexturePath="Data/Textures/buildingpowerpath.png" MoveMulti="1.2" CanBePowered="true" DestroysInto="4"/>
     </PathTypes>
@@ -111,6 +116,7 @@
     <RockRaider Speed="1.0" SurveyRadius="3.0" AwarenessRange="2.0" DrillMulti="1.0" RepairMulti="1.0" TirednessRate="1.0" Health="80"
     NumberOfToolsCanCarry="2" MoveType="Land" OxygenDrain="10.0" DrillRadius="1.0" ModelPath="Models/Minifig/Minifig">
         <TeleportedByIds>1 2</TeleportedByIds>
+        <NewMoveType>1</NewMoveType>
     </RockRaider>
     
     <!-- Not implemented yet -->

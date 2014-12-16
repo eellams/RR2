@@ -18,6 +18,8 @@ public class LogicController : Singleton<LogicController> {
 
 	public Dictionary<int, List<GameTask>> Tasks;
 
+	public enum MoveType { Land=1, Air=3, Water=2 };
+
 	private int NextTaskId = 0;
 
 	// Use this for initialization
@@ -28,6 +30,20 @@ public class LogicController : Singleton<LogicController> {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void SetAStar(int tileNumber, MoveType graphType, bool walkable) {
+
+	}
+
+	public void SetAStarPos(int tileNumber, Vector3 position) {
+
+	}
+
+
+
+	public List<Vector3> GetPath(Vector3 start, Vector3 end) {
+		throw new NotImplementedException ();
 	}
 
 	public bool CanAddVehicle(int vehicleTypeId) {
@@ -55,6 +71,10 @@ public class LogicController : Singleton<LogicController> {
 	}
 
 	public List<int> AvailableBuildings() {
+		throw new NotImplementedException ();
+	}
+
+	public void AddJob(int shovel = -1) {
 		throw new NotImplementedException ();
 	}
 }
