@@ -16,11 +16,10 @@ public class LogicController : Singleton<LogicController> {
 	public Dictionary<int, GameDropRequires> ObjectsCanAcceptDrop;
 	public Dictionary<int, GameDropRequires> ToolsCanAcceptDrop;
 
-	public Dictionary<int, List<GameTask>> Tasks;
+	public Dictionary<TaskTypes, List<GameTask>> Tasks;
 
 	public enum MoveType { Land=1, Air=3, Water=2 };
-
-	private int NextTaskId = 0;
+	public enum TaskTypes {Shovel};
 
 	// Use this for initialization
 	void Start () {
@@ -32,16 +31,27 @@ public class LogicController : Singleton<LogicController> {
 	
 	}
 
-	public void SetAStar(int tileNumber, MoveType graphType, bool walkable) {
+	void Awake() {
+		BuildingRequires = new Dictionary<int, GameRequires> ();
+		VehicleRequires = new Dictionary<int, GameRequires> ();
+		ObjectsCanAcceptDrop = new Dictionary<int, GameDropRequires> ();
+		ToolsCanAcceptDrop = new Dictionary<int, GameDropRequires> ();
 
+		Tasks = new Dictionary<TaskTypes, List<GameTask>> ();
+		foreach (TaskTypes taskType in (TaskTypes[]) Enum.GetValues(typeof(TaskTypes)))
+		{
+			Tasks.Add(taskType, new List<GameTask>());
+		}
+	}
+
+	public void SetAStar(int tileNumber, MoveType graphType, bool walkable) {
+		throw new NotImplementedException ();
 	}
 
 	public void SetAStarPos(int tileNumber, Vector3 position) {
-
+		throw new NotImplementedException ();
 	}
-
-
-
+	
 	public List<Vector3> GetPath(Vector3 start, Vector3 end) {
 		throw new NotImplementedException ();
 	}
@@ -74,13 +84,24 @@ public class LogicController : Singleton<LogicController> {
 		throw new NotImplementedException ();
 	}
 
-	public void AddJob(int shovel = -1) {
-		throw new NotImplementedException ();
+	public void AddTask(TaskTypes taskType, int dataId, int taskId = 0) {
+		GameTask gameTask = new GameTask();
+
+		//TODO lots of these to add
+		switch (taskType) {
+		case TaskTypes.Shovel:
+			Debug.Log(string.Format("Adding task to shovel path at {0}", dataId));
+			gameTask.DataId = dataId;
+			break;
+		}
+
+		Tasks[taskType].Add(gameTask);
 	}
 }
 
 public class GameTask {
-
+	public LogicController.TaskTypes TaskType;
+	public int DataId;
 }
 
 public class GameRequires : Requires {

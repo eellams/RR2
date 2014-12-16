@@ -212,8 +212,6 @@ namespace RR2.Map {
 		
 		// Cretaes the relevant tile mesh
 		public Mesh CreateTile (int tileNumber) {
-			//Map map = .Instance.GetMap ();
-
 			//Debug.Log (string.Format ("Creating tile {0}", tileNumber));
 			
 			Mesh finalMesh = new Mesh();

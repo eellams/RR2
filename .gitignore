@@ -216,3 +216,10 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+Data/mapformat - Copy.xsd
+Data/mapformat.cs
+Data/testmap - Copy.xml
+Data/testmap_oldformat.xml
+Data/xsd.bat
+ideal_outline.dia
+ideal_outline.vdx

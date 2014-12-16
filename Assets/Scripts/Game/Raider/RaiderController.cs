@@ -14,7 +14,7 @@ public class RaiderController : Singleton<RaiderController> {
 
 	private int NextRaiderId = 1;
 
-
+	// Load stuff from the map etc.
 	void Awake () {
 		RockRaider rockRaider = ApplicationModel.Instance.MapData.RockRaider;
 		Raider[] raiders = ApplicationModel.Instance.MapData.MapData.Raiders;
@@ -39,6 +39,7 @@ public class RaiderController : Singleton<RaiderController> {
 	
 	}
 
+	// Select a raider by ID
 	public void SelectRaider(int raiderId, bool addSelect=false) {
 		if (!addSelect)
 			DeselectAll ();
@@ -46,6 +47,7 @@ public class RaiderController : Singleton<RaiderController> {
 		RaidersSelected.Add (raiderId);
 	}
 
+	// Deselect a raider by ID
 	public void DeselectRaider(int raiderId, bool addSelect=false) {
 		if (!addSelect) {
 			DeselectAll();
@@ -55,6 +57,7 @@ public class RaiderController : Singleton<RaiderController> {
 		}
 	}
 
+	// Deselect all raiders
 	public void DeselectAll() {
 		Debug.Log ("Deselecting all raiders");
 		while (RaidersSelected.Count > 0) {
@@ -62,6 +65,7 @@ public class RaiderController : Singleton<RaiderController> {
 		}
 	}
 
+	// Add a new raider at a specified location
 	public void AddNewRaider(Vector3 position, int raiderId = 0) {
 		Debug.Log (string.Format ("Adding new raider {0} at {1}", raiderId, position));
 
@@ -69,13 +73,11 @@ public class RaiderController : Singleton<RaiderController> {
 		
 		toAdd.transform.position = position;
 
-		if (raiderId > 0) {
-			if (raiderId > NextRaiderId) {
-				NextRaiderId = raiderId;//++;
-			}
-		}
-    	toAdd.GetComponent<GameRaider> ().GR.RaiderId = raiderId;
-		raiderId++;
+		// Adjust the id of the next raider to be added (if appropriate)
+		if (raiderId > NextRaiderId) NextRaiderId = raiderId;
+
+    	toAdd.GetComponent<GameRaider> ().GR.RaiderId = NextRaiderId;
+		NextRaiderId++;
 
 		GameRaiders.Add (toAdd.GetComponent<GameRaider> ().RaiderId, toAdd);
 

@@ -74,7 +74,7 @@ public class MapController : Singleton<MapController> {
 		mr.materials[tileId].SetTexture ("_PathTex", GetComponent<GameMap>().GamePathTypes[pathId].Texture);
 
 		if (GetComponent<GameMap> ().GamePathTypes [pathId].Shoveled) {
-			LogicController.Instance.AddJob(shovel: tileId);
+			LogicController.Instance.AddTask(LogicController.TaskTypes.Shovel, tileId);
 		}
 	}
 
