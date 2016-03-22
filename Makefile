@@ -1,6 +1,6 @@
 CC      = g++
 CFLAGS  = -I/usr/include/boost -I/usr/include/python3.4 -Wno-unknown-pragmas
-LDFLAGS = -lpython3.4m -lboost_python3
+LDFLAGS = -lpython3.4m -lboost_python-py34 -lboost_filesystem -lboost_system
 
 # All objects are c++ (with .cxx extension)
 OBJ = main
