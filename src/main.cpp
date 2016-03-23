@@ -20,31 +20,36 @@ int main(int argc, char *argv[]) {
   bfs::path confdir = basedir / bfs::path("../doc");
 
   try {
-        // If you're going to use threads: PyEval_InitThreads();
-        Py_Initialize();
+    // If you're going to use threads: PyEval_InitThreads();
+    Py_Initialize();
 
-        bpy::object main_module = bpy::import("__main__");
-        bpy::object main_namespace = main_module.attr("__dict__");
+    bpy::object main_module = bpy::import("__main__");
+    bpy::object main_namespace = main_module.attr("__dict__");
 
-        bpy::object sys = bpy::import("sys");
-        bpy::object os = bpy::import("os");
+    bpy::object sys = bpy::import("sys");
+    bpy::object os = bpy::import("os");
 
-        // Set up the environment variables (path and environment)
-        sys.attr("path").attr("append")(libdir.string());
-        sys.attr("path").attr("append")(confdir.string());
+    // Set up the environment variables (path and environment)
+    sys.attr("path").attr("append")(libdir.string());
+    sys.attr("path").attr("append")(confdir.string());
 
-        os.attr("environ").attr("__setitem__")("LD_LIBRARY_PATH", libdir.string());
+    os.attr("environ").attr("__setitem__")("LD_LIBRARY_PATH", libdir.string());
 
-        // Now path has been set, we can import our own modules (yay!)
-        bpy::object config = bpy::import("config");
+    // Now path has been set, we can import our own modules (yay!)
+    bpy::object config = bpy::import("config");
 
-        bpy::object pythontest = bpy::exec("print('Hello from Python!');", main_namespace);
+    bpy::object pythontest = bpy::exec("print('Hello from Python!');", main_namespace);
 
-        std::cout << "Program finished!" << std::endl;
-   }
-   catch (bpy::error_already_set const&) {
-        PyErr_Print();
-   }
+    bpy::object mainconfig = bpy::import("mainconfig");
+
+    // The config works!
+    std::cout << bpy::extract<int>(config.attr("Configs").attr("GraphicsConfig").attr("resX")) << std::endl;
+
+    std::cout << "Program finished!" << std::endl;
+  }
+  catch (bpy::error_already_set const&) {
+    PyErr_Print();
+  }
 
   return 0;
 }

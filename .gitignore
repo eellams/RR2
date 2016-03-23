@@ -7,3 +7,6 @@ bin/*
 
 # Ignore Mac specific files
 .DS_Store
+
+# Python stuff
+*.pyc
