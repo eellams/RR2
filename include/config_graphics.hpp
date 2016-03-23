@@ -1,12 +1,12 @@
-#ifndef _GRAPHICS_CONFIG_H
-#define _GRAPHICS_CONFIG_H
+#ifndef _CONFIG_GRAPHIC_H
+#define _CONFIG_GRAPHIC_H
 
 #include <boost/python.hpp>
 
 using namespace boost::python;
 
 namespace config {
-  struct graphics_config {
+  struct config_graphics {
     long resX;
     long resY;
   };
