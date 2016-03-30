@@ -7,6 +7,8 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
 
+#include "config.hpp"
+
 //using namespace boost::python;
 
 namespace bpy = boost::python;
@@ -38,12 +40,17 @@ int main(int argc, char *argv[]) {
     // Now path has been set, we can import our own modules (yay!)
     bpy::object config = bpy::import("config");
 
+    /* Put yur Python tizz 'ere */
     bpy::object pythontest = bpy::exec("print('Hello from Python!');", main_namespace);
 
+    // Python file
     bpy::object mainconfig = bpy::import("mainconfig");
 
     // The config works!
-    std::cout << bpy::extract<int>(config.attr("Configs").attr("GraphicsConfig").attr("resX")) << std::endl;
+    config::config_graphics cg = bpy::extract<config::config_graphics>(config.attr("Configs").attr("GraphicsConfig"));
+
+    // C++ function, hidden from python 'wrapping'
+    cg.print_resolution();
 
     std::cout << "Program finished!" << std::endl;
   }

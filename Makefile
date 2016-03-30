@@ -40,7 +40,7 @@ $(BUILDDIR)/%.o: $(SOURCES) #$(SRCDIR)/%.$(SRCEXT)
 $(LIBTARGETS): $(LIBSOURCES)
 	@echo " Making libs...";
 	@echo " $(CC) -shared -fPIC $(CFLAGS) $(INC) -o $@ $< $(LIB)";
-	$(CC) -shared $(CFLAGS) $(INC) -o lib/config.so src/config.cpp $(LIB)
+	$(CC) -shared -fPIC $(CFLAGS) $(INC) -o lib/config.so src/config.cpp $(LIB)
 
 clean:
 	@echo " Cleaning...";
