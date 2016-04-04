@@ -10,6 +10,7 @@
     return CLASS::FUNCTION(ARGS); \
   } \
   TYPE default_##NAME(ARGS) { return this->CLASS::FUNCTION(ARGS); }
+#define WRAPPER_CLASS(CLASS) public CLASS, public boost::python::wrapper<CLASS>
 
 namespace bpy = boost::python;
 
@@ -17,15 +18,19 @@ namespace config {
   class BaseClass {
   protected:
     BaseClass() {}
+    ~BaseClass() {}
 
   public:
     virtual void overrideMe() { std::cout << "Base override" << std::endl; };
   };
 
 
-  class BaseWrap : public BaseClass, public bpy::wrapper<BaseClass> {
+  class BaseWrap : WRAPPER_CLASS(BaseClass) {
   public:
     BaseWrap() : BaseClass() {}
+    ~BaseWrap() {}
+
+    // Wrappers go here
     WRAPPER(void, BaseWrap, overrideMe)
   };
 }
