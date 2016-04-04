@@ -4,6 +4,13 @@
 #include <boost/python.hpp>
 #include <iostream>
 
+#define STRINGIFY(x) #x
+#define WRAPPER(TYPE, CLASS, FUNCTION, ARGS...) TYPE FUNCTION(ARGS) { \
+    if (override FUNCTION = this->get_override( STRINGIFY(FUNCTION) )) FUNCTION(ARGS); \
+    return CLASS::FUNCTION(ARGS); \
+  } \
+  TYPE default_##NAME(ARGS) { return this->CLASS::FUNCTION(ARGS); }
+
 namespace bpy = boost::python;
 
 namespace config {
@@ -12,24 +19,14 @@ namespace config {
     BaseClass() {}
 
   public:
-    virtual void overrideMe() { std::cout << "Asdf-asdf-asdf" << std::endl; };
+    virtual void overrideMe() { std::cout << "Base override" << std::endl; };
   };
+
 
   class BaseWrap : public BaseClass, public bpy::wrapper<BaseClass> {
   public:
     BaseWrap() : BaseClass() {}
-
-    // I can't seem to ever call this function?
-    //  however, it is needed?
-    void overrideMe() {
-      if (override overrideMe = this->get_override("overrideMe"))
-        overrideMe(); // *note*
-      return BaseClass::overrideMe();
-    }
-
-    // What is done by default?
-    void default_overrideMe() { return this->BaseClass::overrideMe(); }
-
+    WRAPPER(void, BaseWrap, overrideMe)
   };
 }
 
