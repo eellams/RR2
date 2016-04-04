@@ -12,7 +12,7 @@ namespace config {
     BaseClass() {}
 
   public:
-    virtual void overrideMe() { std::cout << "Base override" << std::endl; };
+    virtual void overrideMe() { std::cout << "Asdf-asdf-asdf" << std::endl; };
   };
 
   class BaseWrap : public BaseClass, public bpy::wrapper<BaseClass> {

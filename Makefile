@@ -23,7 +23,7 @@ LIBTARGETS := $(patsubst $(SRCDIR)/%,$(LIBDIR)/%,$(LIBSOURCES:.$(SRCEXT)=.so))
 
 CFLAGS := #-g # -Wall
 #LIB := -pthread -lmongoclient -L lib -lboost_thread-mt -lboost_filesystem-mt -lboost_system-mt
-LIB := -lpython3.4m -lboost_python-py34 -lboost_filesystem -lboost_system
+LIB := -lpython3.4m -lboost_python-py34 -lboost_filesystem -lboost_system -lboost_timer
 INC := -I include -I/usr/include/python3.4
 
 #meh:

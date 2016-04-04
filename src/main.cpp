@@ -5,6 +5,7 @@
 #include <boost/python.hpp>
 #include <boost/python/object.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/timer/timer.hpp>
 #include <iostream>
 
 #include "config.hpp"
@@ -16,6 +17,8 @@ namespace bfs = boost::filesystem;
 
 int main(int argc, char *argv[]) {
   std::cout << "Program startup!" << std::endl;
+
+  boost::timer::auto_cpu_timer t;
 
   bfs::path basedir = bfs::system_complete(argv[0]).parent_path();
   bfs::path libdir = basedir / bfs::path("../lib");
@@ -41,16 +44,34 @@ int main(int argc, char *argv[]) {
     bpy::object config = bpy::import("config");
 
     /* Put yur Python tizz 'ere */
-    bpy::object pythontest = bpy::exec("print('Hello from Python!');", main_namespace);
+    //bpy::object pythontest = bpy::exec("print('Hello from Python!');", main_namespace);
 
     // Python file
     bpy::object mainconfig = bpy::import("mainconfig");
 
     // The config works!
-    config::config_graphics cg = bpy::extract<config::config_graphics>(config.attr("Configs").attr("GraphicsConfig"));
+    //config::config_graphics cg = bpy::extract<config::config_graphics>(config.attr("Configs").attr("GraphicsConfig"));
+
+    config::BaseWrap bw = bpy::extract<config::BaseWrap>(config.attr("Configs").attr("ClassConfig"));
+    bpy::object x = config.attr("Configs").attr("ClassConfig");
+
+    // Here are 3 test units, unccoment ONE as appropriate
+    //  interestingly, extracted C++ class is about 2x slower than the python object
+    //
+    // Python object
+    //for(int i=0; i<1000000; i++) bpy::call_method<void>(x.ptr(), "overrideMe");
+    //
+    // C++ class extracted from Python object
+    //for(int i=0; i<1000000; i++) bw.overrideMe();
+    //
+    // Pure C++ class (comparison)
+    //config::BaseWrap testbw;
+    //for(int i=0; i<1000000; i++) testbw.overrideMe();
+
+    //bw.overrideMe();
 
     // C++ function, hidden from python 'wrapping'
-    cg.print_resolution();
+    //cg.print_resolution();
 
     std::cout << "Program finished!" << std::endl;
   }
