@@ -1,6 +1,6 @@
 RR2
 ===
 
-A remake of the 1999 LEGO Rock Raiders PC game.
+My homage to the 1999 PC game Lego Rock Raiders.
 
-This is mainly an exercise to learn about embedding python, and SDL - hope it's some use to somebody :)
+Mainly a personal exercise in learning SDL. Hope it is of some use to somebody :)
