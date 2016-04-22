@@ -1,4 +1,5 @@
 #include <iostream>
+#include "MapLoader/MapLoader.hpp"
 
 int main(int argc, char *argv[]) {
   std::cout << "Program startup!" << std::endl;
@@ -7,4 +8,3 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-

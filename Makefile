@@ -9,34 +9,38 @@ CC := g++ # This is the main compiler
 # CC := clang --analyze # and comment out the linker last line for sanity
 SRCDIR := src
 BUILDDIR := build
+BINDIR := bin
 LIBDIR := lib
-TARGET := bin/RR2
+TARGET := RR2
 
 SRCEXT := cpp
 #SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-SOURCES := src/main.cpp
-OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+SOURCEMAIN := src/main.cpp
+SOURCES := $(filter-out $(SOURCEMAIN), $(SOURCES))
+SOURCEDIRS := $(shell find $(SRCDIR) -type d)
+OBJECTS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.o))
 
-CFLAGS := 
-LIB := 
+BUILDDIRS := $(SOURCEDIRS:$(SRCDIR)%=$(BUILDDIR)%)
+
+CFLAGS :=
+LIB :=
 INC := -Iinclude
 
 $(TARGET): $(OBJECTS) $(LIBTARGETS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
+	@mkdir -p $(BINDIR)
+	@touch $(BINDIR)/$(TARGET)
+	@echo " $(CC) $(CFLAGS) $(INC) $^ $(SOURCEMAIN) -o $(BINDIR)/$(TARGET) $(LIB)"; $(CC) $(CFLAGS) $(INC) $^ $(SOURCEMAIN) -o $(BINDIR)/$(TARGET) $(LIB)
 
 $(BUILDDIR)/%.o: $(SOURCES) #$(SRCDIR)/%.$(SRCEXT)
-	@mkdir -p $(BUILDDIR)
+	@echo " Building..."
+	@mkdir -p $(BUILDDIRS)
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
-
-$(LIBTARGETS): $(LIBSOURCES)
-	@echo " Making libs...";
-	@echo " $(CC) -shared -fPIC $(CFLAGS) $(INC) -o $@ $< $(LIB)";
-	$(CC) -shared -fPIC $(CFLAGS) $(INC) -o lib/config.so src/config.cpp $(LIB)
 
 clean:
 	@echo " Cleaning...";
-	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(BINDIR)/$(TARGET)
 
 # Tests
 #tester:
