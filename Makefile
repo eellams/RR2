@@ -24,7 +24,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.o))
 BUILDDIRS := $(SOURCEDIRS:$(SRCDIR)%=$(BUILDDIR)%)
 
 CFLAGS :=
-LIB :=
+LIB := -pedantic -pthread -lboost_serialization -lboost_system
 INC := -Iinclude
 
 $(TARGET): $(OBJECTS) $(LIBTARGETS)

@@ -2,32 +2,30 @@
 #ifndef _MAP_LOADER_HPP
 #define _MAP_LOADER_HPP
 
-#include <string>
-#include <map>
-using namespace std;
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
 
-typedef std::map<std::string,std::string> MessageMap;
-
-// a basic window abstraction - demo purposes only
-class WindowSettings
-{
+class ToSerialise {
 public:
-	int x,y,w,h;
-	string name;
+  ToSerialise() {}
+  ToSerialise(int d, int m, float s) :
+    degrees(d), minutes(m), seconds(s) {}
 
-	WindowSettings()
-		: x(0), y(0), w(100), h(100), name("Untitled")
-	{
-	}
+private:
+  friend class boost::serialization::access;
 
-	WindowSettings(int x, int y, int w, int h, const string& name)
-	{
-		this->x=x;
-		this->y=y;
-		this->w=w;
-		this->h=h;
-		this->name=name;
-	}
+  template<class Archive>
+  void serialize(Archive & ar, const unsigned int version)
+  {
+      ar & BOOST_SERIALIZATION_NVP(degrees);
+      ar & BOOST_SERIALIZATION_NVP(minutes);
+      ar & BOOST_SERIALIZATION_NVP(seconds);
+  }
+
+  int degrees;
+  int minutes;
+  float seconds;
+
 };
 
 #endif
