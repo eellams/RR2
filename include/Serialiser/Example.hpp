@@ -7,7 +7,9 @@
 
 class ToSerialise {
 public:
-  ToSerialise() {}
+  ToSerialise() :
+    degrees(0), minutes(0), seconds(0) {}
+    
   ToSerialise(int d, int m, float s) :
     degrees(d), minutes(m), seconds(s) {}
 
@@ -17,9 +19,9 @@ private:
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version)
   {
-      ar & BOOST_SERIALIZATION_NVP(degrees);
-      ar & BOOST_SERIALIZATION_NVP(minutes);
-      ar & BOOST_SERIALIZATION_NVP(seconds);
+    ar & BOOST_SERIALIZATION_NVP(degrees);
+    ar & BOOST_SERIALIZATION_NVP(minutes);
+    ar & BOOST_SERIALIZATION_NVP(seconds);
   }
 
   int degrees;

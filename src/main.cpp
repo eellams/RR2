@@ -1,11 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "MapLoader/MapLoader.hpp"
+#include "Serialiser/Example.hpp"
+
+#include "Serialiser/ConfigFile.hpp"
+#include "Serialiser/MapFile.hpp"
 
 int main(int argc, char *argv[]) {
   std::cout << "Program startup!" << std::endl;
 
+  /*
   // create and open a character archive for output
   {
       std::string outFileName = "testOut.xml";
@@ -34,6 +38,22 @@ int main(int argc, char *argv[]) {
           ia >> BOOST_SERIALIZATION_NVP(g);
       }
   }
+  */
+
+  std::ofstream ofs("testOut.xml");
+  //const ConfigFile UserConfig(1,2);
+  const MapFile Map;
+  boost::archive::xml_oarchive oa(ofs);
+  oa << BOOST_SERIALIZATION_NVP(Map);
+
+
+  std::ifstream ifs("testIn.xml");
+  MapFile readMap;
+  boost::archive::xml_iarchive ia(ifs);
+  ia >> BOOST_SERIALIZATION_NVP(readMap);
+
+  
+
 
   std::cout << "Program finished!" << std::endl;
 
