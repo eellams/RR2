@@ -15,10 +15,10 @@
 
 class Map {
 public:
-  Map() :
+  Map::Map() :
     mName(""), mDescription(""), mWidth(0), mHeight(0) {}
 
-  Map(std::string n, std::string d, size_t w, size_t h) :
+  Map::Map(std::string n, std::string d, size_t w, size_t h) :
     mName(n), mDescription(d), mWidth(w), mHeight(h) {}
 
   std::string GetName() const { return mName; }

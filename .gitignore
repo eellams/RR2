@@ -11,3 +11,6 @@ bin/*
 # Python stuff
 *.pyc
 *~
+
+# Test maps
+testOut.xml
