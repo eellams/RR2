@@ -17,21 +17,22 @@ SRCEXT := cpp
 #SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 SOURCEMAIN := src/main.cpp
-SOURCES := $(filter-out $(SOURCEMAIN), $(SOURCES))
+SOURCES2 := $(filter-out $(SOURCEMAIN), $(SOURCES))
 SOURCEDIRS := $(shell find $(SRCDIR) -type d)
 OBJECTS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.o))
 
 BUILDDIRS := $(SOURCEDIRS:$(SRCDIR)%=$(BUILDDIR)%)
 
-CFLAGS :=
-LIB := -pedantic -pthread -lboost_serialization -lboost_system
+CFLAGS := -std=c++11
+LIB := -pedantic -pthread -lboost_serialization -lboost_system -lIrrlicht -lGL -lXxf86vm -lXext -lX11 -lXcursor
+
 INC := -Iinclude
 
 $(TARGET): $(OBJECTS) $(LIBTARGETS)
 	@echo " Linking..."
 	@mkdir -p $(BINDIR)
 	@touch $(BINDIR)/$(TARGET)
-	@echo " $(CC) $(CFLAGS) $(INC) $^ $(SOURCEMAIN) -o $(BINDIR)/$(TARGET) $(LIB)"; $(CC) $(CFLAGS) $(INC) $^ $(SOURCEMAIN) -o $(BINDIR)/$(TARGET) $(LIB)
+	@echo " $(CC) $(CFLAGS) $(INC) $^ $(SOURCES) -o $(BINDIR)/$(TARGET) $(LIB)"; $(CC) $(CFLAGS) $(INC) $^ $(SOURCES2) -o $(BINDIR)/$(TARGET) $(LIB)
 
 $(BUILDDIR)/%.o: $(SOURCES) #$(SRCDIR)/%.$(SRCEXT)
 	@echo " Building..."
