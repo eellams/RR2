@@ -67,26 +67,26 @@ void MapTile::createFlat() {
   t0.pos.set(0,0,mCornerHeights[0]);
   t0.normal.set(0,0,1);
   //t0.colour.set(255,255,0,0);
-  t0.colour=irr::video::SColor(255,255,0,0);
+  t0.colour=irr::video::SColor(255,255,255,255);
   t0.uv.set(0,0);
 
   t1.pos.set(0,TILE_SIZE,mCornerHeights[1]);
   t1.normal.set(0,0,1);
   //t1.colour.set(255,0,255,0);
-  t1.colour=irr::video::SColor(255,0,255,0);
-  t1.uv.set(0,0);
+  t1.colour=irr::video::SColor(255,0,0,0);
+  t1.uv.set(0,1);
 
   t2.pos.set(TILE_SIZE,TILE_SIZE,mCornerHeights[2]);
   t2.normal.set(0,0,1);
   //t2.colour.set(255,0,0,255);
-  t2.colour=irr::video::SColor(255,0,0,255);
-  t2.uv.set(0,0);
+  t2.colour=irr::video::SColor(255,255,255,255);
+  t2.uv.set(1,1);
 
   t3.pos.set(TILE_SIZE,0,mCornerHeights[3]);
   t3.normal.set(0,0,1);
   //t3.colour.set(255,255,255,255);
   t3.colour=irr::video::SColor(255,255,255,255);
-  t3.uv.set(0,0);
+  t3.uv.set(1,0);
 
   x.points.push_back(t0);
   x.points.push_back(t1);

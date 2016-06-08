@@ -20,7 +20,7 @@ void Map::Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
     std::clog << "Correct number of tiles found" << std::endl;
   }
 
-  initialiseTiles(smgr);
+  initialiseTiles(driver, smgr);
 }
 
 void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
@@ -30,11 +30,13 @@ void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
       // iterator->first = key
       // iterator->second = value
       // Repeat if you also want to iterate through the second map.
-      iterator->second.Initialise(driver);
+      //iterator->second.Initialise(driver);
   }
 }
 
-void Map::initialiseTiles(irr::scene::ISceneManager *smgr) {
+void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
+  std::clog << "Initilising tiles" << std::endl;
+
   // Create the heightmap from the deserialised tiles
   createHeightMap();
 
@@ -49,15 +51,21 @@ void Map::initialiseTiles(irr::scene::ISceneManager *smgr) {
     // Set position
     meshnode->setPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, (i/mHeight) * TILE_SIZE,0));
 
-    // Set the texture
-    mTiles[i].SetTexture(mTypes[mTiles[i].GetTileType()].GetTexture());
 
+    meshnode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+    meshnode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+    //meshnode->setMaterialTexture(0, NewTex);
+    std::clog << mTypes[mTiles[i].GetTileType()].GetTextureName() << std::endl;
+
+    // Set the texture
+    // TODO does this optimise out in the wash?
+    //  or do we have <tile number> different textures in memory?
+    //  if so, this is likely a waste in meemory
+    meshnode->setMaterialTexture(0, driver->getTexture(mTypes[mTiles[i].GetTileType()].GetTextureName().c_str()));
 
     // Debugging flags
     //meshnode->setMaterialFlag(irr::video::EMF_BACK_FACE_CULLING, false);
     meshnode->setDebugDataVisible(irr::scene::EDS_BBOX);
-
-    meshnode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
   }
 }
 

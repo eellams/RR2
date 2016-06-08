@@ -15,10 +15,10 @@
 
 class Map {
 public:
-  Map::Map() :
+  Map() :
     mName(""), mDescription(""), mWidth(0), mHeight(0) {}
 
-  Map::Map(std::string n, std::string d, size_t w, size_t h) :
+  Map(std::string n, std::string d, size_t w, size_t h) :
     mName(n), mDescription(d), mWidth(w), mHeight(h) {}
 
   std::string GetName() const { return mName; }
@@ -47,7 +47,7 @@ private:
   // Initialise tiles
   //  e.g. initialise tile models
   //  TODO probably add a lot in here...
-  void initialiseTiles(irr::scene::ISceneManager *smgr);
+  void initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
 
   // The heightmap is not serialised, as each Tile has a height value
   //  however, it is useful to have access to a dedicated heightmap

@@ -27,18 +27,32 @@ public:
   }
 
   void SetTexture(irr::video::ITexture* pTex) {
+    //pMesh->getMaterial().MaterialType = irr::video::EMT_SOLID;
+    //pMesh->getMaterial().setTexture( 0, pTex );
+    //pMesh->getMaterial().Lighting = false;
+
+    //pMesh->setMaterialTexture( 0, pTex );
+    //pMesh->setMaterialType( irr::video::EMT_SOLID );
+
+    //pMesh->getMaterial(0).Textures[0] = pTex;
+
+    /*
     for (irr::u32 i=0; i<pMesh->getMeshBufferCount(); i++) {
-      std::clog << "Poot" << std::endl;
-      pMesh->getMeshBuffer(i)->getMaterial().setTexture(0, pTex);
+      //pMesh->getMeshBuffer(i)->getMaterial().setTexture(0, pTex);
+
+      pMesh->getMeshBuffer(i)->getMaterial().MaterialType = irr::video::EMT_SOLID;
+      pMesh->getMeshBuffer(i)->getMaterial().setTexture( 0, pTex );
+      pMesh->getMeshBuffer(i)->getMaterial().Lighting = false;
     }
+    */
   }
 
   void AddTriStrip(const TriStrip& tris, irr::u32 bufferNum) {
     if (pMesh == NULL) pMesh = new irr::scene::SMesh;
 
-    irr::u32 i;
-    irr::u32 noPoints;
-    irr::u32 noTris;
+    irr::u16 i;
+    irr::u16 noPoints;
+    irr::u16 noTris;
 
     irr::scene::SMeshBuffer* pBuffer;
 

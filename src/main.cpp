@@ -64,6 +64,8 @@ int main(int argc, char *argv[]) {
 
   map.Initialise(driver, smgr);
 
+  std::clog << "Finished initialising" << std::endl;
+
   // irrlict code
 
   // light is just for nice effects
