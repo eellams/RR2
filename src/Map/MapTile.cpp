@@ -4,62 +4,271 @@
 void MapTile::CreateModel(struct Surround s) {
   std::clog << "Creating model" << std::endl;
 
-  //std::array<irr::core::vector3df, 4> argument;
+  std::array< std::pair<bool,bool>, 4> args;
 
-  /*
   if (s.current) {
     // Outward corners
     if (!s.above && s.below && !s.right && s.left) {
       // Outward corner, [peak at] below left
-      //argument[0].set(0,0,);
-      //argument[1].set(0,1,0)
+      args[0].first = 0;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 0;
+
+      createTile(args, 1);
     }
     else if (s.above && !s.below && !s.right && s.left) {
       // Outward corner, above left
+      args[0].first = 0;
+      args[0].second = 1;
+
+      args[1].first = 1;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 0;
+
+      args[3].first = 0;
+      args[3].second = 0;
+
+      createTile(args, 1);
     }
     else if (s.above && !s.below && s.right && !s.left) {
       // Outward corner, above right
+      args[0].first = 1;
+      args[0].second = 1;
+
+      args[1].first = 1;
+      args[1].second = 0;
+
+      args[2].first = 0;
+      args[2].second = 0;
+
+      args[3].first = 0;
+      args[3].second = 1;
+
+      createTile(args, 1);
     }
     else if (!s.above && s.below && s.right && !s.left) {
       // Outward corner, below right
+      args[0].first = 1;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 0;
+
+      args[2].first = 0;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 1;
+
+      createTile(args, 1);
     }
 
     // Flat walls
     else if (!s.above && s.below && s.right && s.left) {
       // Facing above
+      args[0].first = 1;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 0;
+
+      args[2].first = 0;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 1;
+
+      createTile(args, 2);
     }
 
     else if (s.above && s.below && !s.right && s.left) {
       // Facing right
+      args[0].first = 0;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 0;
+
+      createTile(args, 2);
     }
 
     else if (s.above && !s.below && s.right && s.left) {
       // Facing below
+      args[0].first = 0;
+      args[0].second = 1;
+
+      args[1].first = 1;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 0;
+
+      args[3].first = 0;
+      args[3].second = 0;
+
+      createTile(args, 2);
     }
 
     else if (s.above && s.below && s.right && !s.left) {
       // Facing left
+      args[0].first = 1;
+      args[0].second = 1;
+
+      args[1].first = 1;
+      args[1].second = 0;
+
+      args[2].first = 0;
+      args[2].second = 0;
+
+      args[3].first = 0;
+      args[3].second = 1;
+
+      createTile(args, 2);
+    }
+
+    else if (s.above && s.below && s.right && s.left) {
+      // Create a 'roof' tile
+      args[0].first = 0;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 0;
+
+      createTile(args, 4);
+    }
+
+    else {
+      // Error, this should never occur
+      std::clog << "Incorrect tile model type!" << std::endl;
+      args[0].first = 0;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 0;
+
+      createTile(args, 0);
     }
   }
 
   else {
     // A standard flat tile
-    createFlat();
+    args[0].first = 0;
+    args[0].second = 0;
+
+    args[1].first = 0;
+    args[1].second = 1;
+
+    args[2].first = 1;
+    args[2].second = 1;
+
+    args[3].first = 1;
+    args[3].second = 0;
+
+    createTile(args, 0);
   }
-  */
-
-  createFlat();
 }
 
+// tuple < tuple <x,y>, index_mCornerHeights >
+//
+/*
+void MapTile::createInwardCorner(const std::array< std::pair<bool, bool>, 4>& points) {
+  struct TriStrip tris;
+  struct TrianglePoint tpoint;
+  bool isHigh = true;
 
-void MapTile::createInwardCorner(std::array<irr::core::vector3df, 4> points) {
+  // TODO normals
 
+  // For each point in points
+  for (const auto& point : points) {
+    // Set potition
+    tpoint.pos.set(point.first * TILE_SIZE,
+      point.second * TILE_SIZE,
+      mCornerHeights[point.first + 2*point.second]);
+
+    // If the first point, we assume that it is 'high'
+    if (isHigh) {
+      tpoint.pos.Z += TILE_WALL_HEIGHT;
+      isHigh = false;
+    }
+
+    // Set normal, colour and UV
+    tpoint.normal.set(0,0,1); // TODO
+    tpoint.colour = irr::video::SColor(255,255,255,255);
+    tpoint.uv.set(point.first, point.second);
+
+    tris.points.push_back(tpoint);
+  }
+
+  AddTriStrip(tris, 1);
+}
+*/
+
+void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh) {
+  std::clog << "Creating a tile model" << std::endl;
+  struct TriStrip tris;
+  struct TrianglePoint tpoint;
+  irr::u32 highCount = 0;
+
+  // TODO normals
+
+  // For each point in points
+  for (const auto& point : points) {
+    // Set potition
+    //  Correct Y-up system
+    tpoint.pos.set(point.first * TILE_SIZE,
+      mCornerHeights[2*point.first + point.second + ((point.first && point.second)*-1) + ((point.first && !point.second)*1)],
+      point.second * TILE_SIZE);
+
+    // The first points are assumed 'high'
+    if (highCount < noHigh) {
+      tpoint.pos.Y += TILE_WALL_HEIGHT;
+      highCount++;
+    }
+
+    // Set normal, colour and UV
+    tpoint.normal.set(0,0,1); // TODO
+    tpoint.colour = irr::video::SColor(255,255,255,255);
+    tpoint.uv.set(point.first, point.second);
+
+    tris.points.push_back(tpoint);
+  }
+
+  AddTriStrip(tris, 1);
 }
 
+/*
 void MapTile::createFlat() {
   std::clog << "Creating a flat model" << std::endl;
 
-  struct TriStrip x;
+  struct TriStrip tris;
   struct TrianglePoint t0, t1, t2, t3;
 
   // TODO normals
@@ -88,10 +297,11 @@ void MapTile::createFlat() {
   t3.colour=irr::video::SColor(255,255,255,255);
   t3.uv.set(1,0);
 
-  x.points.push_back(t0);
-  x.points.push_back(t1);
-  x.points.push_back(t2);
-  x.points.push_back(t3);
+  tris.points.push_back(t0);
+  tris.points.push_back(t1);
+  tris.points.push_back(t2);
+  tris.points.push_back(t3);
 
-  AddTriStrip(x, 1);
+  AddTriStrip(tris, 1);
 }
+*/

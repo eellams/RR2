@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
       //camera->setPosition(vector3df(-20.f, 150.f, -20.f));
       //camera->setTarget(vector3df(200.f, -80.f, 150.f));
 
-      camera->setPosition(vector3df(0,0,10));
+      camera->setPosition(vector3df(10,10,0));
       camera->setTarget(vector3df(0,0,0));
 
       camera->setFarValue(20000.0f);

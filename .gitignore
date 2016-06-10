@@ -11,7 +11,3 @@ bin/RR2
 # Python stuff
 *.pyc
 *~
-
-# Test maps
-testOut.xml
-testIn.xml

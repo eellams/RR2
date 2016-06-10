@@ -36,6 +36,7 @@ void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
 
 void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initilising tiles" << std::endl;
+  struct Surround surround;
 
   // Create the heightmap from the deserialised tiles
   createHeightMap();
@@ -43,25 +44,33 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
   // For each tile
   for (irr::u32 i=0; i<mWidth*mHeight; i++) {
     // Create the tile model
-    CalculateTileModel(i);
+    surround = calculateSurround(i);
+    mTiles[i].CreateModel(surround);
 
     // Add the node to the map
     irr::scene::IMeshSceneNode* meshnode = smgr -> addMeshSceneNode(mTiles[i].pMesh);
 
     // Set position
-    meshnode->setPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, (i/mHeight) * TILE_SIZE,0));
-
+    meshnode->setPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, 0, (i/mHeight) * TILE_SIZE));
 
     meshnode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
     meshnode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-    //meshnode->setMaterialTexture(0, NewTex);
-    std::clog << mTypes[mTiles[i].GetTileType()].GetTextureName() << std::endl;
 
     // Set the texture
     // TODO does this optimise out in the wash?
     //  or do we have <tile number> different textures in memory?
-    //  if so, this is likely a waste in meemory
-    meshnode->setMaterialTexture(0, driver->getTexture(mTypes[mTiles[i].GetTileType()].GetTextureName().c_str()));
+    //  if so, this is likely a waste in memory
+
+    // Texture depends on 'visibility' of the tile
+    if (surround.left && surround.right && surround.above && surround.below) {
+      // A roof tile
+      meshnode->setMaterialTexture(0, driver->getTexture(mRoofTexture.c_str()));
+    }
+
+    else {
+      // A normal tile
+      meshnode->setMaterialTexture(0, driver->getTexture(mTypes[mTiles[i].GetTileType()].GetTextureName().c_str()));
+    }
 
     // Debugging flags
     //meshnode->setMaterialFlag(irr::video::EMF_BACK_FACE_CULLING, false);
@@ -193,8 +202,6 @@ void Map::calculateTileCorners(irr::u32 tileNumber) {
 
   mTiles[tileNumber].SetCornerHeights(cornerHeights);
 }
-
-
 
 struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 

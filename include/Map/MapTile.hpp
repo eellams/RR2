@@ -12,6 +12,7 @@
 #include "GeomObject.hpp"
 
 #include <iostream>
+#include <utility>
 
 class MapTile : public GeomObject {
 public:
@@ -30,13 +31,16 @@ public:
 
 private:
   // For a [peak at] below left outward corner
+  //  with first = x, second = y
   //  points[0] BL (oeak)
   //  points[1] AL
   //  points[2] AR
   //  points[3] BR
-  void createInwardCorner(std::array<irr::core::vector3df, 4> points);
+  //void createInwardCorner(const std::array< std::pair<bool, bool>, 4>& points);
 
-  void createFlat();
+  void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh);
+
+  //void createFlat();
 
   friend class boost::serialization::access;
 

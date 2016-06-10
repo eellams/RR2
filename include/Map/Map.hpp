@@ -23,17 +23,14 @@ public:
 
   std::string GetName() const { return mName; }
 
-  // Recaclculate a specific tile's model
-  void CalculateTileModel(irr::u32 tileNumber) {
-    mTiles[tileNumber].CreateModel(calculateSurround(tileNumber));
-  }
-
   void Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
 private:
   friend class boost::serialization::access;
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version) {
     ar & BOOST_SERIALIZATION_NVP(mName);
+    ar & BOOST_SERIALIZATION_NVP(mDescription);
+    ar & BOOST_SERIALIZATION_NVP(mRoofTexture);
     ar & BOOST_SERIALIZATION_NVP(mWidth);
     ar & BOOST_SERIALIZATION_NVP(mHeight);
     ar & BOOST_SERIALIZATION_NVP(mTypes);
@@ -60,6 +57,7 @@ private:
   // Serialised values
   std::string mName;
   std::string mDescription;
+  std::string mRoofTexture;
   size_t mWidth;
   size_t mHeight;
   //std::vector<MapType> mTypes;

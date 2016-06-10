@@ -90,14 +90,14 @@ public:
 
       // The math to work out which indices go where
       pBuffer->Indices[i*3] = i;
-      pBuffer->Indices[i*3+1] = i + 2 - (1 - (i%2));
-      pBuffer->Indices[i*3+2] = i + 2 - (i%2);
+      pBuffer->Indices[i*3+2] = i + 2 - (1 - (i%2));
+      pBuffer->Indices[i*3+1] = i + 2 - (i%2);
 
       // Special casse that don't follow the above rules
       if (i==0) {
         pBuffer->Indices[0] = 0;
-        pBuffer->Indices[1] = 2;
-        pBuffer->Indices[2] = 1;
+        pBuffer->Indices[2] = 2;
+        pBuffer->Indices[1] = 1;
       }
       else if (i == 1) {
         pBuffer->Indices[i*3] = 0;
