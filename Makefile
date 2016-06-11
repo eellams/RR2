@@ -23,7 +23,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.o))
 
 BUILDDIRS := $(SOURCEDIRS:$(SRCDIR)%=$(BUILDDIR)%)
 
-CFLAGS := -std=c++11 -g
+CFLAGS := -std=c++11
 LIB := -pedantic -pthread -lboost_serialization -lboost_system -lIrrlicht -lGL -lXxf86vm -lXext -lX11 -lXcursor
 
 INC := -Iinclude

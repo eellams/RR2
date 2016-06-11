@@ -18,9 +18,18 @@
 
 struct Surround {
   bool current, below, left, right, above;
+  bool belowLeft, belowRight, aboveLeft, aboveRight;
 
   inline bool operator==(Surround a) {
-    if (a.current==current && a.below==below && a.left==left && a.right==right && a.above==above)
+    if (a.current == current &&
+      a.below == below &&
+      a.left == left &&
+      a.right == right &&
+      a.above == above &&
+      a.belowLeft == belowLeft &&
+      a.belowRight == belowRight &&
+      a.aboveLeft == aboveLeft &&
+      a.aboveRight == aboveRight)
       return true;
     else
       return false;
@@ -49,7 +58,7 @@ public:
   void createModel(const struct Surround s);
 
 private:
-  void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh);
+  void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, const bool inward=false);
 
   friend class boost::serialization::access;
 

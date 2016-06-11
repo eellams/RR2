@@ -140,7 +140,6 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 2);
     }
-
     else if (s.above && s.below && !s.right && s.left) {
       // Facing right
       args[0].first = 0;
@@ -157,7 +156,6 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 2);
     }
-
     else if (s.above && !s.below && s.right && s.left) {
       // Facing below
       args[0].first = 0;
@@ -174,7 +172,6 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 2);
     }
-
     else if (s.above && s.below && s.right && !s.left) {
       // Facing left
       args[0].first = 1;
@@ -192,7 +189,80 @@ void MapTile::createModel(struct Surround s) {
       createTile(args, 2);
     }
 
-    else if (s.above && s.below && s.right && s.left) {
+    // Inward corners
+    else if (s.above && s.below && s.right && s.left &&
+      !s.belowLeft && s.belowRight && s.aboveLeft && s.aboveRight) {
+      // Inward corner, [trough at] below left
+      args[0].first = 0;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 0;
+
+      createTile(args, 1, true);
+    }
+    else if (s.above && s.below && s.right && s.left &&
+      s.belowLeft && s.belowRight && !s.aboveLeft && s.aboveRight) {
+      // Inward corner, above left
+      args[0].first = 0;
+      args[0].second = 1;
+
+      args[1].first = 1;
+      args[1].second = 1;
+
+      args[2].first = 1;
+      args[2].second = 0;
+
+      args[3].first = 0;
+      args[3].second = 0;
+
+      createTile(args, 1, true);
+    }
+    else if (s.above && s.below && s.right && s.left &&
+      s.belowLeft && s.belowRight && s.aboveLeft && !s.aboveRight) {
+      // Inward corner, above right
+      args[0].first = 1;
+      args[0].second = 1;
+
+      args[1].first = 1;
+      args[1].second = 0;
+
+      args[2].first = 0;
+      args[2].second = 0;
+
+      args[3].first = 0;
+      args[3].second = 1;
+
+      createTile(args, 1, true);
+    }
+    else if (s.above && s.below && s.right && s.left &&
+      s.belowLeft && !s.belowRight && s.aboveLeft && s.aboveRight) {
+      // Inward corner, below right
+      args[0].first = 1;
+      args[0].second = 0;
+
+      args[1].first = 0;
+      args[1].second = 0;
+
+      args[2].first = 0;
+      args[2].second = 1;
+
+      args[3].first = 1;
+      args[3].second = 1;
+
+      createTile(args, 1, true);
+    }
+
+    // A 'normal' roof tile
+    else if (s.above && s.below && s.right && s.left &&
+      s.belowLeft && s.belowRight && s.aboveLeft && s.aboveRight) {
+
       // Create a 'roof' tile
       args[0].first = 0;
       args[0].second = 0;
@@ -209,6 +279,8 @@ void MapTile::createModel(struct Surround s) {
       createTile(args, 4);
     }
 
+    // A tile combination not of the above
+    //  creates a 'flat' tile
     else {
       // Error, this should never occur
       std::clog << "Incorrect tile model type!" << std::endl;
@@ -246,7 +318,7 @@ void MapTile::createModel(struct Surround s) {
   }
 }
 
-void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh) {
+void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, bool inward) {
   // array< pair<x,y>, 4>
   struct TriStrip tris;
   struct TrianglePoint tpoint;
@@ -266,9 +338,17 @@ void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, con
       point.second * TILE_SIZE);
 
     // The first points are assumed 'high'
-    if (highCount < noHigh) {
-      tpoint.pos.Y += TILE_WALL_HEIGHT;
-      highCount++;
+    if (!inward) {
+      if (highCount < noHigh) {
+        tpoint.pos.Y += TILE_WALL_HEIGHT;
+        highCount++;
+      }
+    } else {
+      if (highCount < noHigh) {
+        highCount++;
+      } else {
+        tpoint.pos.Y += TILE_WALL_HEIGHT;
+      }
     }
 
     // Set normal, colour and UV

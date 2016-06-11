@@ -299,7 +299,11 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
   */
 
   struct Surround toReturn;
+  bool above, below;
+
   toReturn.above = toReturn.below = toReturn.left = toReturn.right = false;
+  toReturn.belowLeft = toReturn.belowRight = toReturn.aboveLeft = toReturn.aboveRight = false;
+  above = below = false;
 
   // Current tile (whether solid or not)
   toReturn.current = mTypes[mTiles[tileNumber].getTileType()].getSolid();
@@ -307,33 +311,61 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
   // Below
   if (tileNumber >= mWidth) {
     toReturn.below = mTypes[mTiles[tileNumber - mWidth].getTileType()].getSolid();
+    below = true;
   } else {
     // Botton row, assume solid
     toReturn.below = true;
+    toReturn.belowLeft = true;
+    toReturn.belowRight = true;
   }
 
   // Above
   if (tileNumber < (mHeight-1)*mWidth) {
     toReturn.above = mTypes[mTiles[tileNumber + mWidth].getTileType()].getSolid();
+    above = true;
   } else {
     // Top row, assume solid
     toReturn.above = true;
+    toReturn.aboveRight = true;
+    toReturn.aboveLeft = true;
   }
 
   // Left
   if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
     toReturn.left = mTypes[mTiles[tileNumber - 1].getTileType()].getSolid();
+
+    if (above) {
+      toReturn.aboveLeft =  mTypes[mTiles[tileNumber + mWidth - 1].getTileType()].getSolid();
+    }
+
+    if (below) {
+      toReturn.belowLeft =  mTypes[mTiles[tileNumber - mWidth - 1].getTileType()].getSolid();
+    }
+
   } else {
     // Furthest left on each row
     toReturn.left = true;
+    toReturn.aboveLeft = true;
+    toReturn.belowLeft = true;
   }
 
   // Right
   if ( (tileNumber + 1) % mWidth != 0) {
     toReturn.right = mTypes[mTiles[tileNumber + 1].getTileType()].getSolid();
+
+    if (above) {
+      toReturn.aboveRight =  mTypes[mTiles[tileNumber + mWidth + 1].getTileType()].getSolid();
+    }
+
+    if (below) {
+      toReturn.belowRight =  mTypes[mTiles[tileNumber - mWidth + 1].getTileType()].getSolid();
+    }
+
   } else {
     // Furthest right of each row
     toReturn.right = true;
+    toReturn.aboveRight = true;
+    toReturn.belowRight = true;
   }
 
   return toReturn;
@@ -352,7 +384,8 @@ void Map::recalculateTileModel(irr::u32 tileNumber) {
   //  or do we have <tile number> different textures in memory?
   //  if so, this is likely a waste in memory
   // Texture depends on 'visibility' of the tile
-  if (surround.left && surround.right && surround.above && surround.below && surround.current) {
+  if (surround.left && surround.right && surround.above && surround.below && surround.current &&
+    surround.belowLeft && surround.belowRight && surround.aboveLeft && surround.aboveRight) {
     // A roof tile
     mTiles[tileNumber].setTexture(mRoofTexture);
   }

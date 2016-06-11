@@ -134,12 +134,10 @@ int main(int argc, char *argv[]) {
 
   while(device->run()) {
     if(receiver.IsKeyDown(irr::KEY_KEY_1)) {
-      //meshnode->setMaterialFlag(video::EMF_WIREFRAME, !meshnode->getMaterial(0).Wireframe);
       map.mineTile(18);
     }
 
     if(receiver.IsKeyDown(irr::KEY_KEY_2)) {
-      //meshnode->setMaterialFlag(video::EMF_WIREFRAME, !meshnode->getMaterial(0).Wireframe);
       map.mineTile(28);
     }
 
