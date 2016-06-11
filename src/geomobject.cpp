@@ -49,7 +49,6 @@ void GeomObject::setFlags() {
 }
 
 void GeomObject::addTriStrip(struct TriStrip& tris, irr::u32 bufferNum) {
-  std::clog << "Adding triangle strip" << std::endl;
   if (pMesh == NULL) pMesh = new irr::scene::SMesh;
 
   irr::u16 i;

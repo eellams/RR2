@@ -336,7 +336,6 @@ void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, con
   irr::u32 highCount = 0;
 
   mGo.clear();
-  std::clog << "Creating tile" << std::endl;
 
   // TODO normals
 

@@ -12,6 +12,7 @@
 
 #include "maptile.hpp"
 #include "maptype.hpp"
+#include "generic.hpp"
 
 class Map {
 public:

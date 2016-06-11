@@ -7,15 +7,10 @@
 
 #include <irrlicht.h>
 
+#include "generic.hpp"
+
 class MapType {
 public:
-
-  enum MoveType {
-    AIR = 0,
-    GROUND = 1,
-    WATER = 2
-  };
-
   MapType();
   MapType(std::string t, bool s, irr::f32 dt, MoveType mt);
 
@@ -44,7 +39,7 @@ private:
   irr::f32 mDrillTime;
   irr::f32 mMineInto;
 
-  MapType::MoveType mMoveType;
+  MoveType mMoveType;
 };
 
 #endif

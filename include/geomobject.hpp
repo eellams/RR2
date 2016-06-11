@@ -6,17 +6,7 @@
 #include <iostream>
 
 #include <irrlicht.h>
-
-struct TrianglePoint {
-  irr::core::vector3df pos;
-  irr::core::vector3df normal;
-  irr::video::SColor colour;
-  irr::core::vector2df uv;
-};
-
-struct TriStrip {
-  std::vector<TrianglePoint> points;
-};
+#include "generic.hpp"
 
 class GeomObject {
 public:

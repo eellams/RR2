@@ -8,13 +8,10 @@
 #include <irrlicht.h>
 
 #include "geomobject.hpp"
+#include "generic.hpp"
 
 #include <iostream>
 #include <utility>
-
-#define TILE_SIZE 10.0f
-#define TILE_WALL_HEIGHT 12.5f
-#define COLLISION_MASK_TILE 1 << 30
 
 struct Surround {
   bool current, below, left, right, above;

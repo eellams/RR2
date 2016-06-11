@@ -6,6 +6,7 @@
 #include <boost/archive/xml_iarchive.hpp>
 
 #include "map.hpp"
+#include "generic.hpp"
 
 class SaveFile {
 public:
