@@ -66,6 +66,13 @@ class RTSCamera : public ICameraSceneNode
       virtual void setTranslateSpeed(f32 value);
       virtual void setRotationSpeed(f32 value);
 
+      // Modified by EE
+      //  sets the target height
+      //  TODO proper cameera working
+      virtual void setTargetHeight(f32 height) {
+        Target.Y = height;
+      }
+
 
       //Helper Functions
       //virtual void serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options=0);

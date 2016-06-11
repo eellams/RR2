@@ -25,14 +25,12 @@ void Map::Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
 
   initialiseTiles(driver, smgr);
 
-  pSelector = mTiles[0].GetTriangleSelector();
 
-  irr::core::list< irr::scene::ISceneNode * > children = pNode->getChildren ();
+  pMetaSelector = pNode->getSceneManager()->createMetaTriangleSelector();
 
-  for (auto& child : children) {
-    child->setTriangleSelector(pSelector);
+  for (auto child : pNode->getChildren()) {
+    pMetaSelector->addTriangleSelector(child->getTriangleSelector());
   }
-
 }
 
 void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {

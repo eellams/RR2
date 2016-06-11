@@ -225,4 +225,7 @@ void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, con
   }
 
   mGo.AddTriStrip(tris, 1);
+
+  // This flag should be set on all terrain tiles
+  mGo.SetID(COLLISION_MASK_TILE);
 }

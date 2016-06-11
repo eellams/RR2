@@ -21,13 +21,13 @@ public:
   GeomObject() {
     pMesh = NULL;
     pMeshSceneNode = NULL;
-    //pSelector = NULL;
+    pSelector = NULL;
   }
 
   ~GeomObject() {
     if (pMesh != NULL) pMesh->drop();
     if (pMeshSceneNode != NULL) pMeshSceneNode->drop();
-    //if (pSelector != NULL) pSelector->drop();
+    if (pSelector != NULL) pSelector->drop();
   }
 
   // Set the parent of the node
@@ -50,6 +50,10 @@ public:
   // TODO this needs to be user-configurable
   void SetDebug() {
     pMeshSceneNode->setDebugDataVisible(irr::scene::EDS_BBOX);
+  }
+
+  void SetID(irr::s32 id) {
+    pMeshSceneNode->setID(id);
   }
 
   irr::scene::ITriangleSelector* GetTriangleSelector() {
@@ -126,6 +130,9 @@ public:
 
     // Set the flags
     setFlags();
+
+    pSelector = pMeshSceneNode->getSceneManager()->createTriangleSelector(pMesh, pMeshSceneNode);
+    pMeshSceneNode->setTriangleSelector(pSelector);
   }
 
 protected:
@@ -139,6 +146,7 @@ protected:
   irr::scene::ISceneNode* pParent;
   irr::scene::SMesh* pMesh;
   irr::scene::IMeshSceneNode* pMeshSceneNode;
+  irr::scene::ITriangleSelector* pSelector;
   //irr::scene::ITriangleSelector* pSelector;
 };
 

@@ -16,14 +16,18 @@
 class Map {
 public:
   Map() :
-    mName(""), mDescription(""), mWidth(0), mHeight(0), pNode(NULL) {}
+    mName(""), mDescription(""), mWidth(0), mHeight(0), pNode(NULL), pMetaSelector(NULL) {}
 
   Map(std::string n, std::string d, size_t w, size_t h) :
-    mName(n), mDescription(d), mWidth(w), mHeight(h), pNode(NULL) {}
+    mName(n), mDescription(d), mWidth(w), mHeight(h), pNode(NULL), pMetaSelector(NULL) {}
+
+  ~Map() {
+    if (pNode != NULL) pNode->drop();
+    if (pMetaSelector != NULL) pMetaSelector->drop();
+  }
 
   std::string GetName() const { return mName; }
-  irr::scene::ITriangleSelector* GetSelector() { return pSelector; }
-
+  irr::scene::IMetaTriangleSelector* GetMetaTriangleSelector() const { return pMetaSelector; }
 
   void Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
 
@@ -69,8 +73,7 @@ private:
   // Non-serialised values
   std::vector<float> mHeightmap;
   irr::scene::ISceneNode* pNode;
-
-  irr::scene::ITriangleSelector* pSelector;
+  irr::scene::IMetaTriangleSelector* pMetaSelector;
 };
 
 #endif

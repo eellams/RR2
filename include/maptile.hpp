@@ -14,6 +14,7 @@
 
 #define TILE_SIZE 10.0f
 #define TILE_WALL_HEIGHT 12.5f
+#define COLLISION_MASK_TILE 1 << 30
 
 struct Surround {
   bool current, below, left, right, above;
@@ -28,29 +29,16 @@ public:
   float GetHeight() const { return mHeight; }
   irr::u32 GetTileType() { return mTileType; }
 
+  irr::scene::ITriangleSelector* GetTriangleSelector() { return mGo.GetTriangleSelector(); }
+
+  void SetParent(irr::scene::ISceneNode* parent) { mGo.SetParent(parent); }
+  void SetPosition(irr::core::vector3df position) { mGo.SetPosition(position); }
+  void SetTexture(std::string tex) { mGo.SetTexture(tex); }
+  void SetDebug() { mGo.SetDebug(); }
+
+  void SetCornerHeights(const std::array<irr::f32, 4>& cornerHeights) { mCornerHeights = cornerHeights; }
+
   void CreateModel(struct Surround s);
-
-  void SetParent(irr::scene::ISceneNode* parent) {
-    mGo.SetParent(parent);
-  }
-  void SetPosition(irr::core::vector3df position) {
-    mGo.SetPosition(position);
-  }
-  void SetTexture(std::string tex) {
-    mGo.SetTexture(tex);
-  }
-
-  void SetCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
-    mCornerHeights = cornerHeights;
-  }
-
-  void SetDebug() {
-    mGo.SetDebug();
-  }
-
-  irr::scene::ITriangleSelector* GetTriangleSelector() {
-    return mGo.GetTriangleSelector();
-  }
 
 private:
   void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh);
