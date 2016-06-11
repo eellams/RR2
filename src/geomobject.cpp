@@ -1,11 +1,12 @@
 #include "geomobject.hpp"
 
 GeomObject::GeomObject() :
-  pMesh(NULL), pMeshSceneNode(NULL), pSelector(NULL) {
+  pMesh(NULL), pMeshSceneNode(NULL), pSelector(NULL), pParent(NULL) {
 
   }
 
 GeomObject::~GeomObject() {
+  if (pParent != NULL) pParent->drop();
   if (pMesh != NULL) pMesh->drop();
   if (pMeshSceneNode != NULL) pMeshSceneNode->drop();
   if (pSelector != NULL) pSelector->drop();
@@ -39,7 +40,16 @@ void GeomObject::setID(irr::s32 id) {
   pMeshSceneNode->setID(id);
 }
 
+void GeomObject::setFlags() {
+  // TODO all of this
+  //  needs to be configurable
+
+  pMeshSceneNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+  pMeshSceneNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+}
+
 void GeomObject::addTriStrip(struct TriStrip& tris, irr::u32 bufferNum) {
+  std::clog << "Adding triangle strip" << std::endl;
   if (pMesh == NULL) pMesh = new irr::scene::SMesh;
 
   irr::u16 i;
@@ -114,9 +124,15 @@ void GeomObject::addTriStrip(struct TriStrip& tris, irr::u32 bufferNum) {
   pMeshSceneNode->setTriangleSelector(pSelector);
 }
 
-void GeomObject::setFlags() {
-  // TODO all of this
-  //  needs to be configurable
-  pMeshSceneNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-  pMeshSceneNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+void GeomObject::clear() {
+  // TODO is this memory safe?
+  if (pMesh != NULL) {
+    // Drop and reset pointer
+    pMesh->drop();
+    pMesh = NULL;
+
+    // Remove and reset pointer
+    pMeshSceneNode->remove();
+    pMeshSceneNode = NULL;
+  }
 }

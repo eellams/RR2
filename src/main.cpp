@@ -51,8 +51,6 @@ int main(int argc, char *argv[]) {
   std::cout << "Program startup!" << std::endl;
 
   // Demonstrating reading and writing from a config file
-
-
   /*
   std::ofstream ofs("testOut.xml");
 
@@ -71,10 +69,9 @@ int main(int argc, char *argv[]) {
   if (driverType==video::EDT_COUNT)
       return 1;
 
-  //MyEventReceiver receiver;
   IrrlichtDevice* device = createDevice(driverType,
           core::dimension2du(800, 600), 32, false, false, false,
-          NULL);
+          &receiver);
 
   if(device == 0)
       return 1;
@@ -95,7 +92,7 @@ int main(int argc, char *argv[]) {
   Map& map = readMap.mMap;
 
   // Initialise the map (load from the save file)
-  map.Initialise(driver, smgr);
+  map.initialise(driver, smgr);
 
   std::clog << "Finished initialising" << std::endl;
 
@@ -115,7 +112,6 @@ int main(int argc, char *argv[]) {
 
   //add RTS Camera
   RTSCamera* camera = new RTSCamera(device,smgr->getRootSceneNode(),smgr,-1,100.0f,10.0f,10.0f);
-  //ICameraSceneNode *camera= smgr->addCameraSceneNodeFPS(0, 50.0f,0.2f,-1,0,0,true,0.0f,false,true);
   camera->setPosition(vector3df(0,9,-14));
   camera->setTranslateSpeed(2.5);//speed of cam movement
   camera->setRotationSpeed(50);//speed of cam rotation
@@ -137,6 +133,16 @@ int main(int argc, char *argv[]) {
   scene::ISceneCollisionManager* collMan = smgr->getSceneCollisionManager();
 
   while(device->run()) {
+    if(receiver.IsKeyDown(irr::KEY_KEY_1)) {
+      //meshnode->setMaterialFlag(video::EMF_WIREFRAME, !meshnode->getMaterial(0).Wireframe);
+      map.mineTile(18);
+    }
+
+    if(receiver.IsKeyDown(irr::KEY_KEY_2)) {
+      //meshnode->setMaterialFlag(video::EMF_WIREFRAME, !meshnode->getMaterial(0).Wireframe);
+      map.mineTile(28);
+    }
+
     // Set up the ray used for moving the camera over terrain
     core::line3d<f32> ray;
 

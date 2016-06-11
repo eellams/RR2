@@ -13,6 +13,7 @@ public:
   SaveFile(Map &m) : mMap(m) {}
 
   // Serialised values
+  // TODO this breaks encapsulation!
   Map mMap;
 
 private:

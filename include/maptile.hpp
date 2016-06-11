@@ -18,6 +18,13 @@
 
 struct Surround {
   bool current, below, left, right, above;
+
+  inline bool operator==(Surround a) {
+    if (a.current==current && a.below==below && a.left==left && a.right==right && a.above==above)
+      return true;
+    else
+      return false;
+  }
 };
 
 class MapTile {
@@ -29,6 +36,7 @@ public:
   irr::f32 getHeight() const;
   irr::u32 getTileType() const;
   irr::scene::ITriangleSelector* getTriangleSelector();
+  struct Surround getPrevSurround();
 
   // Setters
   void setParent(irr::scene::ISceneNode* parent);
@@ -36,9 +44,9 @@ public:
   void setTexture(const std::string& tex);
   void setDebug();
   void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
+  void setTileType(const irr::u32& tileType);
 
   void createModel(const struct Surround s);
-  void mineTile();
 
 private:
   void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh);
@@ -57,6 +65,7 @@ private:
   irr::u32 mTileType;
   irr::f32 mHeight;
   std::array<irr::f32, 4> mCornerHeights;
+  struct Surround mPrevSurround;
 
   GeomObject mGo;
 

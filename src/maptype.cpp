@@ -10,10 +10,14 @@ MapType::MapType(std::string t, bool s, irr::f32 dt, MoveType mt) :
 
   }
 
-bool MapType::getSolid() {
+bool MapType::getSolid() const {
   return mSolid;
 }
 
-std::string MapType::getTextureName() {
+std::string MapType::getTextureName() const {
   return mTexture;
+}
+
+irr::f32 MapType::getMineInto() const {
+  return mMineInto;
 }

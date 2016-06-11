@@ -22,6 +22,10 @@ irr::scene::ITriangleSelector* MapTile::getTriangleSelector() {
   return mGo.getTriangleSelector();
 }
 
+struct Surround MapTile::getPrevSurround() {
+  return mPrevSurround;
+}
+
 void MapTile::setParent(irr::scene::ISceneNode* parent) {
   mGo.setParent(parent);
 }
@@ -42,12 +46,14 @@ void MapTile::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
   mCornerHeights = cornerHeights;
 }
 
-void MapTile::mineTile() {
-
+void MapTile::setTileType(const irr::u32& tileType) {
+  mTileType = tileType;
 }
 
 void MapTile::createModel(struct Surround s) {
   std::array< std::pair<bool,bool>, 4> args;
+
+  mPrevSurround = s;
 
   // TODO I'm sure a loop could be used here...
   if (s.current) {
@@ -245,6 +251,9 @@ void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, con
   struct TriStrip tris;
   struct TrianglePoint tpoint;
   irr::u32 highCount = 0;
+
+  mGo.clear();
+  std::clog << "Creating tile" << std::endl;
 
   // TODO normals
 

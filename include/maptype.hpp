@@ -17,14 +17,14 @@ public:
   };
 
   MapType();
-
   MapType(std::string t, bool s, irr::f32 dt, MoveType mt);
 
-  // Setters
-
   // Getters
-  bool getSolid();
-  std::string getTextureName();
+  bool getSolid() const;
+  std::string getTextureName() const;
+  irr::f32 getMineInto() const;
+
+  // Setters
 
 private:
   friend class boost::serialization::access;
@@ -35,16 +35,16 @@ private:
     ar & BOOST_SERIALIZATION_NVP(mTexture);
     ar & BOOST_SERIALIZATION_NVP(mSolid);
     ar & BOOST_SERIALIZATION_NVP(mDrillTime);
+    ar & BOOST_SERIALIZATION_NVP(mMineInto);
     ar & BOOST_SERIALIZATION_NVP(mMoveType);
   }
 
   std::string mTexture;
   bool mSolid;
   irr::f32 mDrillTime;
+  irr::f32 mMineInto;
 
   MapType::MoveType mMoveType;
-
-  //irr::video::ITexture* pTex;
 };
 
 #endif

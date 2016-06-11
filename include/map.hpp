@@ -25,7 +25,8 @@ public:
 
   // Setters
 
-  void Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
+  void initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
+  void mineTile(irr::u32 tileNumber);
 
 private:
   friend class boost::serialization::access;
@@ -56,6 +57,8 @@ private:
   void calculateTileCorners(irr::u32 tileNumber);
 
   struct Surround calculateSurround(irr::u32 tileNumber);
+
+  void recalculateTileModel(irr::u32 tileNumber);
 
   // Serialised values
   std::string mName;

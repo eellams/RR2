@@ -3,6 +3,7 @@
 
 #include <array>
 #include <vector>
+#include <iostream>
 
 #include <irrlicht.h>
 
@@ -33,6 +34,7 @@ public:
   void setID(irr::s32 id);
 
   void addTriStrip(struct TriStrip& tris, irr::u32 bufferNum);
+  void clear();
 
 protected:
   void setFlags();

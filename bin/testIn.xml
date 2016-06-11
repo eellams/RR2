@@ -13,20 +13,22 @@
 			<count>2</count>
 			<item_version>0</item_version>
 			<item class_id="3" tracking_level="0" version="0">
-				<first>1</first>
-				<second class_id="4" tracking_level="0" version="0">
-					<mTexture>./data/dirt.png</mTexture>
-					<mSolid>0</mSolid>
-					<mDrillTime>0.000000000e+00</mDrillTime>
-					<mMoveType>1</mMoveType>
-				</second>
-			</item>
-			<item class_id="3" tracking_level="0" version="0">
 				<first>0</first>
 				<second class_id="4" tracking_level="0" version="0">
 					<mTexture>./data/wall.png</mTexture>
 					<mSolid>1</mSolid>
 					<mDrillTime>0.000000000e+00</mDrillTime>
+					<mMineInto>1</mMineInto>
+					<mMoveType>1</mMoveType>
+				</second>
+			</item>
+			<item class_id="3" tracking_level="0" version="0">
+				<first>1</first>
+				<second class_id="4" tracking_level="0" version="0">
+					<mTexture>./data/dirt.png</mTexture>
+					<mSolid>0</mSolid>
+					<mDrillTime>0.000000000e+00</mDrillTime>
+					<mMineInto>1</mMineInto>
 					<mMoveType>1</mMoveType>
 				</second>
 			</item>

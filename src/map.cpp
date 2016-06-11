@@ -24,7 +24,7 @@ irr::scene::IMetaTriangleSelector* Map::getMetaTriangleSelectorP() const {
 }
 
 
-void Map::Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
+void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initialising map '" << mName << "'" << std::endl;
 
   // Empty parent node for all map tiles
@@ -49,11 +49,77 @@ void Map::Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
 
   initialiseTiles(driver, smgr);
 
-
   pMetaSelector = pNode->getSceneManager()->createMetaTriangleSelector();
 
   for (auto child : pNode->getChildren()) {
     pMetaSelector->addTriangleSelector(child->getTriangleSelector());
+  }
+}
+
+void Map::mineTile(irr::u32 tileNumber) {
+  struct Surround surround;
+  struct Surround prevSurround;
+  bool above, below;
+
+  // Set the new tile type
+
+  std::clog << "Mining tile " << tileNumber;
+  std::clog << " from " << mTiles[tileNumber].getTileType();
+  std::clog << " to " << mTypes[mTiles[tileNumber].getTileType()].getMineInto() << std::endl;
+
+  mTiles[tileNumber].setTileType( mTypes[mTiles[tileNumber].getTileType()].getMineInto() );
+
+  prevSurround = mTiles[tileNumber].getPrevSurround();
+  above = false;
+  below = false;
+
+  recalculateTileModel(tileNumber);
+
+  if (!(prevSurround == surround)) {
+    // The surround has changed
+    //  need to recalculate the surrounding tile's models
+
+    // If there is a tile below
+    if (tileNumber >= mWidth) {
+      recalculateTileModel(tileNumber-mWidth);
+      below = true;
+    }
+
+    // If there is a tile above
+    if (tileNumber < (mHeight-1)*mWidth) {
+      recalculateTileModel(tileNumber+mWidth);
+      above = true;
+    }
+
+    // If there is a tile left
+    if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
+      recalculateTileModel(tileNumber-1);
+
+      // If there is a tile above left
+      if (above) {
+        recalculateTileModel(tileNumber+mWidth-1);
+      }
+
+      // If there is a tile below left
+      if (below) {
+        recalculateTileModel(tileNumber-mWidth-1);
+      }
+    }
+
+    // If there is a tile right
+    if ( (tileNumber + 1) % mWidth != 0) {
+      recalculateTileModel(tileNumber+1);
+
+      // If there is a tile above right
+      if (above) {
+        recalculateTileModel(tileNumber+mWidth+1);
+      }
+
+      // If there is a tile below right
+      if (below) {
+        recalculateTileModel(tileNumber-mWidth+1);
+      }
+    }
   }
 }
 
@@ -76,7 +142,6 @@ void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
 
 void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initilising tiles" << std::endl;
-  struct Surround surround;
 
   // Create the heightmap from the deserialised tiles
   //  heightmap is calculated from serialised tile data
@@ -90,30 +155,7 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
   //  calculate tile, set texture etc.
   for (irr::u32 i=0; i<mWidth*mHeight; i++) {
     // Create the tile model
-    surround = calculateSurround(i);
-    //mTiles[i].CreateModel(surround);
-
-    mTiles[i].setParent(pNode);
-    mTiles[i].createModel(surround);
-    mTiles[i].setDebug();
-
-    // Set the texture
-    // TODO does this optimise out in the wash?
-    //  or do we have <tile number> different textures in memory?
-    //  if so, this is likely a waste in memory
-    // Texture depends on 'visibility' of the tile
-    if (surround.left && surround.right && surround.above && surround.below) {
-      // A roof tile
-      mTiles[i].setTexture(mRoofTexture);
-    }
-
-    else {
-      // A normal tile
-      mTiles[i].setTexture( mTypes[mTiles[i].getTileType()].getTextureName() );
-    }
-
-    // Set the position of the tile
-    mTiles[i].setPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, 0, (i/mHeight) * TILE_SIZE));
+    recalculateTileModel(i);
   }
 }
 
@@ -295,4 +337,31 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
   }
 
   return toReturn;
+}
+
+void Map::recalculateTileModel(irr::u32 tileNumber) {
+  struct Surround surround;
+
+  surround = calculateSurround(tileNumber);
+
+  mTiles[tileNumber].setParent(pNode);
+  mTiles[tileNumber].createModel(surround);
+
+  // Set the texture
+  // TODO does this optimise out in the wash?
+  //  or do we have <tile number> different textures in memory?
+  //  if so, this is likely a waste in memory
+  // Texture depends on 'visibility' of the tile
+  if (surround.left && surround.right && surround.above && surround.below && surround.current) {
+    // A roof tile
+    mTiles[tileNumber].setTexture(mRoofTexture);
+  }
+
+  else {
+    // A normal tile
+    mTiles[tileNumber].setTexture( mTypes[mTiles[tileNumber].getTileType()].getTextureName() );
+  }
+
+  // Set the position of the tile
+  mTiles[tileNumber].setPosition(irr::core::vector3df((tileNumber%mWidth) * TILE_SIZE, 0, (tileNumber/mHeight) * TILE_SIZE));
 }
