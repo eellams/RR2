@@ -1,7 +1,10 @@
-#include "Map/Map.hpp"
+#include "map.hpp"
 
 void Map::Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initialising map '" << mName << "'" << std::endl;
+
+  // Empty parent node for all map tiles
+  pNode = smgr->addEmptySceneNode();
 
   initialiseTileTypes(driver);
 
@@ -41,40 +44,35 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
   // Create the heightmap from the deserialised tiles
   createHeightMap();
 
+  pNode->setParent(smgr->getRootSceneNode());
+
   // For each tile
   for (irr::u32 i=0; i<mWidth*mHeight; i++) {
     // Create the tile model
     surround = calculateSurround(i);
+    //mTiles[i].CreateModel(surround);
+
+    mTiles[i].SetParent(pNode);
     mTiles[i].CreateModel(surround);
+    mTiles[i].SetDebug();
 
-    // Add the node to the map
-    irr::scene::IMeshSceneNode* meshnode = smgr -> addMeshSceneNode(mTiles[i].pMesh);
-
-    // Set position
-    meshnode->setPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, 0, (i/mHeight) * TILE_SIZE));
-
-    meshnode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-    meshnode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 
     // Set the texture
     // TODO does this optimise out in the wash?
     //  or do we have <tile number> different textures in memory?
     //  if so, this is likely a waste in memory
-
     // Texture depends on 'visibility' of the tile
     if (surround.left && surround.right && surround.above && surround.below) {
       // A roof tile
-      meshnode->setMaterialTexture(0, driver->getTexture(mRoofTexture.c_str()));
+      mTiles[i].SetTexture(mRoofTexture);
     }
 
     else {
       // A normal tile
-      meshnode->setMaterialTexture(0, driver->getTexture(mTypes[mTiles[i].GetTileType()].GetTextureName().c_str()));
+      mTiles[i].SetTexture( mTypes[mTiles[i].GetTileType()].GetTextureName() );
     }
 
-    // Debugging flags
-    //meshnode->setMaterialFlag(irr::video::EMF_BACK_FACE_CULLING, false);
-    meshnode->setDebugDataVisible(irr::scene::EDS_BBOX);
+    mTiles[i].SetPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, 0, (i/mHeight) * TILE_SIZE));
   }
 }
 
@@ -216,8 +214,6 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   struct Surround toReturn;
   toReturn.above = toReturn.below = toReturn.left = toReturn.right = false;
-
-  std::clog << "Calculating surround for: " << tileNumber << std::endl;
 
   // Current tile (whether solid or not)
   toReturn.current = mTypes[mTiles[tileNumber].GetTileType()].GetSolid();

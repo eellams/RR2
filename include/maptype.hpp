@@ -23,16 +23,7 @@ public:
     mTexture(t), mSolid(s), mDrillTime(dt), mMoveType(mt) {}
 
   bool GetSolid() { return mSolid; }
-  //irr::video::ITexture* GetTexture() { return pTex; }
   std::string GetTextureName() { return mTexture; }
-
-  /*
-  void Initialise(irr::video::IVideoDriver* driver) {
-    std::clog << "Loading tile: " << mTexture << std::endl;
-    //pTex = driver->addRenderTargetTexture(irr::core::dimension2d<irr::u32>(256,256), mTexture.c_str());
-    //pTex = driver->getTexture(mTexture.c_str());
-  }
-  */
 
 private:
   friend class boost::serialization::access;

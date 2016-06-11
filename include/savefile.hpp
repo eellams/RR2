@@ -1,30 +1,27 @@
 // Copyright (c) 2016 Eddie Ellams All Rights Reserved.
-#ifndef _CONFIG_FILE_HPP
-#define _CONFIG_FILE_HPP
+#ifndef _SAVE_FILE_HPP
+#define _SAVE_FILE_HPP
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 
-#include "ConfigGraphics.hpp"
+#include "map.hpp"
 
-class ConfigFile {
+class SaveFile {
 public:
-  ConfigFile() :
-    GraphicsConfig() {}
+  SaveFile() : mMap() {}
+  SaveFile(Map &m) : mMap(m) {}
 
-  ConfigFile(int x, int y) :
-    GraphicsConfig(x, y) {}
+  // Serialised values
+  Map mMap;
 
 private:
   friend class boost::serialization::access;
-
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version)
   {
-    ar & BOOST_SERIALIZATION_NVP(GraphicsConfig);
+    ar & BOOST_SERIALIZATION_NVP(mMap);
   }
-
-  ConfigGraphics GraphicsConfig;
 };
 
 #endif

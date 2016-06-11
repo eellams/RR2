@@ -7,14 +7,13 @@
 
 #include <irrlicht.h>
 
-#include "Map/MapStructs.hpp"
-#include "Map/MapType.hpp"
-#include "GeomObject.hpp"
+#include "mapstructs.hpp"
+#include "geomobject.hpp"
 
 #include <iostream>
 #include <utility>
 
-class MapTile : public GeomObject {
+class MapTile {
 public:
   MapTile(size_t t=0) :
     mTileNumber(t), mHeight(0), mTileType(0) {}
@@ -25,22 +24,26 @@ public:
 
   void CreateModel(struct Surround s);
 
-  void SetCornerHeights(std::array<irr::f32, 4> cornerHeights) {
+  void SetParent(irr::scene::ISceneNode* parent) {
+    mGo.SetParent(parent);
+  }
+  void SetPosition(irr::core::vector3df position) {
+    mGo.SetPosition(position);
+  }
+  void SetTexture(std::string tex) {
+    mGo.SetTexture(tex);
+  }
+
+  void SetCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
     mCornerHeights = cornerHeights;
   }
 
+  void SetDebug() {
+    mGo.SetDebug();
+  }
+
 private:
-  // For a [peak at] below left outward corner
-  //  with first = x, second = y
-  //  points[0] BL (oeak)
-  //  points[1] AL
-  //  points[2] AR
-  //  points[3] BR
-  //void createInwardCorner(const std::array< std::pair<bool, bool>, 4>& points);
-
   void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh);
-
-  //void createFlat();
 
   friend class boost::serialization::access;
 
@@ -56,7 +59,8 @@ private:
   irr::u32 mTileType;
   irr::f32 mHeight;
 
-  //irr::f32 mCornerHeights[4];
+  GeomObject mGo;
+
   std::array<irr::f32, 4> mCornerHeights;
 };
 

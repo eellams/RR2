@@ -1,9 +1,7 @@
 // Copyright (c) 2016 Eddie Ellams All Rights Reserved.
-#include "Map/MapTile.hpp"
+#include "maptile.hpp"
 
 void MapTile::CreateModel(struct Surround s) {
-  std::clog << "Creating model" << std::endl;
-
   std::array< std::pair<bool,bool>, 4> args;
 
   if (s.current) {
@@ -196,43 +194,8 @@ void MapTile::CreateModel(struct Surround s) {
   }
 }
 
-// tuple < tuple <x,y>, index_mCornerHeights >
-//
-/*
-void MapTile::createInwardCorner(const std::array< std::pair<bool, bool>, 4>& points) {
-  struct TriStrip tris;
-  struct TrianglePoint tpoint;
-  bool isHigh = true;
-
-  // TODO normals
-
-  // For each point in points
-  for (const auto& point : points) {
-    // Set potition
-    tpoint.pos.set(point.first * TILE_SIZE,
-      point.second * TILE_SIZE,
-      mCornerHeights[point.first + 2*point.second]);
-
-    // If the first point, we assume that it is 'high'
-    if (isHigh) {
-      tpoint.pos.Z += TILE_WALL_HEIGHT;
-      isHigh = false;
-    }
-
-    // Set normal, colour and UV
-    tpoint.normal.set(0,0,1); // TODO
-    tpoint.colour = irr::video::SColor(255,255,255,255);
-    tpoint.uv.set(point.first, point.second);
-
-    tris.points.push_back(tpoint);
-  }
-
-  AddTriStrip(tris, 1);
-}
-*/
-
+// pair <x, y>
 void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh) {
-  std::clog << "Creating a tile model" << std::endl;
   struct TriStrip tris;
   struct TrianglePoint tpoint;
   irr::u32 highCount = 0;
@@ -261,47 +224,5 @@ void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, con
     tris.points.push_back(tpoint);
   }
 
-  AddTriStrip(tris, 1);
+  mGo.AddTriStrip(tris, 1);
 }
-
-/*
-void MapTile::createFlat() {
-  std::clog << "Creating a flat model" << std::endl;
-
-  struct TriStrip tris;
-  struct TrianglePoint t0, t1, t2, t3;
-
-  // TODO normals
-
-  t0.pos.set(0,0,mCornerHeights[0]);
-  t0.normal.set(0,0,1);
-  //t0.colour.set(255,255,0,0);
-  t0.colour=irr::video::SColor(255,255,255,255);
-  t0.uv.set(0,0);
-
-  t1.pos.set(0,TILE_SIZE,mCornerHeights[1]);
-  t1.normal.set(0,0,1);
-  //t1.colour.set(255,0,255,0);
-  t1.colour=irr::video::SColor(255,0,0,0);
-  t1.uv.set(0,1);
-
-  t2.pos.set(TILE_SIZE,TILE_SIZE,mCornerHeights[2]);
-  t2.normal.set(0,0,1);
-  //t2.colour.set(255,0,0,255);
-  t2.colour=irr::video::SColor(255,255,255,255);
-  t2.uv.set(1,1);
-
-  t3.pos.set(TILE_SIZE,0,mCornerHeights[3]);
-  t3.normal.set(0,0,1);
-  //t3.colour.set(255,255,255,255);
-  t3.colour=irr::video::SColor(255,255,255,255);
-  t3.uv.set(1,0);
-
-  tris.points.push_back(t0);
-  tris.points.push_back(t1);
-  tris.points.push_back(t2);
-  tris.points.push_back(t3);
-
-  AddTriStrip(tris, 1);
-}
-*/

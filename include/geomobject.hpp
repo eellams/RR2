@@ -20,31 +20,30 @@ class GeomObject {
 public:
   GeomObject() {
     pMesh = NULL;
+    //pSceneNode = NULL;
+    pMeshSceneNode = NULL;
   }
 
   ~GeomObject() {
     if (pMesh != NULL) pMesh->drop();
+    if (pMeshSceneNode != NULL) pMeshSceneNode->drop();
   }
 
-  void SetTexture(irr::video::ITexture* pTex) {
-    //pMesh->getMaterial().MaterialType = irr::video::EMT_SOLID;
-    //pMesh->getMaterial().setTexture( 0, pTex );
-    //pMesh->getMaterial().Lighting = false;
+  void SetParent(irr::scene::ISceneNode* parent) {
+    pParent = parent;
+    if (pMeshSceneNode != NULL) pMeshSceneNode->setParent(parent);
+  }
 
-    //pMesh->setMaterialTexture( 0, pTex );
-    //pMesh->setMaterialType( irr::video::EMT_SOLID );
+  void SetPosition(irr::core::vector3df& pos) {
+    pMeshSceneNode->setPosition(pos);
+  }
 
-    //pMesh->getMaterial(0).Textures[0] = pTex;
+  void SetTexture(std::string& tex) {
+    pMeshSceneNode->setMaterialTexture(0, pMeshSceneNode->getSceneManager()->getVideoDriver()->getTexture(tex.c_str()));
+  }
 
-    /*
-    for (irr::u32 i=0; i<pMesh->getMeshBufferCount(); i++) {
-      //pMesh->getMeshBuffer(i)->getMaterial().setTexture(0, pTex);
-
-      pMesh->getMeshBuffer(i)->getMaterial().MaterialType = irr::video::EMT_SOLID;
-      pMesh->getMeshBuffer(i)->getMaterial().setTexture( 0, pTex );
-      pMesh->getMeshBuffer(i)->getMaterial().Lighting = false;
-    }
-    */
+  void SetDebug() {
+    pMeshSceneNode->setDebugDataVisible(irr::scene::EDS_BBOX);
   }
 
   void AddTriStrip(const TriStrip& tris, irr::u32 bufferNum) {
@@ -104,13 +103,32 @@ public:
       }
     }
 
+    // Set flags, and recalcuate bounding boxes
     pBuffer->recalculateBoundingBox();
     pMesh->setDirty();
     pMesh->recalculateBoundingBox();
+
+    // Set the parent
+    if (pMeshSceneNode == NULL) {
+      pMeshSceneNode = pParent->getSceneManager()->addMeshSceneNode(pMesh);
+      pMeshSceneNode->setParent(pParent);
+    }
+
+    // Set the flags
+    setFlags();
   }
 
-//protected:
+protected:
+  void setFlags() {
+    // TODO all of this
+    //  needs to be configurable
+    pMeshSceneNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+    pMeshSceneNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+  }
+
+  irr::scene::ISceneNode* pParent;
   irr::scene::SMesh* pMesh;
+  irr::scene::IMeshSceneNode* pMeshSceneNode;
 };
 
 #endif

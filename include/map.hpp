@@ -10,20 +10,21 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 
-#include "Map/MapTile.hpp"
-#include "Map/MapType.hpp"
+#include "maptile.hpp"
+#include "maptype.hpp"
 
 class Map {
 public:
   Map() :
-    mName(""), mDescription(""), mWidth(0), mHeight(0) {}
+    mName(""), mDescription(""), mWidth(0), mHeight(0), pNode(NULL) {}
 
   Map(std::string n, std::string d, size_t w, size_t h) :
-    mName(n), mDescription(d), mWidth(w), mHeight(h) {}
+    mName(n), mDescription(d), mWidth(w), mHeight(h), pNode(NULL) {}
 
   std::string GetName() const { return mName; }
 
   void Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
+
 private:
   friend class boost::serialization::access;
   template<class Archive>
@@ -60,14 +61,12 @@ private:
   std::string mRoofTexture;
   size_t mWidth;
   size_t mHeight;
-  //std::vector<MapType> mTypes;
   std::map<irr::u32, MapType> mTypes;
   std::vector<MapTile> mTiles;
 
-  //irr::scene::IMeshSceneNode* pTileNode;
-
   // Non-serialised values
   std::vector<float> mHeightmap;
+  irr::scene::ISceneNode* pNode;
 };
 
 #endif
