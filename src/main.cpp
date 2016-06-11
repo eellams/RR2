@@ -141,6 +141,10 @@ int main(int argc, char *argv[]) {
       map.mineTile(28);
     }
 
+    if(receiver.IsKeyDown(irr::KEY_KEY_3)) {
+      map.mineTile(22);
+    }
+
     // Set up the ray used for moving the camera over terrain
     core::line3d<f32> ray;
 

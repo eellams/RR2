@@ -55,7 +55,7 @@ public:
   void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
   void setTileType(const irr::u32& tileType);
 
-  void createModel(const struct Surround s);
+  bool createModel(const struct Surround s);
 
 private:
   void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, const bool inward=false);

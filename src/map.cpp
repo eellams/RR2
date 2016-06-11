@@ -377,24 +377,30 @@ void Map::recalculateTileModel(irr::u32 tileNumber) {
   surround = calculateSurround(tileNumber);
 
   mTiles[tileNumber].setParent(pNode);
-  mTiles[tileNumber].createModel(surround);
+  if (mTiles[tileNumber].createModel(surround)) {
+    //mTiles[tileNumber].createModel(surround);
 
-  // Set the texture
-  // TODO does this optimise out in the wash?
-  //  or do we have <tile number> different textures in memory?
-  //  if so, this is likely a waste in memory
-  // Texture depends on 'visibility' of the tile
-  if (surround.left && surround.right && surround.above && surround.below && surround.current &&
-    surround.belowLeft && surround.belowRight && surround.aboveLeft && surround.aboveRight) {
-    // A roof tile
-    mTiles[tileNumber].setTexture(mRoofTexture);
+    // Set the texture
+    // TODO does this optimise out in the wash?
+    //  or do we have <tile number> different textures in memory?
+    //  if so, this is likely a waste in memory
+    // Texture depends on 'visibility' of the tile
+    if (surround.left && surround.right && surround.above && surround.below && surround.current &&
+      surround.belowLeft && surround.belowRight && surround.aboveLeft && surround.aboveRight) {
+      // A roof tile
+      mTiles[tileNumber].setTexture(mRoofTexture);
+    }
+
+    else {
+      // A normal tile
+      mTiles[tileNumber].setTexture( mTypes[mTiles[tileNumber].getTileType()].getTextureName() );
+    }
+
+    // Set the position of the tile
+    mTiles[tileNumber].setPosition(irr::core::vector3df((tileNumber%mWidth) * TILE_SIZE, 0, (tileNumber/mHeight) * TILE_SIZE));
   }
 
   else {
-    // A normal tile
-    mTiles[tileNumber].setTexture( mTypes[mTiles[tileNumber].getTileType()].getTextureName() );
+    mineTile(tileNumber);
   }
-
-  // Set the position of the tile
-  mTiles[tileNumber].setPosition(irr::core::vector3df((tileNumber%mWidth) * TILE_SIZE, 0, (tileNumber/mHeight) * TILE_SIZE));
 }

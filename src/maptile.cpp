@@ -50,7 +50,7 @@ void MapTile::setTileType(const irr::u32& tileType) {
   mTileType = tileType;
 }
 
-void MapTile::createModel(struct Surround s) {
+bool MapTile::createModel(struct Surround s) {
   std::array< std::pair<bool,bool>, 4> args;
 
   mPrevSurround = s;
@@ -58,7 +58,8 @@ void MapTile::createModel(struct Surround s) {
   // TODO I'm sure a loop could be used here...
   if (s.current) {
     // Outward corners
-    if (!s.above && s.below && !s.right && s.left) {
+    if (!s.above && s.below && !s.right && s.left &&
+      s.belowLeft) {
       // Outward corner, [peak at] below left
       args[0].first = 0;
       args[0].second = 0;
@@ -74,7 +75,8 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 1);
     }
-    else if (s.above && !s.below && !s.right && s.left) {
+    else if (s.above && !s.below && !s.right && s.left &&
+      s.aboveLeft) {
       // Outward corner, above left
       args[0].first = 0;
       args[0].second = 1;
@@ -90,7 +92,8 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 1);
     }
-    else if (s.above && !s.below && s.right && !s.left) {
+    else if (s.above && !s.below && s.right && !s.left &&
+      s.aboveRight) {
       // Outward corner, above right
       args[0].first = 1;
       args[0].second = 1;
@@ -106,7 +109,8 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 1);
     }
-    else if (!s.above && s.below && s.right && !s.left) {
+    else if (!s.above && s.below && s.right && !s.left &&
+      s.belowRight) {
       // Outward corner, below right
       args[0].first = 1;
       args[0].second = 0;
@@ -124,7 +128,8 @@ void MapTile::createModel(struct Surround s) {
     }
 
     // Flat walls
-    else if (!s.above && s.below && s.right && s.left) {
+    else if (!s.above && s.below && s.right && s.left &&
+      s.belowRight && s.belowLeft) {
       // Facing above
       args[0].first = 1;
       args[0].second = 0;
@@ -140,7 +145,8 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 2);
     }
-    else if (s.above && s.below && !s.right && s.left) {
+    else if (s.above && s.below && !s.right && s.left &&
+      s.aboveLeft && s.belowLeft) {
       // Facing right
       args[0].first = 0;
       args[0].second = 0;
@@ -156,7 +162,8 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 2);
     }
-    else if (s.above && !s.below && s.right && s.left) {
+    else if (s.above && !s.below && s.right && s.left &&
+      s.aboveRight && s.aboveRight) {
       // Facing below
       args[0].first = 0;
       args[0].second = 1;
@@ -172,7 +179,8 @@ void MapTile::createModel(struct Surround s) {
 
       createTile(args, 2);
     }
-    else if (s.above && s.below && s.right && !s.left) {
+    else if (s.above && s.below && s.right && !s.left &&
+      s.aboveRight && s.belowRight) {
       // Facing left
       args[0].first = 1;
       args[0].second = 1;
@@ -297,6 +305,7 @@ void MapTile::createModel(struct Surround s) {
       args[3].second = 0;
 
       createTile(args, 0);
+      return false;
     }
   }
 
@@ -316,6 +325,8 @@ void MapTile::createModel(struct Surround s) {
 
     createTile(args, 0);
   }
+
+  return true;
 }
 
 void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, bool inward) {
