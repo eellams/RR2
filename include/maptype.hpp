@@ -16,14 +16,15 @@ public:
     WATER = 2
   };
 
-  MapType() :
-    mTexture(""), mSolid(false), mDrillTime(0), mMoveType(GROUND) {}
+  MapType();
 
-  MapType(std::string t, bool s, irr::f32 dt, MoveType mt) :
-    mTexture(t), mSolid(s), mDrillTime(dt), mMoveType(mt) {}
+  MapType(std::string t, bool s, irr::f32 dt, MoveType mt);
 
-  bool GetSolid() { return mSolid; }
-  std::string GetTextureName() { return mTexture; }
+  // Setters
+
+  // Getters
+  bool getSolid();
+  std::string getTextureName();
 
 private:
   friend class boost::serialization::access;

@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 
   ia >> BOOST_SERIALIZATION_NVP(readMap);
 
-  std::cout << "Loading map " << readMap.mMap.GetName() << std::endl;
+  std::cout << "Loading map " << readMap.mMap.getName() << std::endl;
 
   Map& map = readMap.mMap;
 
@@ -104,12 +104,10 @@ int main(int argc, char *argv[]) {
   ILightSceneNode *node = smgr->addLightSceneNode(0, vector3df(0,100,0),
       SColorf(1.0f, 0.6f, 0.7f, 1.0f), 500.0f);
 
-  if (node)
-  {
+  if (node) {
       node->getLightData().Attenuation.set(0.f, 1.f/500.f, 0.f);
       ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator(vector3df(0,150,0),250.0f);
-      if (anim)
-      {
+      if (anim) {
           node->addAnimator(anim);
           anim->drop();
       }
@@ -122,11 +120,9 @@ int main(int argc, char *argv[]) {
   camera->setTranslateSpeed(2.5);//speed of cam movement
   camera->setRotationSpeed(50);//speed of cam rotation
 
-  std::clog << "Selector: " << map.GetMetaTriangleSelector() << std::endl;
-
   //Set collision for camera
   scene::ISceneNodeAnimator *collision = smgr->createCollisionResponseAnimator(
-    map.GetMetaTriangleSelector(),
+    map.getMetaTriangleSelectorP(),
     camera,
     core::vector3df(20,40,20),
     core::vector3df(0,-2,0),
@@ -138,13 +134,7 @@ int main(int argc, char *argv[]) {
   collision->drop();
 
   // Collision stuff
-  video::SMaterial material;
   scene::ISceneCollisionManager* collMan = smgr->getSceneCollisionManager();
-
-  material.setTexture(0, driver->getTexture("./data/dirt.png"));
-  material.Lighting = true;
-  material.NormalizeNormals = true;
-  node->getMaterial(0) = material;
 
   while(device->run()) {
     // Set up the ray used for moving the camera over terrain

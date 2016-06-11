@@ -1,5 +1,29 @@
 #include "map.hpp"
 
+Map::Map() :
+  mName(""), mDescription(""), mWidth(0), mHeight(0), pNode(NULL), pMetaSelector(NULL) {
+
+  }
+
+Map::Map(std::string n, std::string d, size_t w, size_t h) :
+  mName(n), mDescription(d), mWidth(w), mHeight(h), pNode(NULL), pMetaSelector(NULL) {
+
+  }
+
+Map::~Map() {
+  if (pNode != NULL) pNode->drop();
+  if (pMetaSelector != NULL) pMetaSelector->drop();
+}
+
+std::string Map::getName() const {
+  return mName;
+}
+
+irr::scene::IMetaTriangleSelector* Map::getMetaTriangleSelectorP() const {
+  return pMetaSelector;
+}
+
+
 void Map::Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initialising map '" << mName << "'" << std::endl;
 
@@ -69,9 +93,9 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
     surround = calculateSurround(i);
     //mTiles[i].CreateModel(surround);
 
-    mTiles[i].SetParent(pNode);
-    mTiles[i].CreateModel(surround);
-    mTiles[i].SetDebug();
+    mTiles[i].setParent(pNode);
+    mTiles[i].createModel(surround);
+    mTiles[i].setDebug();
 
     // Set the texture
     // TODO does this optimise out in the wash?
@@ -80,16 +104,16 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
     // Texture depends on 'visibility' of the tile
     if (surround.left && surround.right && surround.above && surround.below) {
       // A roof tile
-      mTiles[i].SetTexture(mRoofTexture);
+      mTiles[i].setTexture(mRoofTexture);
     }
 
     else {
       // A normal tile
-      mTiles[i].SetTexture( mTypes[mTiles[i].GetTileType()].GetTextureName() );
+      mTiles[i].setTexture( mTypes[mTiles[i].getTileType()].getTextureName() );
     }
 
     // Set the position of the tile
-    mTiles[i].SetPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, 0, (i/mHeight) * TILE_SIZE));
+    mTiles[i].setPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, 0, (i/mHeight) * TILE_SIZE));
   }
 }
 
@@ -102,7 +126,7 @@ void Map::createHeightMap() {
 
   // Fill the heightmap with the tile data
   for (size_t i=0; i<mWidth*mHeight; i++) {
-    mHeightmap.push_back(mTiles[i].GetHeight());
+    mHeightmap.push_back(mTiles[i].getHeight());
   }
 
   for (size_t i=0; i<mWidth*mHeight; i++) {
@@ -216,7 +240,7 @@ void Map::calculateTileCorners(irr::u32 tileNumber) {
   // Set the corner heights to the average that has been calculated
   //setCornerHeights(c0,c1,c2,c3);
 
-  mTiles[tileNumber].SetCornerHeights(cornerHeights);
+  mTiles[tileNumber].setCornerHeights(cornerHeights);
 }
 
 // Calculates whether surrounding tiles are 'solid' or not
@@ -236,11 +260,11 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
   toReturn.above = toReturn.below = toReturn.left = toReturn.right = false;
 
   // Current tile (whether solid or not)
-  toReturn.current = mTypes[mTiles[tileNumber].GetTileType()].GetSolid();
+  toReturn.current = mTypes[mTiles[tileNumber].getTileType()].getSolid();
 
   // Below
   if (tileNumber >= mWidth) {
-    toReturn.below = mTypes[mTiles[tileNumber - mWidth].GetTileType()].GetSolid();
+    toReturn.below = mTypes[mTiles[tileNumber - mWidth].getTileType()].getSolid();
   } else {
     // Botton row, assume solid
     toReturn.below = true;
@@ -248,7 +272,7 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   // Above
   if (tileNumber < (mHeight-1)*mWidth) {
-    toReturn.above = mTypes[mTiles[tileNumber + mWidth].GetTileType()].GetSolid();
+    toReturn.above = mTypes[mTiles[tileNumber + mWidth].getTileType()].getSolid();
   } else {
     // Top row, assume solid
     toReturn.above = true;
@@ -256,7 +280,7 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   // Left
   if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
-    toReturn.left = mTypes[mTiles[tileNumber - 1].GetTileType()].GetSolid();
+    toReturn.left = mTypes[mTiles[tileNumber - 1].getTileType()].getSolid();
   } else {
     // Furthest left on each row
     toReturn.left = true;
@@ -264,7 +288,7 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   // Right
   if ( (tileNumber + 1) % mWidth != 0) {
-    toReturn.right = mTypes[mTiles[tileNumber + 1].GetTileType()].GetSolid();
+    toReturn.right = mTypes[mTiles[tileNumber + 1].getTileType()].getSolid();
   } else {
     // Furthest right of each row
     toReturn.right = true;

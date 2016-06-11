@@ -15,19 +15,15 @@
 
 class Map {
 public:
-  Map() :
-    mName(""), mDescription(""), mWidth(0), mHeight(0), pNode(NULL), pMetaSelector(NULL) {}
+  Map();
+  Map(std::string n, std::string d, size_t w, size_t h);
+  ~Map();
 
-  Map(std::string n, std::string d, size_t w, size_t h) :
-    mName(n), mDescription(d), mWidth(w), mHeight(h), pNode(NULL), pMetaSelector(NULL) {}
+  // Getters
+  std::string getName() const;
+  irr::scene::IMetaTriangleSelector* getMetaTriangleSelectorP() const;
 
-  ~Map() {
-    if (pNode != NULL) pNode->drop();
-    if (pMetaSelector != NULL) pMetaSelector->drop();
-  }
-
-  std::string GetName() const { return mName; }
-  irr::scene::IMetaTriangleSelector* GetMetaTriangleSelector() const { return pMetaSelector; }
+  // Setters
 
   void Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
 

@@ -1,9 +1,55 @@
 // Copyright (c) 2016 Eddie Ellams All Rights Reserved.
 #include "maptile.hpp"
 
-void MapTile::CreateModel(struct Surround s) {
+MapTile::MapTile(size_t t) :
+  mTileNumber(t), mHeight(0), mTileType(0) {
+
+}
+
+irr::u32 MapTile::getTileNumber() const {
+  return mTileNumber;
+}
+
+irr::f32  MapTile::getHeight() const {
+  return mHeight;
+}
+
+irr::u32  MapTile::getTileType() const {
+  return mTileType;
+}
+
+irr::scene::ITriangleSelector* MapTile::getTriangleSelector() {
+  return mGo.getTriangleSelector();
+}
+
+void MapTile::setParent(irr::scene::ISceneNode* parent) {
+  mGo.setParent(parent);
+}
+
+void MapTile::setPosition(const irr::core::vector3df& position) {
+  mGo.setPosition(position);
+}
+
+void MapTile::setTexture(const std::string& tex) {
+  mGo.setTexture(tex);
+}
+
+void MapTile::setDebug() {
+  mGo.setDebug();
+}
+
+void MapTile::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
+  mCornerHeights = cornerHeights;
+}
+
+void MapTile::mineTile() {
+
+}
+
+void MapTile::createModel(struct Surround s) {
   std::array< std::pair<bool,bool>, 4> args;
 
+  // TODO I'm sure a loop could be used here...
   if (s.current) {
     // Outward corners
     if (!s.above && s.below && !s.right && s.left) {
@@ -194,8 +240,8 @@ void MapTile::CreateModel(struct Surround s) {
   }
 }
 
-// pair <x, y>
 void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh) {
+  // array< pair<x,y>, 4>
   struct TriStrip tris;
   struct TrianglePoint tpoint;
   irr::u32 highCount = 0;
@@ -224,8 +270,8 @@ void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, con
     tris.points.push_back(tpoint);
   }
 
-  mGo.AddTriStrip(tris, 1);
+  mGo.addTriStrip(tris, 1);
 
   // This flag should be set on all terrain tiles
-  mGo.SetID(COLLISION_MASK_TILE);
+  mGo.setID(COLLISION_MASK_TILE);
 }

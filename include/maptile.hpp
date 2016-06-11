@@ -22,23 +22,23 @@ struct Surround {
 
 class MapTile {
 public:
-  MapTile(size_t t=0) :
-    mTileNumber(t), mHeight(0), mTileType(0) {}
+  MapTile(size_t t=0);
 
-  size_t GetTileNumber() const { return mTileNumber; }
-  float GetHeight() const { return mHeight; }
-  irr::u32 GetTileType() { return mTileType; }
+  // Getters
+  irr::u32 getTileNumber()  const;
+  irr::f32 getHeight() const;
+  irr::u32 getTileType() const;
+  irr::scene::ITriangleSelector* getTriangleSelector();
 
-  irr::scene::ITriangleSelector* GetTriangleSelector() { return mGo.GetTriangleSelector(); }
+  // Setters
+  void setParent(irr::scene::ISceneNode* parent);
+  void setPosition(const irr::core::vector3df& position);
+  void setTexture(const std::string& tex);
+  void setDebug();
+  void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
 
-  void SetParent(irr::scene::ISceneNode* parent) { mGo.SetParent(parent); }
-  void SetPosition(irr::core::vector3df position) { mGo.SetPosition(position); }
-  void SetTexture(std::string tex) { mGo.SetTexture(tex); }
-  void SetDebug() { mGo.SetDebug(); }
-
-  void SetCornerHeights(const std::array<irr::f32, 4>& cornerHeights) { mCornerHeights = cornerHeights; }
-
-  void CreateModel(struct Surround s);
+  void createModel(const struct Surround s);
+  void mineTile();
 
 private:
   void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh);
@@ -56,10 +56,10 @@ private:
   irr::u32 mTileNumber;
   irr::u32 mTileType;
   irr::f32 mHeight;
+  std::array<irr::f32, 4> mCornerHeights;
 
   GeomObject mGo;
 
-  std::array<irr::f32, 4> mCornerHeights;
 };
 
 #endif
