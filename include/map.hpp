@@ -22,6 +22,8 @@ public:
     mName(n), mDescription(d), mWidth(w), mHeight(h), pNode(NULL) {}
 
   std::string GetName() const { return mName; }
+  irr::scene::ITriangleSelector* GetSelector() { return pSelector; }
+
 
   void Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
 
@@ -67,6 +69,8 @@ private:
   // Non-serialised values
   std::vector<float> mHeightmap;
   irr::scene::ISceneNode* pNode;
+
+  irr::scene::ITriangleSelector* pSelector;
 };
 
 #endif

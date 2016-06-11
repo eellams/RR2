@@ -24,12 +24,27 @@ void Map::Initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
   }
 
   initialiseTiles(driver, smgr);
+
+  pSelector = mTiles[0].GetTriangleSelector();
+
+  irr::core::list< irr::scene::ISceneNode * > children = pNode->getChildren ();
+
+  for (auto& child : children) {
+    child->setTriangleSelector(pSelector);
+  }
+
 }
 
 void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
   typedef std::map<irr::u32, MapType>::iterator it_type;
 
   for(it_type iterator = mTypes.begin(); iterator != mTypes.end(); iterator++) {
+      // TODO there isn't anything here
+      //  it used to be used to load textures into the tile type, which would
+      //  then be used in each tile of that class
+      //  but, I couldn't get this to work, so instead textures are loaded
+      //  when tiles initialised
+
       // iterator->first = key
       // iterator->second = value
       // Repeat if you also want to iterate through the second map.
@@ -42,11 +57,15 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
   struct Surround surround;
 
   // Create the heightmap from the deserialised tiles
+  //  heightmap is calculated from serialised tile data
   createHeightMap();
 
+  // Set the parent of the 'master' node
+  //  the 'master'' node is the parent of all Tile models
   pNode->setParent(smgr->getRootSceneNode());
 
-  // For each tile
+  // For each tile, initialise
+  //  calculate tile, set texture etc.
   for (irr::u32 i=0; i<mWidth*mHeight; i++) {
     // Create the tile model
     surround = calculateSurround(i);
@@ -55,7 +74,6 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
     mTiles[i].SetParent(pNode);
     mTiles[i].CreateModel(surround);
     mTiles[i].SetDebug();
-
 
     // Set the texture
     // TODO does this optimise out in the wash?
@@ -72,13 +90,13 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
       mTiles[i].SetTexture( mTypes[mTiles[i].GetTileType()].GetTextureName() );
     }
 
+    // Set the position of the tile
     mTiles[i].SetPosition(irr::core::vector3df((i%mWidth) * TILE_SIZE, 0, (i/mHeight) * TILE_SIZE));
   }
 }
 
 // Creates the heightmap from the vector of tiles
 void Map::createHeightMap() {
-  std::clog << "Creaing heightmap" << std::endl;
   // In case the heightmap already contains data
   //  at time of writing, can't actually see this situation arising, but better
   //  to be safe than sorry.
@@ -94,6 +112,8 @@ void Map::createHeightMap() {
   }
 }
 
+// Caclulates the corner heights of the tile as a mean of surrounding tile
+//  heights
 void Map::calculateTileCorners(irr::u32 tileNumber) {
   //  1|A |2
   // --------
@@ -201,6 +221,8 @@ void Map::calculateTileCorners(irr::u32 tileNumber) {
   mTiles[tileNumber].SetCornerHeights(cornerHeights);
 }
 
+// Calculates whether surrounding tiles are 'solid' or not
+//  if the tile is out-of-range (i.e. outside edges of map), assumes solid
 struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   /*

@@ -6,6 +6,7 @@
 //#include "Serialiser/ConfigFile.hpp"
 #include "map.hpp"
 #include "savefile.hpp"
+#include "rtscamera.h"
 
 #include <irrlicht.h>
 #include "driverChoice.h"
@@ -63,7 +64,7 @@ int main(int argc, char *argv[]) {
   ofs.flush();
   */
 
-  //MyEventReceiver receiver;
+  MyEventReceiver receiver;
 
   // ask user for driver
   video::E_DRIVER_TYPE driverType=driverChoiceConsole();
@@ -86,7 +87,6 @@ int main(int argc, char *argv[]) {
   std::ifstream ifs("testIn.xml");
   SaveFile readMap;
   boost::archive::xml_iarchive ia(ifs);
-  std::clog << "Poot" << std::endl;
 
   ia >> BOOST_SERIALIZATION_NVP(readMap);
 
@@ -115,6 +115,7 @@ int main(int argc, char *argv[]) {
       }
   }
 
+  /*
   ICameraSceneNode* camera = smgr->addCameraSceneNodeFPS();
   if (camera)
   {
@@ -126,6 +127,7 @@ int main(int argc, char *argv[]) {
 
       camera->setFarValue(20000.0f);
   }
+  */
 
 
 
@@ -137,6 +139,7 @@ int main(int argc, char *argv[]) {
   selector = smgr->createOctreeTriangleSelector(mesh->getMesh(0), bg, 128);
   bg->setTriangleSelector(selector);
   selector->drop();
+  */
 
   //add RTS Camera
   RTSCamera* camera = new RTSCamera(device,smgr->getRootSceneNode(),smgr,-1,100.0f,10.0f,10.0f);
@@ -149,14 +152,14 @@ int main(int argc, char *argv[]) {
   //Set collision for camera
 
   scene::ISceneNodeAnimator *collision = smgr->createCollisionResponseAnimator(
-  selector,camera,core::vector3df(20,40,20),
+    map.GetSelector(),camera,core::vector3df(20,40,20),
     core::vector3df(0,-2,0),
     core::vector3df(0,0,0),
     0.0f);
   camera->addAnimator(collision);
 
   collision->drop();
-  */
+
  /////////
 
 

@@ -7,11 +7,17 @@
 
 #include <irrlicht.h>
 
-#include "mapstructs.hpp"
 #include "geomobject.hpp"
 
 #include <iostream>
 #include <utility>
+
+#define TILE_SIZE 10.0f
+#define TILE_WALL_HEIGHT 12.5f
+
+struct Surround {
+  bool current, below, left, right, above;
+};
 
 class MapTile {
 public:
@@ -40,6 +46,10 @@ public:
 
   void SetDebug() {
     mGo.SetDebug();
+  }
+
+  irr::scene::ITriangleSelector* GetTriangleSelector() {
+    return mGo.GetTriangleSelector();
   }
 
 private:
