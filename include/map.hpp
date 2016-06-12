@@ -19,7 +19,7 @@
 class Map {
 public:
   Map();
-  Map(std::string n, std::string d, size_t w, size_t h);
+  //Map(std::string n, std::string d, size_t w, size_t h);
   ~Map();
 
   // Getters
@@ -48,12 +48,14 @@ private:
 
   // Initialise tile types
   //  e.g. load textures, etc.
-  void initialiseTileTypes(irr::video::IVideoDriver* driver);
+  void initialiseTileTypes();
+  void initialiseBuildingTypes();
 
   // Initialise tiles
   //  e.g. initialise tile models
   //  TODO probably add a lot in here...
-  void initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
+  void initialiseTiles(irr::scene::ISceneNode* parentNode);
+  void initialiseBuildings(irr::scene::ISceneNode* parentNode);
 
   // The heightmap is not serialised, as each Tile has a height value
   //  however, it is useful to have access to a dedicated heightmap
@@ -78,8 +80,9 @@ private:
 
   // Non-serialised values
   std::vector<float> mHeightmap;
-  irr::scene::ISceneNode* pNode;
-  irr::scene::IMetaTriangleSelector* pMetaSelector;
+  irr::scene::ISceneNode* pTileNode;
+  irr::scene::ISceneNode* pBuildingNode;
+  irr::scene::IMetaTriangleSelector* pTileSelector;
 };
 
 #endif

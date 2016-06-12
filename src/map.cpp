@@ -1,18 +1,22 @@
 #include "map.hpp"
 
 Map::Map() :
-  mName(""), mDescription(""), mWidth(0), mHeight(0), pNode(NULL), pMetaSelector(NULL) {
+  mName(""), mDescription(""), mWidth(0), mHeight(0),
+  pTileNode(NULL), pBuildingNode(NULL), pTileSelector(NULL) {
 
   }
 
+/*
 Map::Map(std::string n, std::string d, size_t w, size_t h) :
-  mName(n), mDescription(d), mWidth(w), mHeight(h), pNode(NULL), pMetaSelector(NULL) {
+  mName(n), mDescription(d), mWidth(w), mHeight(h), pTileNode(NULL), pTileSelector(NULL) {
 
   }
+*/
 
 Map::~Map() {
-  if (pNode != NULL) pNode->drop();
-  if (pMetaSelector != NULL) pMetaSelector->drop();
+  if (pTileNode != NULL) pTileNode->drop();
+  if (pBuildingNode != NULL) pBuildingNode->drop();
+  if (pTileSelector != NULL) pTileSelector->drop();
 }
 
 std::string Map::getName() const {
@@ -20,17 +24,15 @@ std::string Map::getName() const {
 }
 
 irr::scene::IMetaTriangleSelector* Map::getMetaTriangleSelectorP() const {
-  return pMetaSelector;
+  return pTileSelector;
 }
 
 
 void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initialising map '" << mName << "'" << std::endl;
 
-  // Empty parent node for all map tiles
-  pNode = smgr->addEmptySceneNode();
-
-  initialiseTileTypes(driver);
+  initialiseTileTypes();
+  initialiseBuildingTypes();
 
   // Check that the number of tiles is as expected
   if (mTiles.size() != mWidth*mHeight) {
@@ -46,12 +48,13 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
     std::clog << "Correct number of tiles found" << std::endl;
   }
 
-  initialiseTiles(driver, smgr);
+  initialiseTiles(smgr->getRootSceneNode());
+  initialiseBuildings(smgr->getRootSceneNode());
 
-  pMetaSelector = pNode->getSceneManager()->createMetaTriangleSelector();
+  pTileSelector = pTileNode->getSceneManager()->createMetaTriangleSelector();
 
-  for (auto child : pNode->getChildren()) {
-    pMetaSelector->addTriangleSelector(child->getTriangleSelector());
+  for (auto child : pTileNode->getChildren()) {
+    pTileSelector->addTriangleSelector(child->getTriangleSelector());
   }
 }
 
@@ -122,9 +125,7 @@ void Map::mineTile(irr::u32 tileNumber) {
   }
 }
 
-void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
-  //typedef std::map<irr::u32, MapType>::iterator it_type;
-
+void Map::initialiseTileTypes() {
   for(auto iterator = mTileTypes.begin(); iterator != mTileTypes.end(); iterator++) {
       // TODO there isn't anything here
       //  it used to be used to load textures into the tile type, which would
@@ -135,11 +136,16 @@ void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
       // iterator->first = key
       // iterator->second = value
       // Repeat if you also want to iterate through the second map.
-      //iterator->second.Initialise(driver);
   }
 }
 
-void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
+void Map::initialiseBuildingTypes() {
+  for(auto iterator = mBuildingTypes.begin(); iterator != mBuildingTypes.end(); iterator++) {
+    // TODO there isn't anything here yet
+  }
+}
+
+void Map::initialiseTiles(irr::scene::ISceneNode* parentNode) {
   std::clog << "Initilising tiles" << std::endl;
 
   // Create the heightmap from the deserialised tiles
@@ -148,13 +154,34 @@ void Map::initialiseTiles(irr::video::IVideoDriver* driver, irr::scene::ISceneMa
 
   // Set the parent of the 'master' node
   //  the 'master'' node is the parent of all Tile models
-  pNode->setParent(smgr->getRootSceneNode());
+  pTileNode = parentNode->getSceneManager()->addEmptySceneNode();
+  pTileNode->setParent(parentNode);
 
   // For each tile, initialise
   //  calculate tile, set texture etc.
   for (irr::u32 i=0; i<mWidth*mHeight; i++) {
     // Create the tile model
     recalculateTileModel(i);
+  }
+}
+
+void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
+  std::clog << "Initialising buildings" << std::endl;
+
+  pBuildingNode = parentNode->getSceneManager()->addEmptySceneNode();
+  pBuildingNode->setParent(parentNode);
+
+  // For each building
+  for (auto& building : mBuildings) {
+    // Set the tile number, so it refers to the correct tile
+    building.second.setTileNumber(building.second.getTileX() + building.second.getTileY()*mWidth);
+
+    // Initialise
+    //  set parent, and load the model
+    building.second.initialise(pBuildingNode,
+      mBuildingTypes[building.second.getBuildingType()].getModel(),
+      mTiles[building.second.getTileNumber()].getCornerHeightMax()
+    );
   }
 }
 
@@ -375,7 +402,7 @@ void Map::recalculateTileModel(irr::u32 tileNumber) {
 
   surround = calculateSurround(tileNumber);
 
-  mTiles[tileNumber].setParent(pNode);
+  mTiles[tileNumber].setParent(pTileNode);
   if (mTiles[tileNumber].createModel(surround)) {
     //mTiles[tileNumber].createModel(surround);
 

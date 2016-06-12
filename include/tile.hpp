@@ -20,6 +20,7 @@ public:
   // Getters
   irr::u32 getTileNumber()  const;
   irr::f32 getHeight() const;
+  irr::f32 getCornerHeightMax() const;
   irr::u32 getTileType() const;
   irr::scene::ITriangleSelector* getTriangleSelector();
   struct Surround getPrevSurround();
@@ -50,6 +51,7 @@ private:
   irr::u32 mTileNumber;
   irr::u32 mTileType;
   irr::f32 mHeight;
+
   std::array<irr::f32, 4> mCornerHeights;
   struct Surround mPrevSurround;
 

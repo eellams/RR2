@@ -14,6 +14,11 @@ irr::f32  Tile::getHeight() const {
   return mHeight;
 }
 
+irr::f32  Tile::getCornerHeightMax() const {
+  // TODO this statement seems fishy...
+  return *std::max_element(std::begin(mCornerHeights), std::end(mCornerHeights));
+}
+
 irr::u32  Tile::getTileType() const {
   return mTileType;
 }

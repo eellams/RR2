@@ -12,10 +12,11 @@
 class BuildingType {
 public:
   BuildingType() :
-    mName("") {
+    mName(""), mModel("") {
 
     }
 
+  std::string getModel() const { return mModel; }
 private:
   friend class boost::serialization::access;
 
@@ -23,9 +24,11 @@ private:
   void serialize(Archive & ar, const unsigned int version)
   {
     ar & BOOST_SERIALIZATION_NVP(mName);
+    ar & BOOST_SERIALIZATION_NVP(mModel);
   }
 
   std::string mName;
+  std::string mModel;
 };
 
 #endif

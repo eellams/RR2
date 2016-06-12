@@ -5,7 +5,7 @@
 	<mMap class_id="1" tracking_level="0" version="0">
 		<mName>Test Map Something-or-other</mName>
 		<mDescription>Some description of this test map</mDescription>
-		<mRoofTexture>./data/roof.png</mRoofTexture>
+		<mRoofTexture>./data/tiletextures/roof.png</mRoofTexture>
 		<mWidth>10</mWidth>
 		<mHeight>10</mHeight>
 
@@ -15,7 +15,7 @@
 			<item class_id="3" tracking_level="0" version="0">
 				<first>0</first>
 				<second class_id="4" tracking_level="0" version="0">
-					<mTexture>./data/wall.png</mTexture>
+					<mTexture>./data/tiletextures/wall.png</mTexture>
 					<mSolid>1</mSolid>
 					<mDrillTime>0.000000000e+00</mDrillTime>
 					<mMineInto>1</mMineInto>
@@ -25,7 +25,7 @@
 			<item class_id="3" tracking_level="0" version="0">
 				<first>1</first>
 				<second class_id="4" tracking_level="0" version="0">
-					<mTexture>./data/dirt.png</mTexture>
+					<mTexture>./data/tiletextures/dirt.png</mTexture>
 					<mSolid>0</mSolid>
 					<mDrillTime>0.000000000e+00</mDrillTime>
 					<mMineInto>1</mMineInto>
@@ -41,6 +41,7 @@
 				<first>0</first>
 				<second class_id="7" tracking_level="0" version="0">
 					<mName>Test Building</mName>
+					<mModel>./data/testbuilding/testbuilding.obj</mModel>
 				</second>
 			</item>
 		</mBuildingTypes>
