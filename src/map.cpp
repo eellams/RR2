@@ -179,18 +179,27 @@ void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
 
     //std::clog << "BUILDING: " << building.second.getTileX() << "," << building.second.getTileY() << " " << building.second.getTileNumber() << std::endl;
 
+
     pos.set(
       ((building.second.getTileNumber() % mWidth) + 0.5f)*TILE_SIZE,
       mTiles[building.second.getTileNumber()].getCornerHeightMax(),
       ((building.second.getTileNumber() / mWidth) + 0.5f)*TILE_SIZE
     );
+    /*
 
     // Initialise
     //  set parent, and load the model
 
     building.second.initialise(
       pBuildingNode, // Parent node
-      mBuildingTypes[building.second.getBuildingType()].getModel(), // Model file string
+      mBuildingTypes[building.second.getBuildingType()].getModel().getModelPath(), // Model file string
+      pos
+    );
+    */
+
+    building.second.initialise(
+      pBuildingNode,
+      mBuildingTypes[building.second.getBuildingType()],
       pos
     );
   }

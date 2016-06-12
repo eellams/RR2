@@ -7,14 +7,17 @@
 
 #include <irrlicht.h>
 
+#include "model.hpp"
 #include "generic.hpp"
 
 class BuildingType {
 public:
   BuildingType() :
-    mName(""), mModel("") {}
+    mName(""), mModel() {}
 
-  std::string getModel() const { return mModel; }
+  //std::string getModel() const { return mModel; }
+  //std::string getModel() const { return mModel.getModel(); }
+  Model getModel() const { return mModel; }
 private:
   friend class boost::serialization::access;
 
@@ -26,7 +29,8 @@ private:
   }
 
   std::string mName;
-  std::string mModel;
+  //std::string mModel;
+  Model mModel;
 };
 
 #endif

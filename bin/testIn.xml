@@ -41,17 +41,34 @@
 				<first>0</first>
 				<second class_id="7" tracking_level="0" version="0">
 					<mName>Test Building</mName>
-					<mModel>./data/testbuilding/testbuilding.obj</mModel>
+					<mModel class_id="8" tracking_level="0" version="0">
+						<mModelPath>./data/testbuilding/testbuilding.obj</mModelPath>
+						<mPosX>0</mPosX>
+						<mPosY>0</mPosY>
+						<mPosZ>0</mPosZ>
+						<mTextures class_id="9" tracking_level="0" version="0">
+							<count>1</count>
+							<item_version>0</item_version>
+							<item class_id="10" tracking_level="0" version="0">
+								<first>0</first>
+								<second>./data/testbuilding/testbuilding.png</second>
+							</item>
+						</mTextures>
+						<mChildren class_id="11" tracking_level="0" version="0">
+							<count>0</count>
+							<item_version>0</item_version>
+						</mChildren>
+					</mModel>
 				</second>
 			</item>
 		</mBuildingTypes>
 
-		<mBuildings class_id="8" tracking_level="0" version="0">
+		<mBuildings class_id="12" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
-			<item class_id="9" tracking_level="0" version="0">
+			<item class_id="13" tracking_level="0" version="0">
 				<first>1</first>
-				<second class_id="10" tracking_level="0" version="0">
+				<second class_id="14" tracking_level="0" version="0">
 					<mBuildingId>1</mBuildingId>
 					<mBuildingType>0</mBuildingType>
 					<mTileNumber>46</mTileNumber>
@@ -59,10 +76,10 @@
 			</item>
 		</mBuildings>
 
-		<mTiles class_id="11" tracking_level="0" version="0">
+		<mTiles class_id="15" tracking_level="0" version="0">
 			<count>100</count>
 			<item_version>0</item_version>
-			<item class_id="12" tracking_level="0" version="0">
+			<item class_id="16" tracking_level="0" version="0">
 				<mTileNumber>0</mTileNumber>
 				<mTileType>0</mTileType>
 				<mHeight>0.00000000e+00</mHeight>

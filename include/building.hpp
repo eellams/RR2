@@ -7,28 +7,26 @@
 
 #include <irrlicht.h>
 
+#include "model.hpp"
 #include "generic.hpp"
 
 class Building {
 public:
   Building() :
-    mBuildingId(0), mBuildingType(0), mTileNumber(0), pMesh(NULL), pNode(NULL) {
+    mBuildingId(0), mBuildingType(0), mTileNumber(0) {//, pMesh(NULL), pNode(NULL) {
 
     }
 
   ~Building() {
-    if (pMesh != NULL) pMesh->drop();
-    if (pNode != NULL) pNode->drop();
-  }
-
-  void setTileNumber(irr::u32 tileNumber) {
-    mTileNumber = tileNumber;
+    //if (pMesh != NULL) pMesh->drop();
+    //if (pNode != NULL) pNode->drop();
   }
 
   irr::u32 getBuildingType() const { return mBuildingType; }
   irr::u32 getTileNumber() const { return mTileNumber; }
 
-  void initialise(irr::scene::ISceneNode* parent, std::string model, irr::core::vector3df& pos) {
+  void initialise(irr::scene::ISceneNode* parent, BuildingType btype, irr::core::vector3df& pos) {
+    /*
     pMesh = parent->getSceneManager()->getMesh(model.c_str() );
 
     pNode = parent->getSceneManager()->addAnimatedMeshSceneNode(pMesh);
@@ -40,8 +38,12 @@ public:
     //  big TODO
     //pNode->setMaterialTexture(0,parent->getSceneManager()->getVideoDriver()->getTexture(textureFile.c_str()));
 
-    //pNode->setPosition(irr::core::vector3df((mTileX+0.5f)*TILE_SIZE, height, (mTileY+0.5f)*TILE_SIZE));
     pNode->setPosition(pos);
+    */
+
+    mModel = btype.getModel();
+    mModel.initialise(parent);
+    mModel.setPosition(pos);
   }
 
 
@@ -60,9 +62,11 @@ private:
   irr::u32 mBuildingId;
   irr::u32 mBuildingType;
   irr::u32 mTileNumber;
-  
-  irr::scene::IAnimatedMesh* pMesh;
-  irr::scene::IAnimatedMeshSceneNode* pNode;
+
+  Model mModel;
+
+  //irr::scene::IAnimatedMesh* pMesh;
+  //irr::scene::IAnimatedMeshSceneNode* pNode;
 };
 
 #endif
