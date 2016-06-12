@@ -9,7 +9,7 @@
 		<mWidth>10</mWidth>
 		<mHeight>10</mHeight>
 
-		<mTypes class_id="2" tracking_level="0" version="0">
+		<mTileTypes class_id="2" tracking_level="0" version="0">
 			<count>2</count>
 			<item_version>0</item_version>
 			<item class_id="3" tracking_level="0" version="0">
@@ -32,12 +32,37 @@
 					<mMoveType>1</mMoveType>
 				</second>
 			</item>
-		</mTypes>
+		</mTileTypes>
 
-		<mTiles class_id="3" tracking_level="0" version="0">
+		<mBuildingTypes class_id="5" tracking_level="0" version="0">
+			<count>1</count>
+			<item_version>0</item_version>
+			<item class_id="6" tracking_level="0" version="0">
+				<first>0</first>
+				<second class_id="7" tracking_level="0" version="0">
+					<mName>Test Building</mName>
+				</second>
+			</item>
+		</mBuildingTypes>
+
+		<mBuildings class_id="8" tracking_level="0" version="0">
+			<count>1</count>
+			<item_version>0</item_version>
+			<item class_id="9" tracking_level="0" version="0">
+				<first>1</first>
+				<second class_id="10" tracking_level="0" version="0">
+					<mBuildingId>1</mBuildingId>
+					<mBuildingType>0</mBuildingType>
+					<mTileX>1</mTileX>
+					<mTileY>1</mTileY>
+				</second>
+			</item>
+		</mBuildings>
+
+		<mTiles class_id="11" tracking_level="0" version="0">
 			<count>100</count>
 			<item_version>0</item_version>
-			<item class_id="4" tracking_level="0" version="0">
+			<item class_id="12" tracking_level="0" version="0">
 				<mTileNumber>0</mTileNumber>
 				<mTileType>0</mTileType>
 				<mHeight>0.00000000e+00</mHeight>

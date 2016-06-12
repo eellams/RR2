@@ -13,29 +13,9 @@
 #include <iostream>
 #include <utility>
 
-struct Surround {
-  bool current, below, left, right, above;
-  bool belowLeft, belowRight, aboveLeft, aboveRight;
-
-  inline bool operator==(Surround a) {
-    if (a.current == current &&
-      a.below == below &&
-      a.left == left &&
-      a.right == right &&
-      a.above == above &&
-      a.belowLeft == belowLeft &&
-      a.belowRight == belowRight &&
-      a.aboveLeft == aboveLeft &&
-      a.aboveRight == aboveRight)
-      return true;
-    else
-      return false;
-  }
-};
-
-class MapTile {
+class Tile {
 public:
-  MapTile(size_t t=0);
+  Tile(size_t t=0);
 
   // Getters
   irr::u32 getTileNumber()  const;

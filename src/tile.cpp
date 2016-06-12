@@ -1,56 +1,56 @@
 // Copyright (c) 2016 Eddie Ellams All Rights Reserved.
-#include "maptile.hpp"
+#include "tile.hpp"
 
-MapTile::MapTile(size_t t) :
+Tile::Tile(size_t t) :
   mTileNumber(t), mHeight(0), mTileType(0) {
 
 }
 
-irr::u32 MapTile::getTileNumber() const {
+irr::u32 Tile::getTileNumber() const {
   return mTileNumber;
 }
 
-irr::f32  MapTile::getHeight() const {
+irr::f32  Tile::getHeight() const {
   return mHeight;
 }
 
-irr::u32  MapTile::getTileType() const {
+irr::u32  Tile::getTileType() const {
   return mTileType;
 }
 
-irr::scene::ITriangleSelector* MapTile::getTriangleSelector() {
+irr::scene::ITriangleSelector* Tile::getTriangleSelector() {
   return mGo.getTriangleSelector();
 }
 
-struct Surround MapTile::getPrevSurround() {
+struct Surround Tile::getPrevSurround() {
   return mPrevSurround;
 }
 
-void MapTile::setParent(irr::scene::ISceneNode* parent) {
+void Tile::setParent(irr::scene::ISceneNode* parent) {
   mGo.setParent(parent);
 }
 
-void MapTile::setPosition(const irr::core::vector3df& position) {
+void Tile::setPosition(const irr::core::vector3df& position) {
   mGo.setPosition(position);
 }
 
-void MapTile::setTexture(const std::string& tex) {
+void Tile::setTexture(const std::string& tex) {
   mGo.setTexture(tex);
 }
 
-void MapTile::setDebug() {
+void Tile::setDebug() {
   mGo.setDebug();
 }
 
-void MapTile::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
+void Tile::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
   mCornerHeights = cornerHeights;
 }
 
-void MapTile::setTileType(const irr::u32& tileType) {
+void Tile::setTileType(const irr::u32& tileType) {
   mTileType = tileType;
 }
 
-bool MapTile::createModel(struct Surround s) {
+bool Tile::createModel(struct Surround s) {
   std::array< std::pair<bool,bool>, 4> args;
 
   mPrevSurround = s;
@@ -329,7 +329,7 @@ bool MapTile::createModel(struct Surround s) {
   return true;
 }
 
-void MapTile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, bool inward) {
+void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, bool inward) {
   // array< pair<x,y>, 4>
   struct TriStrip tris;
   struct TrianglePoint tpoint;

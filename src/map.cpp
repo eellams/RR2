@@ -39,8 +39,7 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
 
     // Pad out with (very empty) tiles
     for (size_t i=mTiles.size(); i<mWidth*mHeight; i++) {
-      //MapTile x(i);
-      mTiles.push_back(MapTile(i));
+      mTiles.push_back(Tile(i));
     }
   }
   else {
@@ -65,9 +64,9 @@ void Map::mineTile(irr::u32 tileNumber) {
 
   std::clog << "Mining tile " << tileNumber;
   std::clog << " from " << mTiles[tileNumber].getTileType();
-  std::clog << " to " << mTypes[mTiles[tileNumber].getTileType()].getMineInto() << std::endl;
+  std::clog << " to " << mTileTypes[mTiles[tileNumber].getTileType()].getMineInto() << std::endl;
 
-  mTiles[tileNumber].setTileType( mTypes[mTiles[tileNumber].getTileType()].getMineInto() );
+  mTiles[tileNumber].setTileType( mTileTypes[mTiles[tileNumber].getTileType()].getMineInto() );
 
   prevSurround = mTiles[tileNumber].getPrevSurround();
   above = false;
@@ -124,9 +123,9 @@ void Map::mineTile(irr::u32 tileNumber) {
 }
 
 void Map::initialiseTileTypes(irr::video::IVideoDriver* driver) {
-  typedef std::map<irr::u32, MapType>::iterator it_type;
+  //typedef std::map<irr::u32, MapType>::iterator it_type;
 
-  for(it_type iterator = mTypes.begin(); iterator != mTypes.end(); iterator++) {
+  for(auto iterator = mTileTypes.begin(); iterator != mTileTypes.end(); iterator++) {
       // TODO there isn't anything here
       //  it used to be used to load textures into the tile type, which would
       //  then be used in each tile of that class
@@ -306,11 +305,11 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
   above = below = false;
 
   // Current tile (whether solid or not)
-  toReturn.current = mTypes[mTiles[tileNumber].getTileType()].getSolid();
+  toReturn.current = mTileTypes[mTiles[tileNumber].getTileType()].getSolid();
 
   // Below
   if (tileNumber >= mWidth) {
-    toReturn.below = mTypes[mTiles[tileNumber - mWidth].getTileType()].getSolid();
+    toReturn.below = mTileTypes[mTiles[tileNumber - mWidth].getTileType()].getSolid();
     below = true;
   } else {
     // Botton row, assume solid
@@ -321,7 +320,7 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   // Above
   if (tileNumber < (mHeight-1)*mWidth) {
-    toReturn.above = mTypes[mTiles[tileNumber + mWidth].getTileType()].getSolid();
+    toReturn.above = mTileTypes[mTiles[tileNumber + mWidth].getTileType()].getSolid();
     above = true;
   } else {
     // Top row, assume solid
@@ -332,14 +331,14 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   // Left
   if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
-    toReturn.left = mTypes[mTiles[tileNumber - 1].getTileType()].getSolid();
+    toReturn.left = mTileTypes[mTiles[tileNumber - 1].getTileType()].getSolid();
 
     if (above) {
-      toReturn.aboveLeft =  mTypes[mTiles[tileNumber + mWidth - 1].getTileType()].getSolid();
+      toReturn.aboveLeft =  mTileTypes[mTiles[tileNumber + mWidth - 1].getTileType()].getSolid();
     }
 
     if (below) {
-      toReturn.belowLeft =  mTypes[mTiles[tileNumber - mWidth - 1].getTileType()].getSolid();
+      toReturn.belowLeft =  mTileTypes[mTiles[tileNumber - mWidth - 1].getTileType()].getSolid();
     }
 
   } else {
@@ -351,14 +350,14 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
 
   // Right
   if ( (tileNumber + 1) % mWidth != 0) {
-    toReturn.right = mTypes[mTiles[tileNumber + 1].getTileType()].getSolid();
+    toReturn.right = mTileTypes[mTiles[tileNumber + 1].getTileType()].getSolid();
 
     if (above) {
-      toReturn.aboveRight =  mTypes[mTiles[tileNumber + mWidth + 1].getTileType()].getSolid();
+      toReturn.aboveRight =  mTileTypes[mTiles[tileNumber + mWidth + 1].getTileType()].getSolid();
     }
 
     if (below) {
-      toReturn.belowRight =  mTypes[mTiles[tileNumber - mWidth + 1].getTileType()].getSolid();
+      toReturn.belowRight =  mTileTypes[mTiles[tileNumber - mWidth + 1].getTileType()].getSolid();
     }
 
   } else {
@@ -393,7 +392,7 @@ void Map::recalculateTileModel(irr::u32 tileNumber) {
 
     else {
       // A normal tile
-      mTiles[tileNumber].setTexture( mTypes[mTiles[tileNumber].getTileType()].getTextureName() );
+      mTiles[tileNumber].setTexture( mTileTypes[mTiles[tileNumber].getTileType()].getTextureName() );
     }
 
     // Set the position of the tile

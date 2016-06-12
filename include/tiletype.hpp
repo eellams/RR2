@@ -9,10 +9,10 @@
 
 #include "generic.hpp"
 
-class MapType {
+class TileType {
 public:
-  MapType();
-  MapType(std::string t, bool s, irr::f32 dt, MoveType mt);
+  TileType();
+  TileType(std::string t, bool s, irr::f32 dt, MoveType mt);
 
   // Getters
   bool getSolid() const;

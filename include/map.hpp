@@ -10,8 +10,10 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 
-#include "maptile.hpp"
-#include "maptype.hpp"
+#include "tile.hpp"
+#include "tiletype.hpp"
+#include "buildingtype.hpp"
+#include "building.hpp"
 #include "generic.hpp"
 
 class Map {
@@ -38,7 +40,9 @@ private:
     ar & BOOST_SERIALIZATION_NVP(mRoofTexture);
     ar & BOOST_SERIALIZATION_NVP(mWidth);
     ar & BOOST_SERIALIZATION_NVP(mHeight);
-    ar & BOOST_SERIALIZATION_NVP(mTypes);
+    ar & BOOST_SERIALIZATION_NVP(mTileTypes);
+    ar & BOOST_SERIALIZATION_NVP(mBuildingTypes);
+    ar & BOOST_SERIALIZATION_NVP(mBuildings);
     ar & BOOST_SERIALIZATION_NVP(mTiles);
   }
 
@@ -67,8 +71,10 @@ private:
   std::string mRoofTexture;
   size_t mWidth;
   size_t mHeight;
-  std::map<irr::u32, MapType> mTypes;
-  std::vector<MapTile> mTiles;
+  std::map<irr::u32, TileType> mTileTypes;
+  std::map<irr::u32, BuildingType> mBuildingTypes;
+  std::map<irr::u32, Building> mBuildings;
+  std::vector<Tile> mTiles;
 
   // Non-serialised values
   std::vector<float> mHeightmap;
