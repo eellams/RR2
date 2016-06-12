@@ -5,6 +5,13 @@
 
 #include "rtscamera.h"
 
+using namespace irr;
+using namespace core;
+using namespace scene;
+using namespace video;
+using namespace io;
+using namespace gui;
+
 RTSCamera::RTSCamera(IrrlichtDevice* devicepointer,ISceneNode* parent,ISceneManager* smgr,s32 id,
     f32 rs,f32 zs,f32 ts)
    : ICameraSceneNode(parent,smgr,id,vector3df(1.0f,1.0f,1.0f),vector3df(0.0f,0.0f,0.0f),
