@@ -12,9 +12,7 @@
 class BuildingType {
 public:
   BuildingType() :
-    mName(""), mModel("") {
-
-    }
+    mName(""), mModel("") {}
 
   std::string getModel() const { return mModel; }
 private:

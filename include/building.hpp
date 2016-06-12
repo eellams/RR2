@@ -12,7 +12,7 @@
 class Building {
 public:
   Building() :
-    mBuildingId(0), mBuildingType(0), mTileX(0), mTileY(0), pMesh(NULL), pNode(NULL) {
+    mBuildingId(0), mBuildingType(0), mTileNumber(0), pMesh(NULL), pNode(NULL) {
 
     }
 
@@ -27,16 +27,21 @@ public:
 
   irr::u32 getBuildingType() const { return mBuildingType; }
   irr::u32 getTileNumber() const { return mTileNumber; }
-  irr::u32 getTileX() const { return mTileX; }
-  irr::u32 getTileY() const { return mTileY; }
 
-  void initialise(irr::scene::ISceneNode* parent, std::string model, irr::f32 height) {
-    pMesh = parent->getSceneManager()->getMesh(model.c_str());
+  void initialise(irr::scene::ISceneNode* parent, std::string model, irr::core::vector3df& pos) {
+    pMesh = parent->getSceneManager()->getMesh(model.c_str() );
 
     pNode = parent->getSceneManager()->addAnimatedMeshSceneNode(pMesh);
     pNode->setParent(parent);
 
-    pNode->setPosition(irr::core::vector3df((mTileX+0.5f)*TILE_SIZE, height, (mTileY+0.5f)*TILE_SIZE));
+    // TODO textures
+    //  need to create a Model class which can be serialised
+    //  including multiple models and textures
+    //  big TODO
+    //pNode->setMaterialTexture(0,parent->getSceneManager()->getVideoDriver()->getTexture(textureFile.c_str()));
+
+    //pNode->setPosition(irr::core::vector3df((mTileX+0.5f)*TILE_SIZE, height, (mTileY+0.5f)*TILE_SIZE));
+    pNode->setPosition(pos);
   }
 
 
@@ -46,18 +51,16 @@ private:
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version)
   {
+    // TODO should it be serialised using X,Y or just tileNumber?
     ar & BOOST_SERIALIZATION_NVP(mBuildingId);
     ar & BOOST_SERIALIZATION_NVP(mBuildingType);
-    ar & BOOST_SERIALIZATION_NVP(mTileX);
-    ar & BOOST_SERIALIZATION_NVP(mTileY);
+    ar & BOOST_SERIALIZATION_NVP(mTileNumber);
   }
 
   irr::u32 mBuildingId;
   irr::u32 mBuildingType;
-  irr::u32 mTileX;
-  irr::u32 mTileY;
-
   irr::u32 mTileNumber;
+  
   irr::scene::IAnimatedMesh* pMesh;
   irr::scene::IAnimatedMeshSceneNode* pNode;
 };

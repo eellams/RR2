@@ -15,8 +15,14 @@ irr::f32  Tile::getHeight() const {
 }
 
 irr::f32  Tile::getCornerHeightMax() const {
-  // TODO this statement seems fishy...
-  return *std::max_element(std::begin(mCornerHeights), std::end(mCornerHeights));
+  // TODO this could be made neater
+  irr::f32 toReturn = 0;
+
+  for (auto h : mCornerHeights) {
+    if (toReturn < h) toReturn = h;
+  }
+
+  return toReturn;
 }
 
 irr::u32  Tile::getTileType() const {
@@ -27,7 +33,7 @@ irr::scene::ITriangleSelector* Tile::getTriangleSelector() {
   return mGo.getTriangleSelector();
 }
 
-struct Surround Tile::getPrevSurround() {
+struct Surround Tile::getPrevSurround() const {
   return mPrevSurround;
 }
 
@@ -334,12 +340,13 @@ bool Tile::createModel(struct Surround s) {
   return true;
 }
 
-void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, bool inward) {
+void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, bool invertHigh) {
   // array< pair<x,y>, 4>
   struct TriStrip tris;
   struct TrianglePoint tpoint;
   irr::u32 highCount = 0;
 
+  // Clear any old models
   mGo.clear();
 
   // TODO normals
@@ -352,13 +359,14 @@ void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const 
       mCornerHeights[2*point.first + point.second + ((point.first && point.second)*-1) + ((point.first && !point.second)*1)],
       point.second * TILE_SIZE);
 
-    // The first points are assumed 'high'
-    if (!inward) {
+    if (!invertHigh) {
+      // The first points are assumed 'high'
       if (highCount < noHigh) {
         tpoint.pos.Y += TILE_WALL_HEIGHT;
         highCount++;
       }
     } else {
+      // The first points are assumed 'low'
       if (highCount < noHigh) {
         highCount++;
       } else {
@@ -374,6 +382,7 @@ void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const 
     tris.points.push_back(tpoint);
   }
 
+  // Add to 1st buffer
   mGo.addTriStrip(tris, 1);
 
   // This flag should be set on all terrain tiles

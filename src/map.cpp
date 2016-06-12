@@ -167,6 +167,7 @@ void Map::initialiseTiles(irr::scene::ISceneNode* parentNode) {
 
 void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
   std::clog << "Initialising buildings" << std::endl;
+  irr::core::vector3df pos;
 
   pBuildingNode = parentNode->getSceneManager()->addEmptySceneNode();
   pBuildingNode->setParent(parentNode);
@@ -174,13 +175,23 @@ void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
   // For each building
   for (auto& building : mBuildings) {
     // Set the tile number, so it refers to the correct tile
-    building.second.setTileNumber(building.second.getTileX() + building.second.getTileY()*mWidth);
+    //building.second.setTileNumber(building.second.getTileX() + building.second.getTileY()*mWidth);
+
+    //std::clog << "BUILDING: " << building.second.getTileX() << "," << building.second.getTileY() << " " << building.second.getTileNumber() << std::endl;
+
+    pos.set(
+      ((building.second.getTileNumber() % mWidth) + 0.5f)*TILE_SIZE,
+      mTiles[building.second.getTileNumber()].getCornerHeightMax(),
+      ((building.second.getTileNumber() / mWidth) + 0.5f)*TILE_SIZE
+    );
 
     // Initialise
     //  set parent, and load the model
-    building.second.initialise(pBuildingNode,
-      mBuildingTypes[building.second.getBuildingType()].getModel(),
-      mTiles[building.second.getTileNumber()].getCornerHeightMax()
+
+    building.second.initialise(
+      pBuildingNode, // Parent node
+      mBuildingTypes[building.second.getBuildingType()].getModel(), // Model file string
+      pos
     );
   }
 }

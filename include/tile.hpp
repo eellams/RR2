@@ -23,7 +23,7 @@ public:
   irr::f32 getCornerHeightMax() const;
   irr::u32 getTileType() const;
   irr::scene::ITriangleSelector* getTriangleSelector();
-  struct Surround getPrevSurround();
+  struct Surround getPrevSurround() const;
 
   // Setters
   void setParent(irr::scene::ISceneNode* parent);
@@ -36,7 +36,7 @@ public:
   bool createModel(const struct Surround s);
 
 private:
-  void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, const bool inward=false);
+  void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, const bool invertHigh=false);
 
   friend class boost::serialization::access;
 

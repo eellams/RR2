@@ -54,8 +54,7 @@
 				<second class_id="10" tracking_level="0" version="0">
 					<mBuildingId>1</mBuildingId>
 					<mBuildingType>0</mBuildingType>
-					<mTileX>1</mTileX>
-					<mTileY>1</mTileY>
+					<mTileNumber>46</mTileNumber>
 				</second>
 			</item>
 		</mBuildings>
@@ -295,7 +294,7 @@
 			</item>
 			<item>
 				<mTileNumber>46</mTileNumber>
-				<mTileType>0</mTileType>
+				<mTileType>1</mTileType>
 				<mHeight>50.00000000e+00</mHeight>
 			</item>
 			<item>
