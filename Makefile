@@ -17,28 +17,28 @@ SRCEXT := cpp
 #SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 SOURCEMAIN := src/main.cpp
-#SOURCES := $(filter-out $(SOURCEMAIN), $(SOURCES))
+SOURCES := $(filter-out $(SOURCEMAIN), $(SOURCES))
 SOURCEDIRS := $(shell find $(SRCDIR) -type d)
 OBJECTS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.o))
 
 BUILDDIRS := $(SOURCEDIRS:$(SRCDIR)%=$(BUILDDIR)%)
 
-CFLAGS := -std=c++11
+CFLAGS := -std=c++11 -ggdb
 LIB := -pedantic -pthread -lboost_serialization -lboost_system -lIrrlicht -lGL -lXxf86vm -lXext -lX11 -lXcursor
 
 INC := -Iinclude
 
-#$(TARGET): $(OBJECTS) $(LIBTARGETS)
-$(TARGET):
+$(TARGET): $(OBJECTS)
 	@echo " Linking..."
 	@mkdir -p $(BINDIR)
 	@touch $(BINDIR)/$(TARGET)
-	@echo " $(CC) $(CFLAGS) $(INC) $^ $(SOURCEMAIN) -o $(BINDIR)/$(TARGET) $(LIB)"; $(CC) $(CFLAGS) $(INC) $^ $(SOURCES) -o $(BINDIR)/$(TARGET) $(LIB)
+	@echo " $(CC) $(CFLAGS) $(INC) $^ $(SOURCEMAIN) -o $(BINDIR)/$(TARGET) $(LIB)"; $(CC) $(CFLAGS) $(INC) $^ $(SOURCEMAIN) -o $(BINDIR)/$(TARGET) $(LIB)
 
+build/%.o : src/%.cpp
 #$(BUILDDIR)/%.o: $(SOURCES) #$(SRCDIR)/%.$(SRCEXT)
-#	@echo " Building..."
-#	@mkdir -p $(BUILDDIRS)
-#	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@echo " Building..."
+	@mkdir -p $(BUILDDIRS)
+	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
 	@echo " Cleaning...";

@@ -12,7 +12,7 @@
 
 class Building {
 public:
-  Building() :
+  inline Building() :
     mBuildingId(0), mBuildingType(0), mTileNumber(0) {//, pMesh(NULL), pNode(NULL) {
 
     }
@@ -25,7 +25,7 @@ public:
   irr::u32 getBuildingType() const { return mBuildingType; }
   irr::u32 getTileNumber() const { return mTileNumber; }
 
-  void initialise(irr::scene::ISceneNode* parent, BuildingType btype, irr::core::vector3df& pos) {
+  void initialise(irr::scene::ISceneNode* parent, const BuildingType& btype, const irr::core::vector3df& pos) {
     /*
     pMesh = parent->getSceneManager()->getMesh(model.c_str() );
 
@@ -51,7 +51,7 @@ private:
   friend class boost::serialization::access;
 
   template<class Archive>
-  void serialize(Archive & ar, const unsigned int version)
+  inline void serialize(Archive & ar, const unsigned int version)
   {
     // TODO should it be serialised using X,Y or just tileNumber?
     ar & BOOST_SERIALIZATION_NVP(mBuildingId);

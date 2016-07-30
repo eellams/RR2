@@ -1,9 +1,17 @@
 // Copyright (c) 2016 Eddie Ellams All Rights Reserved.
 #include "tile.hpp"
+#include "geomobject.hpp"
 
 Tile::Tile(size_t t) :
-  mTileNumber(t), mHeight(0), mTileType(0) {
+  mTileNumber(t),
+  mHeight(0),
+  pGeom(NULL)
+{
+  pGeom = new GeomObject();
+}
 
+Tile::~Tile() {
+  //delete pGeom;
 }
 
 irr::u32 Tile::getTileNumber() const {
@@ -30,27 +38,27 @@ irr::u32  Tile::getTileType() const {
 }
 
 irr::scene::ITriangleSelector* Tile::getTriangleSelector() {
-  return mGo.getTriangleSelector();
+  return pGeom->getTriangleSelector();
 }
 
-struct Surround Tile::getPrevSurround() const {
-  return mPrevSurround;
+struct Surround Tile::getSurround() const {
+  return mSurround;
 }
 
 void Tile::setParent(irr::scene::ISceneNode* parent) {
-  mGo.setParent(parent);
+  pGeom->setParent(parent);
 }
 
 void Tile::setPosition(const irr::core::vector3df& position) {
-  mGo.setPosition(position);
+  pGeom->setPosition(position);
 }
 
 void Tile::setTexture(const std::string& tex) {
-  mGo.setTexture(tex);
+  pGeom->setTexture(tex);
 }
 
 void Tile::setDebug() {
-  mGo.setDebug();
+  pGeom->showBoundingBox();
 }
 
 void Tile::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
@@ -61,12 +69,19 @@ void Tile::setTileType(const irr::u32& tileType) {
   mTileType = tileType;
 }
 
+void Tile::initialise(irr::scene::ISceneManager* pmanager) {
+  pGeom->clear();
+  pGeom->initialise(pmanager);
+}
+
 bool Tile::createModel(struct Surround s) {
   std::array< std::pair<bool,bool>, 4> args;
 
-  mPrevSurround = s;
+  mSurround = s;
 
   // TODO I'm sure a loop could be used here...
+  //  double TODO as I feel this is important
+  //  but not that important that I'm going to do it right now :p
   if (s.current) {
     // Outward corners
     if (!s.above && s.below && !s.right && s.left &&
@@ -347,7 +362,7 @@ void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const 
   irr::u32 highCount = 0;
 
   // Clear any old models
-  mGo.clear();
+  pGeom->clear();
 
   // TODO normals
 
@@ -375,7 +390,7 @@ void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const 
     }
 
     // Set normal, colour and UV
-    tpoint.normal.set(0,0,1); // TODO
+    tpoint.normal.set(0,1,0); // TODO UV
     tpoint.colour = irr::video::SColor(255,255,255,255);
     tpoint.uv.set(point.first, point.second);
 
@@ -383,8 +398,8 @@ void Tile::createTile(const std::array< std::pair<bool,bool>, 4>& points, const 
   }
 
   // Add to 1st buffer
-  mGo.addTriStrip(tris, 1);
+  pGeom->addTriStrip(tris, 1);
 
   // This flag should be set on all terrain tiles
-  mGo.setID(COLLISION_MASK_TILE);
+  pGeom->setID(COLLISION_MASK_TILE);
 }

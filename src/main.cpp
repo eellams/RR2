@@ -4,7 +4,7 @@
 //#include "Serialiser/Example.hpp"
 
 //#include "Serialiser/ConfigFile.hpp"
-#include "map.hpp"
+//#include "map.hpp"
 #include "savefile.hpp"
 #include "rtscamera.h"
 
@@ -102,6 +102,8 @@ int main(int argc, char *argv[]) {
 
   // TODO this can't be declared at the top of the function
   Map& map = readMap.mMap;
+  //Map *pMap = readMap.pMap;
+  //Map map;
 
   // Initialise the map (setup data from the save file)
   map.initialise(driver, smgr);
@@ -152,6 +154,11 @@ int main(int argc, char *argv[]) {
   }
 
   while(device->run()) {
+
+    if (receiver.IsKeyDown(irr::KEY_ESCAPE)) {
+      device->getTimer()->stop();
+    }
+
     if(receiver.IsKeyDown(irr::KEY_KEY_1)) {
       map.mineTile(18);
     }
@@ -162,6 +169,14 @@ int main(int argc, char *argv[]) {
 
     if(receiver.IsKeyDown(irr::KEY_KEY_3)) {
       map.mineTile(22);
+    }
+
+    if (receiver.IsKeyDown(irr::KEY_KEY_4)) {
+      map.setTile(12, 0, false);
+    }
+
+    if (receiver.IsKeyDown(irr::KEY_KEY_5)) {
+      map.setTile(12, 1, false);
     }
 
     // Collision region

@@ -29,7 +29,6 @@ private:
   }
 
   std::string mName;
-  //std::string mModel;
   Model mModel;
 };
 

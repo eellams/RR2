@@ -1,17 +1,27 @@
 #include "map.hpp"
+#include "tile.hpp"
+#include "tiletype.hpp"
+#include "buildingtype.hpp"
+#include "building.hpp"
+#include "pathtype.hpp"
+#include "path.hpp"
 
 Map::Map() :
-  mName(""), mDescription(""), mWidth(0), mHeight(0),
-  pTileNode(NULL), pBuildingNode(NULL), pTileSelector(NULL) {
+  mName(""),
+  mDescription(""),
+  mWidth(0),
+  mHeight(0),
+  mTileTypes(),
+  mBuildingTypes(),
+  mBuildings(),
+  mPathTypes(),
+  mPaths(),
+  mTiles(),
+  pTileNode(NULL),
+  pBuildingNode(NULL),
+  pTileSelector(NULL) {
 
   }
-
-/*
-Map::Map(std::string n, std::string d, size_t w, size_t h) :
-  mName(n), mDescription(d), mWidth(w), mHeight(h), pTileNode(NULL), pTileSelector(NULL) {
-
-  }
-*/
 
 Map::~Map() {
   if (pTileNode != NULL) pTileNode->drop();
@@ -33,6 +43,7 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
 
   initialiseTileTypes();
   initialiseBuildingTypes();
+  initialisePathTypes();
 
   // Check that the number of tiles is as expected
   if (mTiles.size() != mWidth*mHeight) {
@@ -50,6 +61,7 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
 
   initialiseTiles(smgr->getRootSceneNode());
   initialiseBuildings(smgr->getRootSceneNode());
+  initialisePaths(smgr->getRootSceneNode());
 
   pTileSelector = pTileNode->getSceneManager()->createMetaTriangleSelector();
 
@@ -58,91 +70,89 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
   }
 }
 
-void Map::mineTile(irr::u32 tileNumber) {
-  struct Surround surround;
-  struct Surround prevSurround;
-  bool above, below;
+void Map::mineTile(const irr::u32& tileNumber) {
+  setTile(tileNumber, mTileTypes[mTiles[tileNumber].getTileType()].getMineInto(), true);
+
+  // TODO dropping ore, etc.
+}
+
+
+void Map::setTile(const irr::u32& tileNumber, const irr::u32& tileType, const bool& enableCaveIn) {
+  struct Surround newSurround;
+  struct Surround oldSurround;
 
   // Set the new tile type
 
-  std::clog << "Mining tile " << tileNumber;
+  std::clog << "Setting tile " << tileNumber;
   std::clog << " from " << mTiles[tileNumber].getTileType();
-  std::clog << " to " << mTileTypes[mTiles[tileNumber].getTileType()].getMineInto() << std::endl;
+  std::clog << " to " << tileType << std::endl;
 
-  mTiles[tileNumber].setTileType( mTileTypes[mTiles[tileNumber].getTileType()].getMineInto() );
+  // Get old surround before change
+  oldSurround = mTiles[tileNumber].getSurround();
 
-  prevSurround = mTiles[tileNumber].getPrevSurround();
-  above = false;
-  below = false;
+  // Change the tile
+  mTiles[tileNumber].setTileType( tileType );
 
-  recalculateTileModel(tileNumber);
+  newSurround = calculateSurround(tileNumber);
 
-  if (!(prevSurround == surround)) {
-    // The surround has changed
-    //  need to recalculate the surrounding tile's models
+  recalculateAll(tileNumber, enableCaveIn);
 
-    // If there is a tile below
-    if (tileNumber >= mWidth) {
-      recalculateTileModel(tileNumber-mWidth);
-      below = true;
-    }
+  if (!(oldSurround == newSurround))
+    recalculateSurroundingTileModels(tileNumber, enableCaveIn);
+}
 
-    // If there is a tile above
-    if (tileNumber < (mHeight-1)*mWidth) {
-      recalculateTileModel(tileNumber+mWidth);
-      above = true;
-    }
-
-    // If there is a tile left
-    if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
-      recalculateTileModel(tileNumber-1);
-
-      // If there is a tile above left
-      if (above) {
-        recalculateTileModel(tileNumber+mWidth-1);
-      }
-
-      // If there is a tile below left
-      if (below) {
-        recalculateTileModel(tileNumber-mWidth-1);
-      }
-    }
-
-    // If there is a tile right
-    if ( (tileNumber + 1) % mWidth != 0) {
-      recalculateTileModel(tileNumber+1);
-
-      // If there is a tile above right
-      if (above) {
-        recalculateTileModel(tileNumber+mWidth+1);
-      }
-
-      // If there is a tile below right
-      if (below) {
-        recalculateTileModel(tileNumber-mWidth+1);
-      }
-    }
+template<class Archive>
+void Map::serialize(Archive & ar, const unsigned int version) {
+  try {
+    ar & BOOST_SERIALIZATION_NVP(mName);
+    ar & BOOST_SERIALIZATION_NVP(mDescription);
+    ar & BOOST_SERIALIZATION_NVP(mRoofTexture);
+    ar & BOOST_SERIALIZATION_NVP(mWidth);
+    ar & BOOST_SERIALIZATION_NVP(mHeight);
+    ar & BOOST_SERIALIZATION_NVP(mTileTypes);
+    ar & BOOST_SERIALIZATION_NVP(mBuildingTypes);
+    ar & BOOST_SERIALIZATION_NVP(mPathTypes);
+    ar & BOOST_SERIALIZATION_NVP(mBuildings);
+    ar & BOOST_SERIALIZATION_NVP(mPaths);
+    ar & BOOST_SERIALIZATION_NVP(mTiles);
+  }
+  catch (boost::archive::archive_exception& ex) {
+    std::clog << ex.what() << std::endl;
   }
 }
 
+template void Map::serialize<boost::archive::xml_iarchive>(
+    boost::archive::xml_iarchive & ar,
+    const unsigned int version
+);
+template void Map::serialize<boost::archive::xml_oarchive>(
+    boost::archive::xml_oarchive & ar,
+    const unsigned int version
+);
+
 void Map::initialiseTileTypes() {
-  for(auto iterator = mTileTypes.begin(); iterator != mTileTypes.end(); iterator++) {
+  /*for(auto iterator = mTileTypes.begin(); iterator != mTileTypes.end(); iterator++) {
       // TODO there isn't anything here
       //  it used to be used to load textures into the tile type, which would
       //  then be used in each tile of that class
       //  but, I couldn't get this to work, so instead textures are loaded
       //  when tiles initialised
+      //   doesn't seem to be a problem, as the texture is only loaded once
 
       // iterator->first = key
       // iterator->second = value
       // Repeat if you also want to iterate through the second map.
-  }
+  }*/
 }
 
 void Map::initialiseBuildingTypes() {
-  for(auto iterator = mBuildingTypes.begin(); iterator != mBuildingTypes.end(); iterator++) {
+  /*for(auto iterator = mBuildingTypes.begin(); iterator != mBuildingTypes.end(); iterator++) {
     // TODO there isn't anything here yet
-  }
+  }*/
+}
+
+void Map::initialisePathTypes() {
+  // TODO is anything needed here?
 }
 
 void Map::initialiseTiles(irr::scene::ISceneNode* parentNode) {
@@ -161,7 +171,9 @@ void Map::initialiseTiles(irr::scene::ISceneNode* parentNode) {
   //  calculate tile, set texture etc.
   for (irr::u32 i=0; i<mWidth*mHeight; i++) {
     // Create the tile model
-    recalculateTileModel(i);
+    mTiles[i].initialise(pTileNode->getSceneManager());
+    mTiles[i].setParent(pTileNode);
+    recalculateTile(i);
   }
 }
 
@@ -174,34 +186,38 @@ void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
 
   // For each building
   for (auto& building : mBuildings) {
-    // Set the tile number, so it refers to the correct tile
-    //building.second.setTileNumber(building.second.getTileX() + building.second.getTileY()*mWidth);
-
-    //std::clog << "BUILDING: " << building.second.getTileX() << "," << building.second.getTileY() << " " << building.second.getTileNumber() << std::endl;
-
-
-    pos.set(
-      ((building.second.getTileNumber() % mWidth) + 0.5f)*TILE_SIZE,
-      mTiles[building.second.getTileNumber()].getCornerHeightMax(),
-      ((building.second.getTileNumber() / mWidth) + 0.5f)*TILE_SIZE
-    );
-    /*
+    pos = tileNumberToPosition(building.second.getTileNumber());
 
     // Initialise
     //  set parent, and load the model
-
-    building.second.initialise(
-      pBuildingNode, // Parent node
-      mBuildingTypes[building.second.getBuildingType()].getModel().getModelPath(), // Model file string
-      pos
-    );
-    */
-
     building.second.initialise(
       pBuildingNode,
       mBuildingTypes[building.second.getBuildingType()],
       pos
     );
+  }
+}
+
+void Map::initialisePaths(irr::scene::ISceneNode* parentNode) {
+  std::clog << "Initialising paths" << std::endl;
+  irr::core::vector3df pos;
+
+  pPathNode = parentNode->getSceneManager()->addEmptySceneNode();
+  pPathNode->setParent(parentNode);
+
+  for (auto& path : mPaths) {
+    pos = tileNumberToPosition(path.second.getTileNumber());
+
+    path.second.initialise(
+      pPathNode,
+      mPathTypes[path.second.getPathType()],
+      pos
+    );
+
+    path.second.setCornerHeights(mTiles[path.second.getTileNumber()].getCornerHeigts());
+    path.second.createModel();
+    path.second.setTexture( mPathTypes[path.second.getPathType()].getTextureName() );
+    path.second.setAlpha();
   }
 }
 
@@ -224,7 +240,7 @@ void Map::createHeightMap() {
 
 // Caclulates the corner heights of the tile as a mean of surrounding tile
 //  heights
-void Map::calculateTileCorners(irr::u32 tileNumber) {
+void Map::calculateTileCorners(const irr::u32& tileNumber) {
   //  1|A |2
   // --------
   // L |  |R
@@ -333,7 +349,7 @@ void Map::calculateTileCorners(irr::u32 tileNumber) {
 
 // Calculates whether surrounding tiles are 'solid' or not
 //  if the tile is out-of-range (i.e. outside edges of map), assumes solid
-struct Surround Map::calculateSurround(irr::u32 tileNumber) {
+struct Surround Map::calculateSurround(const irr::u32& tileNumber) {
 
   /*
   n := tileNumber
@@ -417,15 +433,20 @@ struct Surround Map::calculateSurround(irr::u32 tileNumber) {
   return toReturn;
 }
 
-void Map::recalculateTileModel(irr::u32 tileNumber) {
+void Map::recalculateAll(const irr::u32 &tileNumber, const bool &enableCaveIn) {
+  recalculateTile(tileNumber, enableCaveIn);
+  recalculateBuilding(tileNumber);
+  recalculatePath(tileNumber);
+}
+
+void Map::recalculateTile(const irr::u32& tileNumber, const bool& enableCaveIn) {
   struct Surround surround;
 
   surround = calculateSurround(tileNumber);
+  //mTiles[tileNumber].initialise(pTileNode->getSceneManager());
+  //mTiles[tileNumber].setParent(pTileNode);
 
-  mTiles[tileNumber].setParent(pTileNode);
   if (mTiles[tileNumber].createModel(surround)) {
-    //mTiles[tileNumber].createModel(surround);
-
     // Set the texture
     // TODO does this optimise out in the wash?
     //  or do we have <tile number> different textures in memory?
@@ -439,14 +460,98 @@ void Map::recalculateTileModel(irr::u32 tileNumber) {
 
     else {
       // A normal tile
-      mTiles[tileNumber].setTexture( mTileTypes[mTiles[tileNumber].getTileType()].getTextureName() );
+      mTiles[tileNumber].setTexture(mTileTypes[mTiles[tileNumber].getTileType()].getTextureName());
     }
 
     // Set the position of the tile
     mTiles[tileNumber].setPosition(irr::core::vector3df((tileNumber%mWidth) * TILE_SIZE, 0, (tileNumber/mHeight) * TILE_SIZE));
   }
 
-  else {
+  else if (enableCaveIn) {
+    // Can't make a tile - illegal layout
+    //  causes 'cave-in' effect
     mineTile(tileNumber);
+  }
+}
+
+void Map::recalculateBuilding(const irr::u32& tileNumber) {
+  // TODO find buildings on tile, see if they can exist still
+}
+
+void Map::recalculatePath(const irr::u32& tileNumber) {
+  auto iterator = mPaths.find(tileNumber);
+
+  if (iterator != mPaths.end()) {
+    if (!mPathTypes[iterator->second.getPathType()].isAllowedTileType( mTiles[tileNumber].getTileType() ) ) {
+      std::cout << "Path on tile " << tileNumber << " is on invalid tile - removing" << std::endl;
+      removePath(iterator->first);
+    }
+  }
+}
+
+void Map::removeBuilding(const irr::u32& buildingId) {}
+void Map::removePath(const irr::u32& pathId) {
+  //mPaths[pathId].destroy();
+  mPaths.erase(pathId);
+  //vec.erase(std::remove(vec.begin(), vec.end(), int_to_remove), vec.end());
+}
+
+irr::core::vector3df Map::tileNumberToPosition(const int& tilenumber) {
+  irr::core::vector3df pos;
+  pos.set(
+    (tilenumber % mWidth)*TILE_SIZE,
+    mTiles[tilenumber].getCornerHeightMax(),
+    (tilenumber / mWidth)*TILE_SIZE
+  );
+  return pos;
+}
+
+void Map::recalculateSurroundingTileModels(const int& tileNumber, const bool& enableCaveIn) {
+  bool above;
+  bool below;
+
+  above = false;
+  below = false;
+
+  // If there is a tile below
+  if (tileNumber >= mWidth) {
+    recalculateAll(tileNumber-mWidth, enableCaveIn);
+    below = true;
+  }
+
+  // If there is a tile above
+  if (tileNumber < (mHeight-1)*mWidth) {
+    recalculateAll(tileNumber+mWidth, enableCaveIn);
+    above = true;
+  }
+
+  // If there is a tile left
+  if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
+    recalculateAll(tileNumber-1, enableCaveIn);
+
+    // If there is a tile above left
+    if (above) {
+      recalculateAll(tileNumber+mWidth-1, enableCaveIn);
+    }
+
+    // If there is a tile below left
+    if (below) {
+      recalculateAll(tileNumber-mWidth-1, enableCaveIn);
+    }
+  }
+
+  // If there is a tile right
+  if ( (tileNumber + 1) % mWidth != 0) {
+    recalculateAll(tileNumber+1, enableCaveIn);
+
+    // If there is a tile above right
+    if (above) {
+      recalculateAll(tileNumber+mWidth+1, enableCaveIn);
+    }
+
+    // If there is a tile below right
+    if (below) {
+      recalculateAll(tileNumber-mWidth+1, enableCaveIn);
+    }
   }
 }

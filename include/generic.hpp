@@ -1,6 +1,8 @@
 #ifndef _GENERIC_HPP
 #define _GENERIC_HPP
 
+#include <irrlicht.h>
+
 #define TILE_SIZE 10.0f
 #define TILE_WALL_HEIGHT 12.5f
 

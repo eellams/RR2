@@ -1,15 +1,29 @@
 #include "geomobject.hpp"
 
 GeomObject::GeomObject() :
-  pMesh(NULL), pMeshSceneNode(NULL), pSelector(NULL), pParent(NULL) {
+  //pMesh(NULL), pMeshSceneNode(NULL), pSelector(NULL), pParent(NULL) {
+  pMeshSceneNode(NULL),
+  pSceneNode(NULL)
+{
+  pMesh = new irr::scene::SMesh();
+}
 
-  }
 
 GeomObject::~GeomObject() {
-  if (pParent != NULL) pParent->drop();
+  std::clog << "Deleting geomobject" << std::endl;
+
+  if (pSceneNode != NULL) {
+    pSceneNode->remove();
+    //pSceneNode->drop();
+    //delete pSceneNode;
+  }
+  if (pMeshSceneNode != NULL) {
+    //std::clog << "Removing gameobject" << std::endl;
+    //pMeshSceneNode->remove();
+    //pMeshSceneNode->drop();
+    //pMeshSceneNode = NULL;
+  }
   if (pMesh != NULL) pMesh->drop();
-  if (pMeshSceneNode != NULL) pMeshSceneNode->drop();
-  if (pSelector != NULL) pSelector->drop();
 }
 
 irr::scene::ITriangleSelector* GeomObject::getTriangleSelector() const {
@@ -17,22 +31,18 @@ irr::scene::ITriangleSelector* GeomObject::getTriangleSelector() const {
 }
 
 void GeomObject::setParent(irr::scene::ISceneNode* parent) {
-  pParent = parent;
-  if (pMeshSceneNode != NULL) pMeshSceneNode->setParent(parent);
+  pSceneNode->setParent(parent);
 }
 
 void GeomObject::setPosition(const irr::core::vector3df& pos) {
-  pMeshSceneNode->setPosition(pos);
+  pSceneNode->setPosition(pos);
 }
 
-void GeomObject::setTexture(const std::string& tex) {
-  // TODO this should be able to deal with multiple texture layers
-  //  as and when (if?) they are implemented
-  pMeshSceneNode->setMaterialTexture(0, pMeshSceneNode->getSceneManager()->getVideoDriver()->getTexture(tex.c_str()));
+void GeomObject::setTexture(const std::string& tex, const int& texturelayer) {
+  pMeshSceneNode->setMaterialTexture(texturelayer, pMeshSceneNode->getSceneManager()->getVideoDriver()->getTexture(tex.c_str()));
 }
 
-// TODO this needs to be user-configurable
-void GeomObject::setDebug() {
+void GeomObject::showBoundingBox() {
   pMeshSceneNode->setDebugDataVisible(irr::scene::EDS_BBOX);
 }
 
@@ -49,8 +59,6 @@ void GeomObject::setFlags() {
 }
 
 void GeomObject::addTriStrip(struct TriStrip& tris, irr::u32 bufferNum) {
-  if (pMesh == NULL) pMesh = new irr::scene::SMesh;
-
   irr::u16 i;
   irr::u16 noPoints;
   irr::u16 noTris;
@@ -109,29 +117,21 @@ void GeomObject::addTriStrip(struct TriStrip& tris, irr::u32 bufferNum) {
   pBuffer->recalculateBoundingBox();
   pMesh->setDirty();
   pMesh->recalculateBoundingBox();
-
-  // Set the parent
-  if (pMeshSceneNode == NULL) {
-    pMeshSceneNode = pParent->getSceneManager()->addMeshSceneNode(pMesh);
-    pMeshSceneNode->setParent(pParent);
-  }
+  pMeshSceneNode->setMesh(pMesh);
 
   // Set the flags
   setFlags();
 
-  pSelector = pMeshSceneNode->getSceneManager()->createTriangleSelector(pMesh, pMeshSceneNode);
-  pMeshSceneNode->setTriangleSelector(pSelector);
+  pMeshSceneNode->setTriangleSelector(pMeshSceneNode->getSceneManager()->createTriangleSelector(pMesh, pMeshSceneNode));
 }
 
 void GeomObject::clear() {
   // TODO is this memory safe?
-  if (pMesh != NULL) {
-    // Drop and reset pointer
-    pMesh->drop();
-    pMesh = NULL;
+  if (pMesh != NULL) pMesh->clear();
+}
 
-    // Remove and reset pointer
-    pMeshSceneNode->remove();
-    pMeshSceneNode = NULL;
-  }
+void GeomObject::initialise(irr::scene::ISceneManager* pmanager) {
+    pSceneNode = pmanager->addEmptySceneNode();
+    pMeshSceneNode = pmanager->addMeshSceneNode(pMesh);
+    pMeshSceneNode->setParent(pSceneNode);
 }

@@ -11,28 +11,41 @@
 class GeomObject {
 public:
   GeomObject();
+  GeomObject(const GeomObject &obj);
   ~GeomObject();
 
   // Getters
   irr::scene::ITriangleSelector* getTriangleSelector() const;
+  irr::scene::ISceneNode* getSceneNode() const {
+    return pSceneNode;
+  }
 
   // Setters
+  void setAlpha() {
+    //material.MaterialType = EMT_TRANSPARENT_ALPHA_CHANNEL;
+    pMeshSceneNode->setMaterialType(irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL);
+  }
+
   void setParent(irr::scene::ISceneNode* parent);
   void setPosition(const irr::core::vector3df& pos);
-  void setTexture(const std::string& tex);
-  void setDebug();
+  void setTexture(const std::string& tex, const int& texturelayer = 0);
   void setID(irr::s32 id);
+
+  void initialise(irr::scene::ISceneManager* pmanager);
+  void destroy();
+
+  void showBoundingBox();
 
   void addTriStrip(struct TriStrip& tris, irr::u32 bufferNum);
   void clear();
 
+
 protected:
   void setFlags();
 
-  irr::scene::ISceneNode* pParent;
   irr::scene::SMesh* pMesh;
   irr::scene::IMeshSceneNode* pMeshSceneNode;
-  irr::scene::ITriangleSelector* pSelector;
+  irr::scene::ISceneNode* pSceneNode;
 };
 
 #endif
