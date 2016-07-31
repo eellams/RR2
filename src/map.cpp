@@ -41,11 +41,13 @@ irr::scene::IMetaTriangleSelector* Map::getMetaTriangleSelectorP() const {
 void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initialising map '" << mName << "'" << std::endl;
 
+  // Initilise the types
   initialiseTileTypes();
   initialiseBuildingTypes();
   initialisePathTypes();
 
   // Check that the number of tiles is as expected
+  //  otherwise pad them out
   if (mTiles.size() != mWidth*mHeight) {
     std::cerr << "Unexpected number of tiles found.  Found: " << mTiles.size() << " expected: " << mWidth*mHeight << std::endl;
     std::cerr << "For development purposes, just going to pad it out" << std::endl;
@@ -59,18 +61,22 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
     std::clog << "Correct number of tiles found" << std::endl;
   }
 
+  // Initialise the actual instances of the types
   initialiseTiles(smgr->getRootSceneNode());
   initialiseBuildings(smgr->getRootSceneNode());
   initialisePaths(smgr->getRootSceneNode());
 
-  pTileSelector = pTileNode->getSceneManager()->createMetaTriangleSelector();
 
+  // The selector for the terrain
+  pTileSelector = pTileNode->getSceneManager()->createMetaTriangleSelector();
   for (auto child : pTileNode->getChildren()) {
     pTileSelector->addTriangleSelector(child->getTriangleSelector());
   }
+
 }
 
 void Map::mineTile(const irr::u32& tileNumber) {
+  // Change the tile into the type
   setTile(tileNumber, mTileTypes[mTiles[tileNumber].getTileType()].getMineInto(), true);
 
   // TODO dropping ore, etc.
@@ -80,8 +86,6 @@ void Map::mineTile(const irr::u32& tileNumber) {
 void Map::setTile(const irr::u32& tileNumber, const irr::u32& tileType, const bool& enableCaveIn) {
   struct Surround newSurround;
   struct Surround oldSurround;
-
-  // Set the new tile type
 
   std::clog << "Setting tile " << tileNumber;
   std::clog << " from " << mTiles[tileNumber].getTileType();
@@ -93,14 +97,19 @@ void Map::setTile(const irr::u32& tileNumber, const irr::u32& tileType, const bo
   // Change the tile
   mTiles[tileNumber].setTileType( tileType );
 
+  // Calculate the surrounding information
   newSurround = calculateSurround(tileNumber);
 
+  // Recalculate everything about the tile
   recalculateAll(tileNumber, enableCaveIn);
 
+  // If the surround information has changed, then recalculate the
+  //  surounding tiles
   if (!(oldSurround == newSurround))
     recalculateSurroundingTileModels(tileNumber, enableCaveIn);
 }
 
+// Serialisation
 template<class Archive>
 void Map::serialize(Archive & ar, const unsigned int version) {
   try {
@@ -121,6 +130,9 @@ void Map::serialize(Archive & ar, const unsigned int version) {
   }
 }
 
+// These two functions are needed in the souce file as a bit of a quirk that
+//  is required in order to not get linker errors when compiling
+//  Otherwise get errors when compiling the template to a .o file
 template void Map::serialize<boost::archive::xml_iarchive>(
     boost::archive::xml_iarchive & ar,
     const unsigned int version
@@ -155,6 +167,7 @@ void Map::initialisePathTypes() {
   // TODO is anything needed here?
 }
 
+// Initialises all of the tiles on the map
 void Map::initialiseTiles(irr::scene::ISceneNode* parentNode) {
   std::clog << "Initilising tiles" << std::endl;
 
@@ -177,6 +190,7 @@ void Map::initialiseTiles(irr::scene::ISceneNode* parentNode) {
   }
 }
 
+// Initialises all the buildings on the map
 void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
   std::clog << "Initialising buildings" << std::endl;
   irr::core::vector3df pos;
@@ -188,6 +202,10 @@ void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
   for (auto& building : mBuildings) {
     pos = tileNumberToPosition(building.second.getTileNumber());
 
+    // Ensure that the model sits in the middle of the tile
+    pos.X += TILE_SIZE * 0.5;
+    pos.Z += TILE_SIZE * 0.5f;
+
     // Initialise
     //  set parent, and load the model
     building.second.initialise(
@@ -198,6 +216,7 @@ void Map::initialiseBuildings(irr::scene::ISceneNode* parentNode) {
   }
 }
 
+// Initialises all the paths on the map
 void Map::initialisePaths(irr::scene::ISceneNode* parentNode) {
   std::clog << "Initialising paths" << std::endl;
   irr::core::vector3df pos;
@@ -207,6 +226,7 @@ void Map::initialisePaths(irr::scene::ISceneNode* parentNode) {
 
   for (auto& path : mPaths) {
     pos = tileNumberToPosition(path.second.getTileNumber());
+    pos.Y = 0;
 
     path.second.initialise(
       pPathNode,
@@ -433,12 +453,14 @@ struct Surround Map::calculateSurround(const irr::u32& tileNumber) {
   return toReturn;
 }
 
+// Recalculates everything to do with a specific tile
 void Map::recalculateAll(const irr::u32 &tileNumber, const bool &enableCaveIn) {
   recalculateTile(tileNumber, enableCaveIn);
   recalculateBuilding(tileNumber);
   recalculatePath(tileNumber);
 }
 
+// Recalculates the tile information (i.e. tile model)
 void Map::recalculateTile(const irr::u32& tileNumber, const bool& enableCaveIn) {
   struct Surround surround;
 
@@ -474,28 +496,35 @@ void Map::recalculateTile(const irr::u32& tileNumber, const bool& enableCaveIn) 
   }
 }
 
+// Recalculates a building (on a tile)
 void Map::recalculateBuilding(const irr::u32& tileNumber) {
   // TODO find buildings on tile, see if they can exist still
 }
 
+// Recalculates a path (on a tile)
 void Map::recalculatePath(const irr::u32& tileNumber) {
-  auto iterator = mPaths.find(tileNumber);
+  for (const auto &path : mPaths) {
 
-  if (iterator != mPaths.end()) {
-    if (!mPathTypes[iterator->second.getPathType()].isAllowedTileType( mTiles[tileNumber].getTileType() ) ) {
-      std::cout << "Path on tile " << tileNumber << " is on invalid tile - removing" << std::endl;
-      removePath(iterator->first);
+    if (path.second.getTileNumber() == tileNumber) {
+      std::clog << "TILE " << path.first << std::endl;
+      if (!mPathTypes[path.second.getPathType()].isAllowedTileType( mTiles[tileNumber].getTileType() ) ) {
+        std::cout << "Path on tile " << tileNumber << " is on invalid tile - removing" << std::endl;
+        removePath(path.first);
+      }
     }
+
   }
 }
 
-void Map::removeBuilding(const irr::u32& buildingId) {}
+// Mainly stub functions for removing objects
+void Map::removeBuilding(const irr::u32& buildingId) {
+  mBuildings.erase(buildingId);
+}
 void Map::removePath(const irr::u32& pathId) {
-  //mPaths[pathId].destroy();
   mPaths.erase(pathId);
-  //vec.erase(std::remove(vec.begin(), vec.end(), int_to_remove), vec.end());
 }
 
+// Converts a tile number into the bottom left position of a tile
 irr::core::vector3df Map::tileNumberToPosition(const int& tilenumber) {
   irr::core::vector3df pos;
   pos.set(
@@ -506,6 +535,8 @@ irr::core::vector3df Map::tileNumberToPosition(const int& tilenumber) {
   return pos;
 }
 
+// Recalculates the surrounding tiles for a given tile number
+//  i.e. takes into account the tiles that don't exist (by the edges)
 void Map::recalculateSurroundingTileModels(const int& tileNumber, const bool& enableCaveIn) {
   bool above;
   bool below;

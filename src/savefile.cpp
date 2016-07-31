@@ -1,11 +1,22 @@
 #include "savefile.hpp"
 #include "map.hpp"
 
+Map* SaveFile::getPMap() {
+  //return mMap;
+  return pMap;
+}
+
+void SaveFile::setPMap(Map *map) {
+  delete pMap;
+  pMap = new Map();
+  std::memcpy(pMap, map, sizeof(Map));
+  //*pMap = *map;
+}
+
 template<class Archive>
 void SaveFile::serialize(Archive & ar, const unsigned int version)
 {
-  ar & BOOST_SERIALIZATION_NVP(mMap);
-  //ar & boost::serialization::make_nvp("mMap", *pMap);
+  ar & boost::serialization::make_nvp("mMap", pMap);
 }
 
 template void SaveFile::serialize<boost::archive::xml_iarchive>(

@@ -25,7 +25,7 @@ Path::Path(const Path &obj) {
 }
 
 Path::~Path() {
-  delete pGeom;
+  //delete pGeom;
 }
 
 irr::u32 Path::getPathType() const { return mPathType; }
@@ -59,7 +59,7 @@ void Path::createModel() {
   tpoint.uv.set(0,0);
   tris.points.push_back(tpoint);
 
-  tpoint.pos.set(0,mCornerHeights[1]+0.01,TILE_SIZE);
+  tpoint.pos.set(0,mCornerHeights[0]+0.01,TILE_SIZE);
   tpoint.uv.set(0,1);
   tris.points.push_back(tpoint);
 

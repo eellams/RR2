@@ -4,7 +4,7 @@
 //#include "Serialiser/Example.hpp"
 
 //#include "Serialiser/ConfigFile.hpp"
-//#include "map.hpp"
+#include "map.hpp"
 #include "savefile.hpp"
 #include "rtscamera.h"
 
@@ -54,7 +54,8 @@ int main(int argc, char *argv[]) {
   RTSCamera* camera;                           // The RTS style camera
 
   MyEventReceiver receiver;        // Receiver for events (keypresses etc.)
-  std::ifstream ifs;               // For reading the input map file
+  std::ifstream ifs;               // For reading the input pMap->file
+  std::ofstream ofs;               // For writing the output file
   SaveFile readMap;                // Where the file is read to
   irr::core::line3d<irr::f32> ray; // Ray used for collision
 
@@ -64,8 +65,8 @@ int main(int argc, char *argv[]) {
   /*
   std::ofstream ofs("testOut.xml");
 
-  Map mapp("Some Name", "Some description", 10, 10);
-  SaveFile MapF(mapp);
+  Map pMap->("Some Name", "Some description", 10, 10);
+  SaveFile MapF(pMap->);
   boost::archive::xml_oarchive oa(ofs);
   oa << BOOST_SERIALIZATION_NVP(MapF);
 
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]) {
   smgr = device->getSceneManager();
   device->setWindowCaption(L"Irrlicht Example for SMesh usage.");
 
-  // Read the map file
+  // Read the pMap->file
   ifs.open("testIn.xml");
 
   // TODO this can't be declared at the top of the function
@@ -101,12 +102,11 @@ int main(int argc, char *argv[]) {
   ia >> BOOST_SERIALIZATION_NVP(readMap); // Read the map
 
   // TODO this can't be declared at the top of the function
-  Map& map = readMap.mMap;
-  //Map *pMap = readMap.pMap;
-  //Map map;
+  //Map& pMap->= readMap.mMap;
+  Map *pMap = readMap.getPMap();
 
-  // Initialise the map (setup data from the save file)
-  map.initialise(driver, smgr);
+  // Initialise the pMap->(setup data from the save file)
+  pMap->initialise(driver, smgr);
 
   std::clog << "Finished initialising" << std::endl;
 
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
   //Set collision for camera
   {
     collision = smgr->createCollisionResponseAnimator(
-      map.getMetaTriangleSelectorP(),
+      pMap->getMetaTriangleSelectorP(),
       camera,
       irr::core::vector3df(20,40,20),
       irr::core::vector3df(0,-2,0),
@@ -160,23 +160,23 @@ int main(int argc, char *argv[]) {
     }
 
     if(receiver.IsKeyDown(irr::KEY_KEY_1)) {
-      map.mineTile(18);
+      pMap->mineTile(18);
     }
 
     if(receiver.IsKeyDown(irr::KEY_KEY_2)) {
-      map.mineTile(28);
+      pMap->mineTile(28);
     }
 
     if(receiver.IsKeyDown(irr::KEY_KEY_3)) {
-      map.mineTile(22);
+      pMap->mineTile(22);
     }
 
     if (receiver.IsKeyDown(irr::KEY_KEY_4)) {
-      map.setTile(12, 0, false);
+      pMap->setTile(12, 0, false);
     }
 
     if (receiver.IsKeyDown(irr::KEY_KEY_5)) {
-      map.setTile(12, 1, false);
+      pMap->setTile(12, 1, false);
     }
 
     // Collision region
@@ -237,6 +237,13 @@ int main(int argc, char *argv[]) {
 
   // Drop the device once we're finished with it
   device->drop();
+
+  // Write to the output file
+  ofs.open("testOut.xml");
+  boost::archive::xml_oarchive oa(ofs);
+  readMap.setPMap(pMap);
+  oa << BOOST_SERIALIZATION_NVP(readMap);
+  ofs.flush();
 
   std::cout << "Program finished!" << std::endl;
 

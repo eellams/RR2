@@ -5,28 +5,28 @@
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 
-#include "map.hpp"
+//#include "map.hpp"
 #include "generic.hpp"
 
 class Map;
 
 class SaveFile {
 public:
-  SaveFile() {}// : mMap() {}
-  //SaveFile(Map &m)  : mMap(m) {}
+  SaveFile() {}
 
   // Serialised values
   // TODO this breaks encapsulation!
-  Map mMap;
+
+  Map* getPMap();
+
+  void setPMap(Map* map);
 
 private:
   friend class boost::serialization::access;
   template<class Archive>
-  void serialize(Archive & ar, const unsigned int version); /*
-  {
-    ar & BOOST_SERIALIZATION_NVP(mMap);
-    //ar & boost::serialization::make_nvp("mMap", *pMap);
-  }*/
+  void serialize(Archive & ar, const unsigned int version);
+
+  Map *pMap;
 };
 
 #endif
