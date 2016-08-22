@@ -2,15 +2,15 @@
 #include "map.hpp"
 
 Map* SaveFile::getPMap() {
-  //return mMap;
+
   return pMap;
 }
 
 void SaveFile::setPMap(Map *map) {
-  delete pMap;
+  // TODO we need to delete the old map somewhere
+  //delete pMap;
   pMap = new Map();
   std::memcpy(pMap, map, sizeof(Map));
-  //*pMap = *map;
 }
 
 template<class Archive>

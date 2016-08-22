@@ -3,7 +3,7 @@
 #include "geomobject.hpp"
 
 Path::Path() :
-  mPathId(0),
+  //mPathId(0),
   mPathType(0),
   mTileNumber(0),
   mCornerHeights(),
@@ -12,24 +12,13 @@ Path::Path() :
   pGeom = new GeomObject();
 }
 
-Path::Path(const Path &obj) {
-  pGeom = new GeomObject();
-  //pGeom->initialise(obj.pGeom->getSceneNode()->getSceneManager());
-
-  mPathId = obj.mPathId;
-  mPathType = obj.mPathType;
-  mTileNumber = obj.mTileNumber;
-  mCornerHeights = obj.mCornerHeights;
-
-
-}
-
 Path::~Path() {
   //delete pGeom;
 }
 
 irr::u32 Path::getPathType() const { return mPathType; }
 irr::u32 Path::getTileNumber() const { return mTileNumber; }
+bool Path::getPowered() const { return mPowered; }
 
 void Path::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
   mCornerHeights = cornerHeights;
@@ -45,7 +34,6 @@ void Path::initialise(irr::scene::ISceneNode* parent, const PathType& ptype, con
   pGeom->initialise(parent->getSceneManager());
   pGeom->setPosition(pos);
 }
-
 
 void Path::createModel() {
   struct TriStrip tris;
@@ -72,4 +60,12 @@ void Path::createModel() {
   tris.points.push_back(tpoint);
 
   pGeom->addTriStrip(tris, 1);
+}
+
+void Path::turnOff() {
+  mConducting = false;
+}
+
+void Path::turnOn() {
+  mConducting = true;
 }

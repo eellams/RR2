@@ -65,6 +65,7 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
   initialiseTiles(smgr->getRootSceneNode());
   initialiseBuildings(smgr->getRootSceneNode());
   initialisePaths(smgr->getRootSceneNode());
+  recalculatePathPower();
 
 
   // The selector for the terrain
@@ -482,6 +483,7 @@ void Map::recalculateTile(const irr::u32& tileNumber, const bool& enableCaveIn) 
 
     else {
       // A normal tile
+      //  i.e. to be calculated by the tile
       mTiles[tileNumber].setTexture(mTileTypes[mTiles[tileNumber].getTileType()].getTextureName());
     }
 
@@ -503,17 +505,31 @@ void Map::recalculateBuilding(const irr::u32& tileNumber) {
 
 // Recalculates a path (on a tile)
 void Map::recalculatePath(const irr::u32& tileNumber) {
-  for (const auto &path : mPaths) {
+  /*for (const auto &path : mPaths) {
 
+    // If we have found the path we are looking for
     if (path.second.getTileNumber() == tileNumber) {
-      std::clog << "TILE " << path.first << std::endl;
+
+      // If [now] on a path type that it is not allowed, remove it
       if (!mPathTypes[path.second.getPathType()].isAllowedTileType( mTiles[tileNumber].getTileType() ) ) {
         std::cout << "Path on tile " << tileNumber << " is on invalid tile - removing" << std::endl;
         removePath(path.first);
       }
     }
 
-  }
+    // Otherwise,if the tile is powered
+    else if (path.second.getPowered()) {
+      // Recursively set the nearby tiles to be conducting
+
+      bool haschanged = true;
+      std::vector<irr::u32> surroundingTileNumbers = getSurroundingTileNumbers(tileNumber);
+
+      std::clog << "Powered tile" << std::endl;
+      for (const int &tn : surroundingTileNumbers) {
+        std::clog << tn << std::endl;
+      }
+    }
+  }*/
 }
 
 // Mainly stub functions for removing objects
@@ -583,6 +599,72 @@ void Map::recalculateSurroundingTileModels(const int& tileNumber, const bool& en
     // If there is a tile below right
     if (below) {
       recalculateAll(tileNumber-mWidth+1, enableCaveIn);
+    }
+  }
+}
+
+void Map::setPathConducting(const irr::u32 &pathid) {
+  mPaths[pathid].turnOn();
+  mPaths[pathid].setTexture( mPathTypes[mPaths[pathid].getPathType()].getTextureConductingName() );
+}
+
+void Map::clearPathConducting(const irr::u32 &pathid) {
+  mPaths[pathid].turnOff();
+  mPaths[pathid].setTexture( mPathTypes[mPaths[pathid].getPathType()].getTextureName() );
+}
+
+void Map::recalculatePathPower() {
+  std::vector<irr::u32> pathIds;
+  std::vector<int> closedList;
+
+  for (const auto &path : mPaths) {
+    irr::u32 currentTile = path.second.getTileNumber();
+    pathIds.push_back(path.first);
+  }
+
+  // Assume that nothing is conducting
+  for (const irr::u32 &pathid : pathIds) {
+    // If is powered, then turn on
+    clearPathConducting(pathid);
+  }
+
+  // Work out what shoudl be condu
+  for (const irr::u32 &pathid : pathIds) {
+    // If is powered, then turn on
+    if (mPaths[pathid].getPowered()) {
+      closedList.clear();
+      turnOnPathNet(pathid, closedList);
+    }
+  }
+}
+
+void Map::turnOnPathNet(const int pathid, std::vector<int> &closedList) {
+  bool inSurroundingTileNumbers;
+  bool inCheckedList;
+  irr::u32 searchPathId;
+  irr::u32 searchTileNumber;
+
+  irr::u32 tileNumber = mPaths[pathid].getTileNumber();
+  std::vector<irr::u32> surroundingTileNumbers = getSurroundingTileNumbers(tileNumber);
+
+  closedList.push_back(pathid);
+  setPathConducting(pathid);
+
+  for (const std::pair<irr::u32, Path> &idpathpair : mPaths) {
+    searchPathId = idpathpair.first;
+    searchTileNumber = idpathpair.second.getTileNumber();
+
+    inSurroundingTileNumbers = std::find(surroundingTileNumbers.begin(), surroundingTileNumbers.end(), searchTileNumber) != surroundingTileNumbers.end();
+
+    if (!closedList.empty())
+      inCheckedList = std::find(closedList.begin(), closedList.end(), searchPathId) != closedList.end();
+    else
+      inCheckedList = false;
+
+
+    if (inSurroundingTileNumbers && !inCheckedList) {
+      closedList.push_back(pathid);
+      turnOnPathNet(idpathpair.first, closedList);
     }
   }
 }

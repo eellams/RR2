@@ -15,11 +15,12 @@ class PathType;
 class Path {
 public:
   Path();
-  Path(const Path &obj);
+  //Path(const Path &obj);
   ~Path();
 
   irr::u32 getPathType() const;
   irr::u32 getTileNumber() const;
+  bool getPowered() const;
 
   void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
   void setTexture(const std::string& tex);
@@ -30,6 +31,9 @@ public:
 
   void createModel();
 
+  void turnOff();
+  void turnOn();
+
 private:
   friend class boost::serialization::access;
 
@@ -37,15 +41,17 @@ private:
   void serialize(Archive & ar, const unsigned int version)
   {
     // TODO should it be serialised using X,Y or just tileNumber?
-    ar & BOOST_SERIALIZATION_NVP(mPathId);
     ar & BOOST_SERIALIZATION_NVP(mPathType);
     ar & BOOST_SERIALIZATION_NVP(mTileNumber);
+    ar & BOOST_SERIALIZATION_NVP(mPowered);
   }
 
   irr::u32 mPathId;
   irr::u32 mPathType;
   irr::u32 mTileNumber;
+  bool mPowered;
 
+  bool mConducting;
   std::array<irr::f32, 4> mCornerHeights;
 
   GeomObject *pGeom;

@@ -71,14 +71,16 @@
 			<item class_id="13" tracking_level="0" version="0">
 				<first>0</first>
 				<second class_id="14" tracking_level="0" version="0">
-					<mTexture>./data/tiletextures/path.png</mTexture>
+					<mTexture>./data/tiletextures/path_off.png</mTexture>
+          <mTextureConducting>./data/tiletextures/path.png</mTextureConducting>
+          <mConductive>1</mConductive>
 
 					<mAllowedTiles class_id="0" tracking_level="0" version="0">
 						<count>1</count>
 						<item_version>0</item_version>
 						<item>1</item>
-					</mAllowedTiles>
 
+					</mAllowedTiles>
 				</second>
 			</item>
 		</mPathTypes>
@@ -99,17 +101,44 @@
 		</mBuildings>
 
 		<mPaths class_id="18" tracking_level="0" version="0">
-			<count>1</count>
+			<count>4</count>
 			<item_version>0</item_version>
 
 			<item class_id="19" tracking_level="0" version="0">
 				<first>1</first>
 				<second class_id="20" tracking_level="0" version="0">
-					<mPathId>1</mPathId>
 					<mPathType>0</mPathType>
 					<mTileNumber>46</mTileNumber>
+          <mPowered>1</mPowered>
 				</second>
 			</item>
+
+      <item>
+        <first>3</first>
+        <second>
+          <mPathType>0</mPathType>
+          <mTileNumber>45</mTileNumber>
+          <mPowered>0</mPowered>
+        </second>
+      </item>
+
+      <item>
+        <first>4</first>
+        <second>
+          <mPathType>0</mPathType>
+          <mTileNumber>43</mTileNumber>
+          <mPowered>0</mPowered>
+        </second>
+      </item>
+
+      <item>
+        <first>5</first>
+        <second>
+          <mPathType>0</mPathType>
+          <mTileNumber>42</mTileNumber>
+          <mPowered>0</mPowered>
+        </second>
+      </item>
 		</mPaths>
 
 		<mTiles class_id="21" tracking_level="0" version="0">

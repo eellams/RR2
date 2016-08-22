@@ -42,7 +42,7 @@ build/%.o : src/%.cpp
 
 clean:
 	@echo " Cleaning...";
-	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(BINDIR)/$(TARGET)
+	@echo " $(RM) -r $(BUILDDIR) $(BINDIR)/$(TARGET)"; $(RM) -r $(BUILDDIR) $(BINDIR)/$(TARGET)
 
 # Tests
 #tester:

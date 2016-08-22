@@ -76,8 +76,56 @@ private:
   void removePath(const irr::u32& pathId);
 
   irr::core::vector3df tileNumberToPosition(const int& tilenumber);
+  std::vector<irr::u32> getSurroundingTileNumbers(const irr::u32& tileNumber) {
+    std::vector<irr::u32> toreturn;
+
+    bool above = false;
+    bool below = false;
+    bool left = false;
+    bool right = false;
+
+    // Tile below
+    if (tileNumber >= mWidth) {
+      below = true;
+    }
+
+    if (tileNumber < (mHeight-1)*mWidth) {
+      below = true;
+    }
+
+    if ((tileNumber > 0) && (tileNumber % mWidth != 0)) {
+      left = true;
+    }
+
+    if ((tileNumber + 1) % mWidth != 0) {
+      right = true;
+    }
+
+    if (above) {
+      toreturn.push_back(tileNumber + mWidth);
+      if (left) toreturn.push_back(tileNumber + mWidth - 1);
+      if (right) toreturn.push_back(tileNumber + mWidth + 1);
+    }
+
+    if (below) {
+      toreturn.push_back(tileNumber - mWidth);
+      if (left) toreturn.push_back(tileNumber - mWidth - 1);
+      if (right) toreturn.push_back(tileNumber - mWidth + 1);
+    }
+
+    if (left) toreturn.push_back(tileNumber - 1);
+
+    if (right) toreturn.push_back(tileNumber + 1);
+
+    return toreturn;
+  }
 
   void recalculateSurroundingTileModels(const int& tileNumber, const bool& enableCaveIn);
+
+  void setPathConducting(const irr::u32 &pathid);
+  void clearPathConducting(const irr::u32 &pathid);
+  void recalculatePathPower();
+  void turnOnPathNet(const int pathId, std::vector<int> &checkedList);
 
   // Serialised values
   std::string mName;

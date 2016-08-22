@@ -172,11 +172,11 @@ int main(int argc, char *argv[]) {
     }
 
     if (receiver.IsKeyDown(irr::KEY_KEY_4)) {
-      pMap->setTile(12, 0, false);
+      pMap->setTile(12, 0, true);
     }
 
     if (receiver.IsKeyDown(irr::KEY_KEY_5)) {
-      pMap->setTile(12, 1, false);
+      pMap->setTile(12, 1, true);
     }
 
     // Collision region
@@ -205,7 +205,6 @@ int main(int argc, char *argv[]) {
           intersection, // This will be the position of the collision
           hitTriangle, // This will be the triangle hit in the collision
           COLLISION_MASK_TILE, // This ensures that only nodes that we have
-                         // set up to be pickable are considered
           0); // Check the entire scene (this is actually the implicit default)
 
 
