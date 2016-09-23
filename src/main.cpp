@@ -159,6 +159,7 @@ int main(int argc, char *argv[]) {
       device->getTimer()->stop();
     }
 
+
     if(receiver.IsKeyDown(irr::KEY_KEY_1)) {
       pMap->mineTile(18);
     }
@@ -172,12 +173,21 @@ int main(int argc, char *argv[]) {
     }
 
     if (receiver.IsKeyDown(irr::KEY_KEY_4)) {
-      pMap->setTile(12, 0, true);
+      pMap->addBuilding(44, 0);
     }
 
     if (receiver.IsKeyDown(irr::KEY_KEY_5)) {
-      pMap->setTile(12, 1, true);
+      pMap->removeBuilding(1);
     }
+
+    /*if (receiver.IsKeyDown(irr::KEY_KEY_4)) {
+      pMap->setTile(18, 0, true);
+    }
+
+    if (receiver.IsKeyDown(irr::KEY_KEY_5)) {
+      pMap->setTile(18, 1, true);
+    }*/
+
 
     // Collision region
     {

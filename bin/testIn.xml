@@ -9,12 +9,13 @@
 		<mWidth>10</mWidth>
 		<mHeight>10</mHeight>
 
-		<mTileTypes class_id="2" tracking_level="0" version="0">
+		<TileTypes class_id="2" tracking_level="0" version="0">
 			<count>2</count>
 			<item_version>0</item_version>
 			<item class_id="3" tracking_level="0" version="0">
 				<first>0</first>
 				<second class_id="4" tracking_level="0" version="0">
+					<mName>Solid Rock</mName>
 					<mTexture>./data/tiletextures/wall.png</mTexture>
 					<mSolid>1</mSolid>
 					<mDrillTime>0.000000000e+00</mDrillTime>
@@ -25,6 +26,7 @@
 			<item class_id="3" tracking_level="0" version="0">
 				<first>1</first>
 				<second class_id="4" tracking_level="0" version="0">
+					<mName>Ground</mName>
 					<mTexture>./data/tiletextures/dirt.png</mTexture>
 					<mSolid>0</mSolid>
 					<mDrillTime>0.000000000e+00</mDrillTime>
@@ -32,9 +34,9 @@
 					<mMoveType>1</mMoveType>
 				</second>
 			</item>
-		</mTileTypes>
+		</TileTypes>
 
-		<mBuildingTypes class_id="5" tracking_level="0" version="0">
+		<BuildingTypes class_id="5" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
 			<item class_id="6" tracking_level="0" version="0">
@@ -63,7 +65,7 @@
 
 				</second>
 			</item>
-		</mBuildingTypes>
+		</BuildingTypes>
 
 		<mPathTypes class_id="12" tracking_level="0" version="0">
 			<count>1</count>
@@ -85,7 +87,7 @@
 			</item>
 		</mPathTypes>
 
-		<mBuildings class_id="15" tracking_level="0" version="0">
+		<Buildings class_id="15" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
 
@@ -98,7 +100,7 @@
 				</second>
 			</item>
 
-		</mBuildings>
+		</Buildings>
 
 		<mPaths class_id="18" tracking_level="0" version="0">
 			<count>4</count>
@@ -141,7 +143,7 @@
       </item>
 		</mPaths>
 
-		<mTiles class_id="21" tracking_level="0" version="0">
+		<Tiles class_id="21" tracking_level="0" version="0">
 			<count>100</count>
 			<item_version>0</item_version>
 			<item class_id="22" tracking_level="0" version="0">
@@ -644,6 +646,6 @@
 				<mTileType>0</mTileType>
 				<mHeight>0.00000000e+00</mHeight>
 			</item>
-		</mTiles>
+		</Tiles>
 	</mMap>
 </MapF>

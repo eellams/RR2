@@ -7,17 +7,28 @@ Model::Model() :
   mPosZ(0),
   mTextures(),
   mChildren(),
-  pMesh(NULL),
+  //pMesh(NULL),
   pNode(NULL)
 {
 
 }
 
 Model::~Model() {
-  //if (pMesh != NULL) pMesh->drop();
-  //if (pNode != NULL) pNode->drop();
-}
+  /*if (pMesh != NULL) pMesh->drop();
+  if (pNode != NULL) {
+    pNode->remove();
+    pNode->drop();
+  }*/
 
+  if (pNode != NULL) {
+    pNode->remove();
+    //pNode->drop();
+  }
+  /*if (pMesh != NULL) {
+    pMesh->remove();
+    pMesh->drop();
+  }*/
+}
 
 void Model::setPosition(const irr::core::vector3df &pos) {
   mPos = pos;
@@ -37,7 +48,9 @@ irr::core::vector3df Model::getPosition() const {
 }
 
 void Model::initialise(irr::scene::ISceneNode* parent) {
-  pMesh = parent->getSceneManager()->getMesh(mModelPath.c_str());
+  irr::scene::IAnimatedMesh *pMesh = parent->getSceneManager()->getMesh(mModelPath.c_str());
+
+  std::clog << pMesh << ", " << parent->getSceneManager() << std::endl;
 
   pNode = parent->getSceneManager()->addAnimatedMeshSceneNode(pMesh);
   pNode->setParent(parent);

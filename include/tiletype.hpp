@@ -12,9 +12,9 @@
 class TileType {
 public:
   TileType();
-  TileType(std::string t, bool s, irr::f32 dt, MoveType mt);
 
   // Getters
+  std::string getName() const;
   bool getSolid() const;
   std::string getTextureName() const;
   irr::f32 getMineInto() const;
@@ -27,6 +27,7 @@ private:
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version)
   {
+    ar & BOOST_SERIALIZATION_NVP(mName);
     ar & BOOST_SERIALIZATION_NVP(mTexture);
     ar & BOOST_SERIALIZATION_NVP(mSolid);
     ar & BOOST_SERIALIZATION_NVP(mDrillTime);
@@ -34,10 +35,11 @@ private:
     ar & BOOST_SERIALIZATION_NVP(mMoveType);
   }
 
+  std::string mName;
   std::string mTexture;
   bool mSolid;
   irr::f32 mDrillTime;
-  irr::f32 mMineInto;
+  irr::u32 mMineInto;
 
   MoveType mMoveType;
 };

@@ -19,6 +19,9 @@ class BuildingType;
 class Path;
 class PathType;
 
+class TileManager;
+class BuildingManager;
+
 class Map {
 public:
   Map();
@@ -32,94 +35,39 @@ public:
 
   void initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr);
   void mineTile(const irr::u32& tileNumber);
-
   void setTile(const irr::u32& tileNumber, const irr::u32& tileType, const bool& enableCaveIn = true);
+
+  void addBuilding(const irr::u32& tileNumber, const irr::u32& buildingType);
+
+  void removeBuilding(const irr::u32 &buildingid);
 
 private:
   friend class boost::serialization::access;
+  friend class BuildingManager;
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version);
 
   // Initialise tile types
   //  e.g. load textures, etc.
-  void initialiseTileTypes();
-  void initialiseBuildingTypes();
+  //void initialiseTileTypes();
+  //void initialiseBuildingTypes();
   void initialisePathTypes();
 
   // Initialise tiles
   //  e.g. initialise tile models
   //  TODO probably add a lot in here...
-  void initialiseTiles(irr::scene::ISceneNode* parentNode);
-  void initialiseBuildings(irr::scene::ISceneNode* parentNode);
+  //void initialiseTiles(irr::scene::ISceneNode* parentNode);
+  //void initialiseBuildings(irr::scene::ISceneNode* parentNode);
   void initialisePaths(irr::scene::ISceneNode* parentNode);
 
-  // The heightmap is not serialised, as each Tile has a height value
-  //  however, it is useful to have access to a dedicated heightmap
-  void createHeightMap();
-  void calculateTileCorners(const irr::u32& tileNumber);
-  struct Surround calculateSurround(const irr::u32& tileNumber);
-
   void recalculateAll(const irr::u32& tileNumber, const bool &enableCaveIn = true);
-  void recalculateTile(const irr::u32& tileNumber, const bool& enableCaveIn = true);
-  void recalculateBuilding(const irr::u32& tileNumber);
   void recalculatePath(const irr::u32& tileNumber);
 
-  void addBuilding(const irr::u32& tileNumber, const irr::u32& buildingType) {
-    // TODO adding buildings
-  }
-  void addPath(const irr::u32& tileNumber, const irr::u32& pathType) {
-    // TODO adding paths
-  }
-
-
-  void removeBuilding(const irr::u32& buildingId);
+  //void addBuilding(const irr::u32& tileNumber, const irr::u32& buildingType);
+  void addPath(const irr::u32& tileNumber, const irr::u32& pathType);
   void removePath(const irr::u32& pathId);
 
-  irr::core::vector3df tileNumberToPosition(const int& tilenumber);
-  std::vector<irr::u32> getSurroundingTileNumbers(const irr::u32& tileNumber) {
-    std::vector<irr::u32> toreturn;
-
-    bool above = false;
-    bool below = false;
-    bool left = false;
-    bool right = false;
-
-    // Tile below
-    if (tileNumber >= mWidth) {
-      below = true;
-    }
-
-    if (tileNumber < (mHeight-1)*mWidth) {
-      below = true;
-    }
-
-    if ((tileNumber > 0) && (tileNumber % mWidth != 0)) {
-      left = true;
-    }
-
-    if ((tileNumber + 1) % mWidth != 0) {
-      right = true;
-    }
-
-    if (above) {
-      toreturn.push_back(tileNumber + mWidth);
-      if (left) toreturn.push_back(tileNumber + mWidth - 1);
-      if (right) toreturn.push_back(tileNumber + mWidth + 1);
-    }
-
-    if (below) {
-      toreturn.push_back(tileNumber - mWidth);
-      if (left) toreturn.push_back(tileNumber - mWidth - 1);
-      if (right) toreturn.push_back(tileNumber - mWidth + 1);
-    }
-
-    if (left) toreturn.push_back(tileNumber - 1);
-
-    if (right) toreturn.push_back(tileNumber + 1);
-
-    return toreturn;
-  }
-
+  std::vector<irr::u32> getSurroundingTileNumbers(const irr::u32& tileNumber);
   void recalculateSurroundingTileModels(const int& tileNumber, const bool& enableCaveIn);
 
   void setPathConducting(const irr::u32 &pathid);
@@ -133,19 +81,11 @@ private:
   std::string mRoofTexture;
   size_t mWidth;
   size_t mHeight;
-  std::map<irr::u32, TileType> mTileTypes;
-  std::map<irr::u32, BuildingType> mBuildingTypes;
-  std::map<irr::u32, Building> mBuildings;
   std::map<irr::u32, PathType> mPathTypes;
   std::map<irr::u32, Path> mPaths;
-  std::vector<Tile> mTiles;
 
-  // Non-serialised values
-  std::vector<float> mHeightmap;
-  irr::scene::ISceneNode* pTileNode;
-  irr::scene::ISceneNode* pBuildingNode;
-  irr::scene::ISceneNode* pPathNode;
-  irr::scene::IMetaTriangleSelector* pTileSelector;
+  TileManager *pTileManager;
+  BuildingManager *pBuildingManager;
 };
 
 #endif

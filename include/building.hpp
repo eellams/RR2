@@ -17,35 +17,26 @@ public:
 
     }
 
-  ~Building() {
-    //if (pMesh != NULL) pMesh->drop();
-    //if (pNode != NULL) pNode->drop();
+  inline Building(const irr::u32 &bid, const irr::u32 &bt, const irr::u32 &tilenumber) :
+    mBuildingId(bid),
+    mBuildingType(bt),
+    mTileNumber(tilenumber)
+  {
+
   }
 
+  ~Building() {
+  }
+
+  irr::u32 getBuildingId() const { return mBuildingId; }
   irr::u32 getBuildingType() const { return mBuildingType; }
   irr::u32 getTileNumber() const { return mTileNumber; }
 
   void initialise(irr::scene::ISceneNode* parent, const BuildingType& btype, const irr::core::vector3df& pos) {
-    /*
-    pMesh = parent->getSceneManager()->getMesh(model.c_str() );
-
-    pNode = parent->getSceneManager()->addAnimatedMeshSceneNode(pMesh);
-    pNode->setParent(parent);
-
-    // TODO textures
-    //  need to create a Model class which can be serialised
-    //  including multiple models and textures
-    //  big TODO
-    //pNode->setMaterialTexture(0,parent->getSceneManager()->getVideoDriver()->getTexture(textureFile.c_str()));
-
-    pNode->setPosition(pos);
-    */
-
     mModel = btype.getModel();
     mModel.initialise(parent);
     mModel.setPosition(pos);
   }
-
 
 private:
   friend class boost::serialization::access;
@@ -64,9 +55,6 @@ private:
   irr::u32 mTileNumber;
 
   Model mModel;
-
-  //irr::scene::IAnimatedMesh* pMesh;
-  //irr::scene::IAnimatedMeshSceneNode* pNode;
 };
 
 #endif

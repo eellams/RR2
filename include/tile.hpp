@@ -26,8 +26,8 @@ public:
   irr::f32 getCornerHeightMax() const;
   irr::u32 getTileType() const;
   irr::scene::ITriangleSelector* getTriangleSelector();
-  struct Surround getSurround() const;
-  inline std::array<irr::f32, 4> getCornerHeigts() const {
+
+  inline std::array<irr::f32, 4> getCornerHeights() const {
     return mCornerHeights;
   }
 
@@ -40,7 +40,7 @@ public:
   void setTileType(const irr::u32& tileType);
 
   bool createModel(const struct Surround s);
-  void initialise(irr::scene::ISceneManager* pmanager);
+  void initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround);
 
 private:
   void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, const bool invertHigh=false);
@@ -59,7 +59,6 @@ private:
   irr::f32 mHeight;
 
   std::array<irr::f32, 4> mCornerHeights;
-  struct Surround mSurround;
 
   GeomObject *pGeom;
 

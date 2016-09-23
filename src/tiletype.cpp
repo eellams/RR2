@@ -1,14 +1,17 @@
 #include "tiletype.hpp"
 
 TileType::TileType() :
-  mTexture(""), mSolid(false), mDrillTime(0), mMoveType(GROUND) {
+  mTexture(""),
+  mSolid(false),
+  mDrillTime(0),
+  mMoveType(GROUND)
+{
+}
 
-  }
 
-TileType::TileType(std::string t, bool s, irr::f32 dt, MoveType mt) :
-  mTexture(t), mSolid(s), mDrillTime(dt), mMoveType(mt) {
-
-  }
+std::string TileType::getName() const {
+  return mName;
+}
 
 bool TileType::getSolid() const {
   return mSolid;

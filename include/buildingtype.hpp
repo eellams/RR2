@@ -15,8 +15,7 @@ public:
   BuildingType() :
     mName(""), mModel() {}
 
-  //std::string getModel() const { return mModel; }
-  //std::string getModel() const { return mModel.getModel(); }
+  std::string getName() { return mName; }
   Model getModel() const { return mModel; }
 private:
   friend class boost::serialization::access;

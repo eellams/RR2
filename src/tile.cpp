@@ -5,6 +5,7 @@
 Tile::Tile(size_t t) :
   mTileNumber(t),
   mHeight(0),
+  mCornerHeights({0,0,0,0}),
   pGeom(NULL)
 {
   pGeom = new GeomObject();
@@ -26,7 +27,7 @@ irr::f32  Tile::getCornerHeightMax() const {
   // TODO this could be made neater
   irr::f32 toReturn = 0;
 
-  for (auto h : mCornerHeights) {
+  for (const irr::f32 &h : mCornerHeights) {
     if (toReturn < h) toReturn = h;
   }
 
@@ -39,10 +40,6 @@ irr::u32  Tile::getTileType() const {
 
 irr::scene::ITriangleSelector* Tile::getTriangleSelector() {
   return pGeom->getTriangleSelector();
-}
-
-struct Surround Tile::getSurround() const {
-  return mSurround;
 }
 
 void Tile::setParent(irr::scene::ISceneNode* parent) {
@@ -69,15 +66,20 @@ void Tile::setTileType(const irr::u32& tileType) {
   mTileType = tileType;
 }
 
-void Tile::initialise(irr::scene::ISceneManager* pmanager) {
+void Tile::initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround) {
+  std::clog << "Initialising tile: " << mTileNumber << std::endl;
   pGeom->clear();
   pGeom->initialise(pmanager);
+
+  //struct Surround s;
+  //s.above = s.below = s.right = s.left = false;
+  //createModel(tilesurround);
 }
 
 bool Tile::createModel(struct Surround s) {
   std::array< std::pair<bool,bool>, 4> args;
 
-  mSurround = s;
+  //mSurround = s;
 
   // TODO I'm sure a loop could be used here...
   //  double TODO as I feel this is important
