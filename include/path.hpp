@@ -15,20 +15,24 @@ class PathType;
 class Path {
 public:
   Path();
-  //Path(const Path &obj);
+  Path(const irr::u32 &pid, const irr::u32 &pt, const irr::u32 &tilenumber);
+
   ~Path();
 
+  irr::u32 getPathId() const;
+  std::string getName() const;
   irr::u32 getPathType() const;
   irr::u32 getTileNumber() const;
   bool getPowered() const;
 
-  void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
   void setTexture(const std::string& tex);
   void setAlpha();
+  void setPathId(const irr::u32 &pid) { mPathId = pid; }
 
   void initialise(irr::scene::ISceneNode* parent, const PathType& ptype, const irr::core::vector3df& pos);
   void destroy();
 
+  void createModel(const std::array<irr::f32, 4> cornerheights);
   void createModel();
 
   void turnOff();
@@ -50,9 +54,9 @@ private:
   irr::u32 mPathType;
   irr::u32 mTileNumber;
   bool mPowered;
+  bool mConductive;
 
   bool mConducting;
-  std::array<irr::f32, 4> mCornerHeights;
 
   GeomObject *pGeom;
 };

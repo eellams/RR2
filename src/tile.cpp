@@ -68,7 +68,7 @@ void Tile::setTileType(const irr::u32& tileType) {
 
 void Tile::initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround) {
   std::clog << "Initialising tile: " << mTileNumber << std::endl;
-  pGeom->clear();
+  //pGeom->clear();
   pGeom->initialise(pmanager);
 
   //struct Surround s;

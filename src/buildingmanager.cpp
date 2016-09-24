@@ -55,9 +55,9 @@ void BuildingManager::add(const irr::u32 &tilenumber, const irr::u32 &btypeid, c
 }
 
 void BuildingManager::recalculateByTileNumber(const irr::u32 &tilenumber) {
-  for (const auto &building : mBuildings) {
-    if (building.second.getTileNumber() == tilenumber) {
-      recalculate(building.second.getTileNumber());
+  for (std::map<irr::u32, Building>::iterator it = mBuildings.begin(); it != mBuildings.end(); it++) {
+    if (it->second.getTileNumber() == tilenumber) {
+      recalculate(it->second.getTileNumber());
     }
   }
 }
@@ -79,7 +79,7 @@ std::map<irr::u32, BuildingType> BuildingManager::getBuildingTypes() const {
   return mBuildingTypes;
 }
 
-void BuildingManager::setBuildings(const std::map<irr::u32, Building> buildings) {
+void BuildingManager::setBuildings(const std::map<irr::u32, Building> &buildings) {
   mBuildings = buildings;
 }
 

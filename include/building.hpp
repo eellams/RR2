@@ -13,7 +13,7 @@
 class Building {
 public:
   inline Building() :
-    mBuildingId(0), mBuildingType(0), mTileNumber(0) {//, pMesh(NULL), pNode(NULL) {
+    mBuildingId(0), mBuildingType(0), mTileNumber(0) {
 
     }
 
@@ -26,6 +26,7 @@ public:
   }
 
   ~Building() {
+    
   }
 
   irr::u32 getBuildingId() const { return mBuildingId; }

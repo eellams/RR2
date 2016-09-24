@@ -11,7 +11,6 @@
 class GeomObject {
 public:
   GeomObject();
-  GeomObject(const GeomObject &obj);
   ~GeomObject();
 
   // Getters
@@ -24,6 +23,11 @@ public:
   void setAlpha() {
     //material.MaterialType = EMT_TRANSPARENT_ALPHA_CHANNEL;
     pMeshSceneNode->setMaterialType(irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL);
+  }
+
+  inline void remove() {
+    std::clog << pSceneNode << std::endl;
+    if (pSceneNode != NULL) pSceneNode->remove();
   }
 
   void setParent(irr::scene::ISceneNode* parent);

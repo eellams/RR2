@@ -2,6 +2,7 @@
 #define _GENERIC_HPP
 
 #include <irrlicht.h>
+#include <vector>
 
 #define TILE_SIZE 10.0f
 #define TILE_WALL_HEIGHT 12.5f
@@ -29,7 +30,7 @@ struct Surround {
   bool current, below, left, right, above;
   bool belowLeft, belowRight, aboveLeft, aboveRight;
 
-  inline bool operator==(Surround a) {
+  inline bool operator==(Surround &a) {
     if (a.current == current &&
       a.below == below &&
       a.left == left &&

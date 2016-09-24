@@ -56,6 +56,10 @@ irr::f32 TileManager::getMaxTileHeight(const irr::u32 &tilenumber) {
   return mTiles[tilenumber].getCornerHeightMax();
 }
 
+std::array<irr::f32, 4> TileManager::getTileHeight(const irr::u32 &tilenumber) {
+  return mTiles[tilenumber].getCornerHeights();
+}
+
 // Set tiles
 //  to the values serialised from the map file
 void TileManager::setTiles(const std::vector< Tile> &tiles) {
@@ -380,7 +384,7 @@ void TileManager::calculateTileCorners(const irr::u32& tileNumber) {
 }
 
 // Converts a tile number into the bottom left position of a tile
-irr::core::vector3df TileManager::tileNumberToPosition(const int& tilenumber) {
+/*irr::core::vector3df TileManager::tileNumberToPosition(const int& tilenumber) {
   irr::core::vector3df pos;
   pos.set(
     (tilenumber % mWidth)*TILE_SIZE,
@@ -388,4 +392,4 @@ irr::core::vector3df TileManager::tileNumberToPosition(const int& tilenumber) {
     (tilenumber / mWidth)*TILE_SIZE
   );
   return pos;
-}
+}*/

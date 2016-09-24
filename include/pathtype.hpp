@@ -11,6 +11,7 @@ class PathType {
 public:
   PathType();
 
+  std::string getName() const { return mName; }
   std::string getTextureName() const { return mTexture; }
   std::string getTextureConductingName() const { return mTextureConducting; }
   bool getConductive() const { return mConductive; }
@@ -24,12 +25,14 @@ private:
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version)
   {
+    ar & BOOST_SERIALIZATION_NVP(mName);
     ar & BOOST_SERIALIZATION_NVP(mTexture);
     ar & BOOST_SERIALIZATION_NVP(mTextureConducting);
     ar & BOOST_SERIALIZATION_NVP(mConductive);
     ar & BOOST_SERIALIZATION_NVP(mAllowedTiles);
   }
 
+  std::string mName;
   std::string mTexture;
   std::string mTextureConducting;
   bool mConductive;

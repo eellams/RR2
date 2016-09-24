@@ -8,18 +8,24 @@
 #include "tilemanager.hpp"
 #include "buildingmanager.hpp"
 
+#include "tiledmanager.hpp"
+
+#include "pathmanager.hpp"
+
 Map::Map() :
   mName(""),
   mDescription(""),
   mWidth(0),
   mHeight(0),
-  mPathTypes(),
-  mPaths(),
+  //mPathTypes(),
+  //mPaths(),
   pTileManager(NULL),
-  pBuildingManager(NULL)
+  pBuildingManager(NULL),
+  pPathManager(NULL)
 {
   pTileManager = new TileManager();
   pBuildingManager = new BuildingManager();
+  pPathManager = new PathManager();
 }
 
 Map::~Map() {
@@ -31,7 +37,6 @@ std::string Map::getName() const {
 }
 
 irr::scene::IMetaTriangleSelector* Map::getMetaTriangleSelectorP() const {
-  //return pTileSelector;
   return pTileManager->getTileSelector();
 }
 
@@ -40,9 +45,11 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
   std::clog << "Initialising map '" << mName << "'" << std::endl;
 
   pTileManager->initialise(smgr->getRootSceneNode());
-
   pBuildingManager->initialise(smgr->getRootSceneNode());
-  
+  pPathManager->initialise(smgr->getRootSceneNode());
+
+  // Initialise buildings
+  //  needs to be here, as need access to tile heights
   for (auto& building : pBuildingManager->getBuildings()) {
     pBuildingManager->add(
       building.second.getTileNumber(),
@@ -52,17 +59,15 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
     );
   }
 
-  // Initilise the types
-  //initialiseTileTypes();
-  //initialiseBuildingTypes();
-  ////initialisePathTypes();
-
-  // Initialise the actual instances of the types
-  //initialiseTiles(smgr->getRootSceneNode());
-  //initialiseBuildings(smgr->getRootSceneNode());
-  ////initialisePaths(smgr->getRootSceneNode());
-  ////recalculatePathPower();
-
+  for (auto& path : pPathManager->getInstances()) {
+    pPathManager->add(
+      path.second.getTileNumber(),
+      path.second.getPathType(),
+      pTileManager->getTileHeight(path.second.getTileNumber()),
+      path.second.getPathId()
+    );
+  }
+  pPathManager->recalculatePower();
 }
 
 void Map::mineTile(const irr::u32& tileNumber) {
@@ -101,6 +106,9 @@ void Map::serialize(Archive & ar, const unsigned int version) {
     std::map<irr::u32, BuildingType> BuildingTypes = pBuildingManager->getBuildingTypes();
     std::map<irr::u32, Building> Buildings = pBuildingManager->getBuildings();
 
+    std::map<irr::u32, PathType> PathTypes = pPathManager->getTypes();
+    std::map<irr::u32, Path> Paths = pPathManager->getInstances();
+
     ar & BOOST_SERIALIZATION_NVP(mName);
     ar & BOOST_SERIALIZATION_NVP(mDescription);
     ar & BOOST_SERIALIZATION_NVP(mRoofTexture);
@@ -108,9 +116,9 @@ void Map::serialize(Archive & ar, const unsigned int version) {
     ar & BOOST_SERIALIZATION_NVP(mHeight);
     ar & BOOST_SERIALIZATION_NVP(TileTypes);
     ar & BOOST_SERIALIZATION_NVP(BuildingTypes);
-    ar & BOOST_SERIALIZATION_NVP(mPathTypes);
+    ar & BOOST_SERIALIZATION_NVP(PathTypes);
     ar & BOOST_SERIALIZATION_NVP(Buildings);
-    ar & BOOST_SERIALIZATION_NVP(mPaths);
+    ar & BOOST_SERIALIZATION_NVP(Paths);
     ar & BOOST_SERIALIZATION_NVP(Tiles);
 
     pTileManager->setTileTypes(TileTypes);
@@ -123,6 +131,11 @@ void Map::serialize(Archive & ar, const unsigned int version) {
     pBuildingManager->setBuildings(Buildings);
     pBuildingManager->setWidth(mWidth);
     pBuildingManager->setHeight(mHeight);
+
+    pPathManager->setTypes(PathTypes);
+    pPathManager->setInstances(Paths);
+    pPathManager->setWidth(mWidth);
+    pPathManager->setHeight(mHeight);
   }
   catch (boost::archive::archive_exception& ex) {
     std::clog << ex.what() << std::endl;
@@ -141,56 +154,11 @@ template void Map::serialize<boost::archive::xml_oarchive>(
     const unsigned int version
 );
 
-void Map::initialisePathTypes() {
-  // TODO is anything needed here?
-}
-
-// Initialises all the paths on the map
-void Map::initialisePaths(irr::scene::ISceneNode* parentNode) {
-  //std::clog << "Initialising paths" << std::endl;
-  //irr::core::vector3df pos;
-
-  //pPathNode = parentNode->getSceneManager()->addEmptySceneNode();
-  //pPathNode->setParent(parentNode);
-
-  /*for (auto& path : mPaths) {
-    //pos = tileNumberToPosition(path.second.getTileNumber());
-    pos.set(
-      (path.second.getTileNumber() % mWidth)*TILE_SIZE,
-      0,//mTiles[tilenumber].getCornerHeightMax(),
-      (path.second.getTileNumber() / mWidth)*TILE_SIZE
-    );
-
-    //pos.Y = 0;
-
-    path.second.initialise(
-      pPathNode,
-      mPathTypes[path.second.getPathType()],
-      pos
-    );
-
-    //path.second.setCornerHeights(mTiles[path.second.getTileNumber()].getCornerHeigts());
-    path.second.setCornerHeights(createTileCorners(path.second.getTileNumber()));
-    path.second.createModel();
-    path.second.setTexture( mPathTypes[path.second.getPathType()].getTextureName() );
-    path.second.setAlpha();
-  }*/
-}
-
 // Recalculates everything to do with a specific tile
 void Map::recalculateAll(const irr::u32 &tileNumber, const bool &enableCaveIn) {
-  /*recalculateTile(tileNumber, enableCaveIn);
-  //recalculateBuilding(tileNumber);
-  recalculatePath(tileNumber);*/
-
   pTileManager->recalculate(tileNumber);
   pBuildingManager->recalculateByTileNumber(tileNumber);
-  //recalculatePath(tileNumber);
-}
-
-// Recalculates a path (on a tile)
-void Map::recalculatePath(const irr::u32& tileNumber) {
-
+  pPathManager->recalculateByTileNumber(tileNumber);
 }
 
 void Map::addBuilding(const irr::u32 &tileNumber, const irr::u32 &buildingType) {
@@ -201,57 +169,18 @@ void Map::removeBuilding(const irr::u32 &buildingid) {
   pBuildingManager->remove(buildingid);
 }
 
-void Map::addPath(const irr::u32& tileNumber, const irr::u32& pathType) {
+void Map::addPath(const irr::u32 &tilenumber, const irr::u32 &pathtype, const irr::u32 &knownid) {
   // TODO adding paths
+  pPathManager->add(
+    tilenumber,
+    pathtype,
+    pTileManager->getTileHeight(tilenumber),
+    knownid
+  );
 }
 
-void Map::removePath(const irr::u32& pathId) {
-  mPaths.erase(pathId);
-}
-
-// Returns a list of the tile numbers of the tiles surrounding a particular tile
-std::vector<irr::u32> Map::getSurroundingTileNumbers(const irr::u32& tileNumber) {
-  std::vector<irr::u32> toreturn;
-
-  bool above = false;
-  bool below = false;
-  bool left = false;
-  bool right = false;
-
-  // Tile below
-  if (tileNumber >= mWidth) {
-    below = true;
-  }
-
-  if (tileNumber < (mHeight-1)*mWidth) {
-    below = true;
-  }
-
-  if ((tileNumber > 0) && (tileNumber % mWidth != 0)) {
-    left = true;
-  }
-
-  if ((tileNumber + 1) % mWidth != 0) {
-    right = true;
-  }
-
-  if (above) {
-    toreturn.push_back(tileNumber + mWidth);
-    if (left) toreturn.push_back(tileNumber + mWidth - 1);
-    if (right) toreturn.push_back(tileNumber + mWidth + 1);
-  }
-
-  if (below) {
-    toreturn.push_back(tileNumber - mWidth);
-    if (left) toreturn.push_back(tileNumber - mWidth - 1);
-    if (right) toreturn.push_back(tileNumber - mWidth + 1);
-  }
-
-  if (left) toreturn.push_back(tileNumber - 1);
-
-  if (right) toreturn.push_back(tileNumber + 1);
-
-  return toreturn;
+void Map::removePath(const irr::u32& pathid) {
+  pPathManager->remove(pathid);
 }
 
 // Recalculates the surrounding tiles for a given tile number
@@ -302,72 +231,6 @@ void Map::recalculateSurroundingTileModels(const int& tileNumber, const bool& en
     // If there is a tile below right
     if (below) {
       recalculateAll(tileNumber-mWidth+1, enableCaveIn);
-    }
-  }
-}
-
-void Map::setPathConducting(const irr::u32 &pathid) {
-  mPaths[pathid].turnOn();
-  mPaths[pathid].setTexture( mPathTypes[mPaths[pathid].getPathType()].getTextureConductingName() );
-}
-
-void Map::clearPathConducting(const irr::u32 &pathid) {
-  mPaths[pathid].turnOff();
-  mPaths[pathid].setTexture( mPathTypes[mPaths[pathid].getPathType()].getTextureName() );
-}
-
-void Map::recalculatePathPower() {
-  std::vector<irr::u32> pathIds;
-  std::vector<int> closedList;
-
-  for (const auto &path : mPaths) {
-    irr::u32 currentTile = path.second.getTileNumber();
-    pathIds.push_back(path.first);
-  }
-
-  // Assume that nothing is conducting
-  for (const irr::u32 &pathid : pathIds) {
-    // If is powered, then turn on
-    clearPathConducting(pathid);
-  }
-
-  // Work out what shoudl be condu
-  for (const irr::u32 &pathid : pathIds) {
-    // If is powered, then turn on
-    if (mPaths[pathid].getPowered()) {
-      closedList.clear();
-      turnOnPathNet(pathid, closedList);
-    }
-  }
-}
-
-void Map::turnOnPathNet(const int pathid, std::vector<int> &closedList) {
-  bool inSurroundingTileNumbers;
-  bool inCheckedList;
-  irr::u32 searchPathId;
-  irr::u32 searchTileNumber;
-
-  irr::u32 tileNumber = mPaths[pathid].getTileNumber();
-  std::vector<irr::u32> surroundingTileNumbers = getSurroundingTileNumbers(tileNumber);
-
-  closedList.push_back(pathid);
-  setPathConducting(pathid);
-
-  for (const std::pair<irr::u32, Path> &idpathpair : mPaths) {
-    searchPathId = idpathpair.first;
-    searchTileNumber = idpathpair.second.getTileNumber();
-
-    inSurroundingTileNumbers = std::find(surroundingTileNumbers.begin(), surroundingTileNumbers.end(), searchTileNumber) != surroundingTileNumbers.end();
-
-    if (!closedList.empty())
-      inCheckedList = std::find(closedList.begin(), closedList.end(), searchPathId) != closedList.end();
-    else
-      inCheckedList = false;
-
-
-    if (inSurroundingTileNumbers && !inCheckedList) {
-      closedList.push_back(pathid);
-      turnOnPathNet(idpathpair.first, closedList);
     }
   }
 }

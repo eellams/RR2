@@ -5,25 +5,31 @@ GeomObject::GeomObject() :
   pMeshSceneNode(NULL),
   pSceneNode(NULL)
 {
-  pMesh = new irr::scene::SMesh();
+  //pMesh = new irr::scene::SMesh();
 }
 
 
 GeomObject::~GeomObject() {
   std::clog << "Deleting geomobject" << std::endl;
 
+  //clear();
+
   if (pSceneNode != NULL) {
+
     pSceneNode->remove();
     //pSceneNode->drop();
     //delete pSceneNode;
   }
-  if (pMeshSceneNode != NULL) {
-    //std::clog << "Removing gameobject" << std::endl;
-    //pMeshSceneNode->remove();
-    //pMeshSceneNode->drop();
+  /*if (pMeshSceneNode != NULL) {
+    std::clog << "Removing gameobject" << std::endl;
+    pMeshSceneNode->removeAll();
+    pMeshSceneNode->drop();
     //pMeshSceneNode = NULL;
   }
-  if (pMesh != NULL) pMesh->drop();
+  if (pMesh != NULL) {
+    //pMesh->remove();
+    pMesh->drop();
+  }*/
 }
 
 irr::scene::ITriangleSelector* GeomObject::getTriangleSelector() const {
@@ -127,11 +133,19 @@ void GeomObject::addTriStrip(struct TriStrip& tris, irr::u32 bufferNum) {
 
 void GeomObject::clear() {
   // TODO is this memory safe?
-  if (pMesh != NULL) pMesh->clear();
+  if (pMesh != NULL) {
+    pMesh->clear();
+    //if (pMeshSceneNode != NULL)
+      //pMeshSceneNode->setMesh(pMesh);
+  }
+
+  //if (pMeshSceneNode != NULL) pMeshSceneNode->getMesh()->clear();
 }
 
 void GeomObject::initialise(irr::scene::ISceneManager* pmanager) {
+    pMesh = new irr::scene::SMesh();
     pSceneNode = pmanager->addEmptySceneNode();
     pMeshSceneNode = pmanager->addMeshSceneNode(pMesh);
     pMeshSceneNode->setParent(pSceneNode);
+    std::clog << "Initialised GeomObject " << pMeshSceneNode << std::endl;
 }

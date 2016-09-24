@@ -21,6 +21,7 @@ public:
   irr::u32 getTileMineInto(const irr::u32 &tilenumber);
   void setTileTileType(const irr::u32& tilenumber, const irr::u32& tiletype);
   irr::f32 getMaxTileHeight(const irr::u32 &tilenumber);
+  std::array<irr::f32, 4> getTileHeight(const irr::u32 &tilenumber);
 
   void setTiles(const std::vector<Tile> &tiles);
   void setTileTypes(const std::map<irr::u32, TileType> &ttypes);
@@ -40,7 +41,7 @@ private:
   void calculateTileCorners(const irr::u32& tileNumber);
 
   struct Surround calculateSurround(const irr::u32& tileNumber);
-  irr::core::vector3df tileNumberToPosition(const int& tilenumber);
+  //irr::core::vector3df tileNumberToPosition(const int& tilenumber);
 
   irr::u32 mWidth;
   irr::u32 mHeight;

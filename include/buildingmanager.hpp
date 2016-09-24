@@ -15,7 +15,7 @@ public:
   std::map<irr::u32, Building> getBuildings() const;
   std::map<irr::u32, BuildingType> getBuildingTypes() const;
 
-  void setBuildings(const std::map<irr::u32, Building> buildings);
+  void setBuildings(const std::map<irr::u32, Building> &buildings);
   void setBuildingTypes(const std::map<irr::u32, BuildingType> &btypes);
   void setWidth(const irr::u32 &width);
   void setHeight(const irr::u32 &height);

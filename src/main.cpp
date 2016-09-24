@@ -180,6 +180,14 @@ int main(int argc, char *argv[]) {
       pMap->removeBuilding(1);
     }
 
+    if (receiver.IsKeyDown(irr::KEY_KEY_6)) {
+      pMap->addPath(41, 0);
+    }
+
+    if (receiver.IsKeyDown(irr::KEY_KEY_7)) {
+      pMap->removePath(1);
+    }
+
     /*if (receiver.IsKeyDown(irr::KEY_KEY_4)) {
       pMap->setTile(18, 0, true);
     }

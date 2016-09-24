@@ -67,12 +67,13 @@
 			</item>
 		</BuildingTypes>
 
-		<mPathTypes class_id="12" tracking_level="0" version="0">
+		<PathTypes class_id="12" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
 			<item class_id="13" tracking_level="0" version="0">
 				<first>0</first>
 				<second class_id="14" tracking_level="0" version="0">
+					<mName>Power Path</mName>
 					<mTexture>./data/tiletextures/path_off.png</mTexture>
           <mTextureConducting>./data/tiletextures/path.png</mTextureConducting>
           <mConductive>1</mConductive>
@@ -85,7 +86,7 @@
 					</mAllowedTiles>
 				</second>
 			</item>
-		</mPathTypes>
+		</PathTypes>
 
 		<Buildings class_id="15" tracking_level="0" version="0">
 			<count>1</count>
@@ -102,8 +103,8 @@
 
 		</Buildings>
 
-		<mPaths class_id="18" tracking_level="0" version="0">
-			<count>4</count>
+		<Paths class_id="18" tracking_level="0" version="0">
+			<count>5</count>
 			<item_version>0</item_version>
 
 			<item class_id="19" tracking_level="0" version="0">
@@ -141,7 +142,16 @@
           <mPowered>0</mPowered>
         </second>
       </item>
-		</mPaths>
+
+			<item>
+				<first>6</first>
+				<second>
+					<mPathType>0</mPathType>
+					<mTileNumber>44</mTileNumber>
+					<mPowered>1</mPowered>
+				</second>
+			</item>
+		</Paths>
 
 		<Tiles class_id="21" tracking_level="0" version="0">
 			<count>100</count>
