@@ -11,7 +11,9 @@ class Map;
 
 class SaveFile {
 public:
-  SaveFile() {}
+  SaveFile();
+  SaveFile(const SaveFile &obj);
+  ~SaveFile();
 
   // Serialised values
   // TODO this breaks encapsulation!

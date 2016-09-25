@@ -9,6 +9,11 @@ BuildingManager::BuildingManager() :
 
 }
 
+BuildingManager::BuildingManager(const BuildingManager &obj) :
+  TiledManager<BuildingType, Building>(obj)
+{
+}
+
 BuildingManager::~BuildingManager() {
 
 }

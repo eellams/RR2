@@ -17,6 +17,22 @@ public:
   {
 
   }
+
+  TiledManager(const TiledManager &obj) :
+    mId(obj.mId),
+    mTypes(obj.mTypes),
+    mInstances(obj.mInstances),
+    pNode(NULL)
+  {
+  }
+
+  ~TiledManager() {
+    if (pNode) {
+      pNode->removeAll();
+      pNode->remove();
+    }
+  }
+
   void setWidth(const irr::u32 &width) {
     mWidth = width;
   }

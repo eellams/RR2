@@ -11,6 +11,7 @@
 class Model {
 public:
   Model();
+  Model(const Model &obj);
   ~Model();
 
   void setPosition(const irr::core::vector3df &pos);
@@ -20,8 +21,6 @@ public:
   irr::core::vector3df getPosition() const;
 
   void initialise(irr::scene::ISceneNode* parent);
-
-  void remove();
 
 private:
   friend class boost::serialization::access;

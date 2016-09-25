@@ -1,8 +1,21 @@
 #include "savefile.hpp"
 #include "map.hpp"
 
-Map* SaveFile::getPMap() {
+SaveFile::SaveFile() :
+  pMap(new Map())
+{
+}
 
+SaveFile::SaveFile(const SaveFile &obj) :
+  pMap(new Map(*obj.pMap))
+{
+}
+
+SaveFile::~SaveFile() {
+  delete pMap;
+}
+
+Map* SaveFile::getPMap() {
   return pMap;
 }
 

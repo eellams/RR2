@@ -11,6 +11,7 @@ class BuildingType;
 class BuildingManager : public TiledManager<BuildingType, Building> {
 public:
   BuildingManager();
+  BuildingManager(const BuildingManager &obj);
   ~BuildingManager();
 
   void add(const irr::u32 &tilenumber,

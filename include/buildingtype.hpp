@@ -12,12 +12,21 @@
 
 class BuildingType {
 public:
-  BuildingType() :
-    mName(""), mModel() {}
+  inline BuildingType() :
+    mName(""),
+    mModel()
+  {
+  }
+
+  inline BuildingType(const BuildingType &obj) :
+    mName(obj.mName),
+    mModel(obj.mModel)
+  {
+  }
 
   std::string getName() { return mName; }
   Model getModel() const { return mModel; }
-  
+
 private:
   friend class boost::serialization::access;
 

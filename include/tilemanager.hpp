@@ -12,6 +12,7 @@ class TileType;
 class TileManager : public TiledManager<TileType, Tile> {
 public:
   TileManager();
+  TileManager(const TileManager &obj);
   ~TileManager();
 
   irr::scene::IMetaTriangleSelector* getTileSelector() const;
@@ -27,8 +28,6 @@ public:
     const std::array<irr::f32, 4> &cornerheights,
     const irr::u32 &knownid = 0) {};
   virtual void remove(const irr::u32 &id) {};
-  //virtual void recalculate(const irr::u32 &id) {};
-  //virtual void recalculateByTileNumber(const irr::u32 &tilenumber) {};
 
   void initialise(irr::scene::ISceneNode *parentnode);
 

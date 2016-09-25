@@ -12,6 +12,8 @@
 class TileType {
 public:
   TileType();
+  TileType(const TileType &obj);
+  ~TileType();
 
   // Getters
   std::string getName() const;

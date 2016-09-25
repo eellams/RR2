@@ -9,6 +9,14 @@ PathManager::PathManager() : TiledManager<PathType, Path>() {
 
 }
 
+PathManager::PathManager(const PathManager &obj) :
+  TiledManager<PathType, Path>(obj)
+{
+}
+
+PathManager::~PathManager() {
+}
+
 // Add a new path
 void PathManager::add(const irr::u32 &tilenumber,
   const irr::u32 &tid,

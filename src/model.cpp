@@ -7,16 +7,27 @@ Model::Model() :
   mPosZ(0),
   mTextures(),
   mChildren(),
-  //pMesh(NULL),
+  pMesh(NULL),
   pNode(NULL)
 {
+}
 
+Model::Model(const Model &obj) :
+  mModelPath(obj.mModelPath),
+  mPosX(obj.mPosX),
+  mPosY(obj.mPosY),
+  mPosZ(obj.mPosZ),
+  mTextures(obj.mTextures),
+  mChildren(obj.mChildren),
+  mPos(obj.mPos),
+  pMesh(NULL),
+  pNode(NULL)
+{
 }
 
 Model::~Model() {
   if (pNode != NULL) {
     pNode->remove();
-
   }
 }
 
@@ -51,10 +62,6 @@ void Model::initialise(irr::scene::ISceneNode* parent) {
   }
 
   setFlags();
-}
-
-void Model::remove() {
-  pNode->remove();
 }
 
 void Model::setFlags() {

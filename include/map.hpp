@@ -26,6 +26,7 @@ class PathManager;
 class Map {
 public:
   Map();
+  Map(const Map &obj);
   ~Map();
 
   // Getters

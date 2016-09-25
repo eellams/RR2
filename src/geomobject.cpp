@@ -1,6 +1,14 @@
 #include "geomobject.hpp"
 
 GeomObject::GeomObject() :
+  pMesh(NULL),
+  pMeshSceneNode(NULL),
+  pSceneNode(NULL)
+{
+}
+
+GeomObject::GeomObject(const GeomObject &obj) :
+  pMesh(NULL),
   pMeshSceneNode(NULL),
   pSceneNode(NULL)
 {
@@ -8,8 +16,6 @@ GeomObject::GeomObject() :
 
 
 GeomObject::~GeomObject() {
-  std::clog << "Deleting geomobject" << std::endl;
-
   if (pSceneNode != NULL) {
     pSceneNode->remove();
   }
@@ -118,11 +124,7 @@ void GeomObject::clear() {
   // TODO is this memory safe?
   if (pMesh != NULL) {
     pMesh->clear();
-    //if (pMeshSceneNode != NULL)
-      //pMeshSceneNode->setMesh(pMesh);
   }
-
-  //if (pMeshSceneNode != NULL) pMeshSceneNode->getMesh()->clear();
 }
 
 void GeomObject::initialise(irr::scene::ISceneManager* pmanager) {

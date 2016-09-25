@@ -15,17 +15,25 @@
 Map::Map() :
   mName(""),
   mDescription(""),
+  mRoofTexture(""),
   mWidth(0),
   mHeight(0),
-  //mPathTypes(),
-  //mPaths(),
-  pTileManager(NULL),
-  pBuildingManager(NULL),
-  pPathManager(NULL)
+  pTileManager(new TileManager()),
+  pBuildingManager(new BuildingManager()),
+  pPathManager(new PathManager())
 {
-  pTileManager = new TileManager();
-  pBuildingManager = new BuildingManager();
-  pPathManager = new PathManager();
+}
+
+Map::Map(const Map &obj) :
+  mName(obj.mName),
+  mDescription(obj.mDescription),
+  mRoofTexture(obj.mRoofTexture),
+  mWidth(obj.mWidth),
+  mHeight(obj.mHeight),
+  pTileManager(new TileManager(*obj.pTileManager)),
+  pBuildingManager(new BuildingManager(*obj.pBuildingManager)),
+  pPathManager(new PathManager(*obj.pPathManager))
+{
 }
 
 Map::~Map() {

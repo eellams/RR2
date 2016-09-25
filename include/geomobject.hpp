@@ -11,6 +11,7 @@
 class GeomObject {
 public:
   GeomObject();
+  GeomObject(const GeomObject &obj);
   ~GeomObject();
 
   // Getters

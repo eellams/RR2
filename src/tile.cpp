@@ -2,17 +2,26 @@
 #include "tile.hpp"
 #include "geomobject.hpp"
 
-Tile::Tile(size_t t) :
-  mTileNumber(t),
+Tile::Tile() :
+  mTileNumber(0),
+  mTileType(0),
   mHeight(0),
-  mCornerHeights({0,0,0,0}),
-  pGeom(NULL)
+  mCornerHeights(),
+  pGeom(new GeomObject())
 {
-  pGeom = new GeomObject();
+}
+
+Tile::Tile(const Tile &obj) :
+  mTileNumber(obj.mTileNumber),
+  mTileType(obj.mTileType),
+  mHeight(obj.mHeight),
+  mCornerHeights(obj.mCornerHeights),
+  pGeom(new GeomObject())
+{
 }
 
 Tile::~Tile() {
-  //delete pGeom;
+  delete pGeom;
 }
 
 irr::u32 Tile::getTileNumber() const {
@@ -23,19 +32,12 @@ irr::f32  Tile::getHeight() const {
   return mHeight;
 }
 
-irr::f32  Tile::getCornerHeightMax() const {
-  // TODO this could be made neater
-  irr::f32 toReturn = 0;
-
-  for (const irr::f32 &h : mCornerHeights) {
-    if (toReturn < h) toReturn = h;
-  }
-
-  return toReturn;
-}
-
 irr::u32  Tile::getTileType() const {
   return mTileType;
+}
+
+std::array<irr::f32, 4> Tile::getCornerHeights() const {
+  return mCornerHeights;
 }
 
 irr::scene::ITriangleSelector* Tile::getTriangleSelector() {
@@ -64,6 +66,10 @@ void Tile::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
 
 void Tile::setTileType(const irr::u32& tileType) {
   mTileType = tileType;
+}
+
+void Tile::setTileNumber(const irr::u32 &tilenumber) {
+  mTileNumber = tilenumber;
 }
 
 void Tile::initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround) {

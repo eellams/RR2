@@ -16,6 +16,7 @@ class Path {
 public:
   Path();
   Path(const irr::u32 &pid, const irr::u32 &pt, const irr::u32 &tilenumber);
+  Path(const Path &obj);
 
   ~Path();
 

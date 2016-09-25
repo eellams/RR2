@@ -10,15 +10,15 @@
 class PathType {
 public:
   PathType();
+  PathType(const PathType &obj);
+  ~PathType();
 
-  std::string getName() const { return mName; }
-  std::string getTextureName() const { return mTexture; }
-  std::string getTextureConductingName() const { return mTextureConducting; }
-  bool getConductive() const { return mConductive; }
-  bool isAllowedTileType(const int &tileType) {
-    //return mAllowedTiles.contains(tileType);
-    return std::find(mAllowedTiles.begin(), mAllowedTiles.end(), tileType) != mAllowedTiles.end();
-  }
+  std::string getName() const;
+  std::string getTextureName() const;
+  std::string getTextureConductingName() const;
+  bool getConductive() const;
+
+  bool isAllowedTileType(const int &tileType);
 
 private:
   friend class boost::serialization::access;

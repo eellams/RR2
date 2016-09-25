@@ -10,36 +10,20 @@
 #include "model.hpp"
 #include "generic.hpp"
 
+class BuildingType;
+
 class Building {
 public:
-  inline Building() :
-    mBuildingId(0), mBuildingType(0), mTileNumber(0) {
+  Building();
+  Building(const irr::u32 &bid, const irr::u32 &bt, const irr::u32 &tilenumber);
+  Building(const Building &obj);
+  ~Building();
 
-    }
+  irr::u32 getBuildingId() const;
+  irr::u32 getBuildingType() const;
+  irr::u32 getTileNumber() const;
 
-  inline Building(const irr::u32 &bid, const irr::u32 &bt, const irr::u32 &tilenumber) :
-    mBuildingId(bid),
-    mBuildingType(bt),
-    mTileNumber(tilenumber)
-  {
-
-  }
-
-  ~Building() {
-    std::clog << "Deleting building " << mBuildingId << std::endl;
-
-    delete pModel;
-  }
-
-  irr::u32 getBuildingId() const { return mBuildingId; }
-  irr::u32 getBuildingType() const { return mBuildingType; }
-  irr::u32 getTileNumber() const { return mTileNumber; }
-
-  void initialise(irr::scene::ISceneNode* parent, const BuildingType& btype, const irr::core::vector3df& pos) {
-    pModel = new Model(btype.getModel());
-    pModel->initialise(parent);
-    pModel.setPosition(pos);
-  }
+  void initialise(irr::scene::ISceneNode* parent, const BuildingType& btype, const irr::core::vector3df& pos);
 
 private:
   friend class boost::serialization::access;
@@ -57,7 +41,6 @@ private:
   irr::u32 mBuildingType;
   irr::u32 mTileNumber;
 
-  //Model mModel;
   Model *pModel;
 };
 

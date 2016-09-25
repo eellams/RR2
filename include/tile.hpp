@@ -17,19 +17,16 @@ class GeomObject;
 
 class Tile {
 public:
-  Tile(size_t t=0);
+  Tile();
+  Tile(const Tile &obj);
   ~Tile();
 
   // Getters
   irr::u32 getTileNumber()  const;
   irr::f32 getHeight() const;
-  irr::f32 getCornerHeightMax() const;
   irr::u32 getTileType() const;
+  std::array<irr::f32, 4> getCornerHeights() const;
   irr::scene::ITriangleSelector* getTriangleSelector();
-
-  inline std::array<irr::f32, 4> getCornerHeights() const {
-    return mCornerHeights;
-  }
 
   // Setters
   void setParent(irr::scene::ISceneNode* parent);
@@ -38,10 +35,7 @@ public:
   void setDebug();
   void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
   void setTileType(const irr::u32& tileType);
-
-  void setTileNumber(const irr::u32 &tilenumber) {
-    mTileNumber = tilenumber;
-  }
+  void setTileNumber(const irr::u32 &tilenumber);
 
   bool createModel(const struct Surround s);
   void initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround);
@@ -53,7 +47,6 @@ private:
   template<class Archive>
   inline void serialize(Archive & ar, const unsigned int version)
   {
-    //ar & BOOST_SERIALIZATION_NVP(mTileNumber);
     ar & BOOST_SERIALIZATION_NVP(mTileType);
     ar & BOOST_SERIALIZATION_NVP(mHeight);
   }

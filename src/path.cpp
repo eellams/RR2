@@ -6,6 +6,8 @@ Path::Path() :
   mPathId(0),
   mPathType(0),
   mTileNumber(0),
+  mPowered(false),
+  mConductive(false),
   pGeom(NULL)
 {
 }
@@ -14,6 +16,18 @@ Path::Path(const irr::u32 &pid, const irr::u32 &pt, const irr::u32 &tilenumber) 
   mPathId(pid),
   mPathType(pt),
   mTileNumber(tilenumber),
+  mPowered(false),
+  mConductive(false),
+  pGeom(NULL)
+{
+}
+
+Path::Path(const Path &obj) :
+  mPathId(obj.mPathId),
+  mPathType(obj.mPathType),
+  mTileNumber(obj.mTileNumber),
+  mPowered(obj.mPowered),
+  mConductive(obj.mConductive),
   pGeom(NULL)
 {
 }

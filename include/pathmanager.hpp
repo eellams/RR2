@@ -11,6 +11,8 @@ class PathType;
 class PathManager : public TiledManager<PathType, Path> {
 public:
   PathManager();
+  PathManager(const PathManager &obj);
+  ~PathManager();
 
   void add(const irr::u32 &tilenumber,
     const irr::u32 &tid,

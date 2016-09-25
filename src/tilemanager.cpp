@@ -11,8 +11,16 @@ TileManager::TileManager() :
 
 }
 
-TileManager::~TileManager() {
+TileManager::TileManager(const TileManager &obj) :
+  TiledManager<TileType, Tile>(obj),
+  mRoofTexture(obj.mRoofTexture),
+  mHeightmap(obj.mHeightmap),
+  pTileSelector(NULL)
+{
+}
 
+TileManager::~TileManager() {
+  if (pTileSelector) pTileSelector->drop();
 }
 
 // Get the tile selector for the Tiles
