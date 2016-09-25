@@ -8,7 +8,6 @@ Path::Path() :
   mTileNumber(0),
   pGeom(NULL)
 {
-  //pGeom = new GeomObject();
 }
 
 Path::Path(const irr::u32 &pid, const irr::u32 &pt, const irr::u32 &tilenumber) :
@@ -17,15 +16,13 @@ Path::Path(const irr::u32 &pid, const irr::u32 &pt, const irr::u32 &tilenumber) 
   mTileNumber(tilenumber),
   pGeom(NULL)
 {
-  //pGeom = new GeomObject();
 }
 
 Path::~Path() {
+  std::clog << "Deleting path " << mPathId << std::endl;
   if (pGeom != NULL) {
-    std::clog << "Deleting path " << mPathId << pGeom << std::endl;
-    delete pGeom;
+    pGeom->clear();
   }
-  //if (pGeom != NULL) pGeom->remove();
 }
 
 irr::u32 Path::getPathId() const { return mPathId; }

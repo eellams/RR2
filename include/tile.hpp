@@ -39,6 +39,10 @@ public:
   void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
   void setTileType(const irr::u32& tileType);
 
+  void setTileNumber(const irr::u32 &tilenumber) {
+    mTileNumber = tilenumber;
+  }
+
   bool createModel(const struct Surround s);
   void initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround);
 
@@ -49,7 +53,7 @@ private:
   template<class Archive>
   inline void serialize(Archive & ar, const unsigned int version)
   {
-    ar & BOOST_SERIALIZATION_NVP(mTileNumber);
+    //ar & BOOST_SERIALIZATION_NVP(mTileNumber);
     ar & BOOST_SERIALIZATION_NVP(mTileType);
     ar & BOOST_SERIALIZATION_NVP(mHeight);
   }

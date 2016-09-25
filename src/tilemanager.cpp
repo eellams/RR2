@@ -3,13 +3,9 @@
 #include "tiletype.hpp"
 
 TileManager::TileManager() :
-  mWidth(0),
-  mHeight(0),
+  TiledManager<TileType, Tile>(),
   mRoofTexture(),
-  mTileTypes(),
-  mTiles(),
   mHeightmap(),
-  pTileNode(NULL),
   pTileSelector(NULL)
 {
 
@@ -17,16 +13,6 @@ TileManager::TileManager() :
 
 TileManager::~TileManager() {
 
-}
-
-// Used for seialisation
-std::vector<Tile> TileManager::getTiles() const {
-  return mTiles;
-}
-
-// Used for serialisation
-std::map<irr::u32, TileType> TileManager::getTileTypes() const {
-  return std::map<irr::u32, TileType>(mTileTypes);
 }
 
 // Get the tile selector for the Tiles
@@ -42,47 +28,16 @@ struct Surround TileManager::getTileSurround(const irr::u32& tilenumber) {
 
 // Get what a particular tile mines into
 irr::u32 TileManager::getTileMineInto(const irr::u32 &tilenumber) {
-  return mTileTypes[mTiles[tilenumber].getTileType()].getMineInto();
+  return mTypes[mInstances[tilenumber].getTileType()].getMineInto();
 }
 
 // Set the tile type of a particular tile
 void TileManager::setTileTileType(const irr::u32& tilenumber, const irr::u32& tiletype) {
-  mTiles[tilenumber].setTileType(tiletype);
-}
-
-// Get the maximum height of a tile
-//  note, only takes base height (solid walls have no effect)
-irr::f32 TileManager::getMaxTileHeight(const irr::u32 &tilenumber) {
-  return mTiles[tilenumber].getCornerHeightMax();
+  mInstances[tilenumber].setTileType(tiletype);
 }
 
 std::array<irr::f32, 4> TileManager::getTileHeight(const irr::u32 &tilenumber) {
-  return mTiles[tilenumber].getCornerHeights();
-}
-
-// Set tiles
-//  to the values serialised from the map file
-void TileManager::setTiles(const std::vector< Tile> &tiles) {
-  mTiles = tiles;
-}
-
-// Set tile types
-//  to the values serialised from the map file
-void TileManager::setTileTypes(const std::map<irr::u32, TileType> &ttypes) {
-  mTileTypes.clear();
-  mTileTypes.insert(ttypes.begin(), ttypes.end());
-}
-
-// Set the map width
-//  (number of tiles in the X direction)
-void TileManager::setWidth(const irr::u32& width) {
-  mWidth = width;
-}
-
-// Set the map height
-//  (number of tiles in the Z direction)
-void TileManager::setHeight(const irr::u32& height) {
-  mHeight = height;
+  return mInstances[tilenumber].getCornerHeights();
 }
 
 // Roof texture is global for all tiles
@@ -93,16 +48,16 @@ void TileManager::setRoofTexture(const std::string& texture) {
 // Initialises all tiles and tile types
 //  from their serialised state
 void TileManager::initialise(irr::scene::ISceneNode *parentnode) {
-  pTileNode = parentnode->getSceneManager()->addEmptySceneNode();
-  pTileNode->setParent(parentnode);
+  pNode = parentnode->getSceneManager()->addEmptySceneNode();
+  pNode->setParent(parentnode);
 
   createHeightMap();
 
-  initialiseTileTypes();
-  initialiseTiles();
+  initialiseTypes();
+  initialiseInstances();
 
-  pTileSelector = pTileNode->getSceneManager()->createMetaTriangleSelector();
-  for (auto child : pTileNode->getChildren()) {
+  pTileSelector = pNode->getSceneManager()->createMetaTriangleSelector();
+  for (auto child : pNode->getChildren()) {
     pTileSelector->addTriangleSelector(child->getTriangleSelector());
   }
 }
@@ -111,33 +66,34 @@ void TileManager::initialise(irr::scene::ISceneNode *parentnode) {
 //  changing tile type as required (cave-ins etc.)
 //  recalculating models as required
 // Recursive, will check surrounding tiles if there is a change in a tile
-void TileManager::recalculate(const irr::u32 &tilenumber, const bool &enableCaveIn) {
+void TileManager::recalculate(const irr::u32 &tilenumber) {//, const bool &enableCaveIn) {
   struct Surround surround;
 
   surround = calculateSurround(tilenumber);
 
-  if (mTiles[tilenumber].createModel(surround)) {
+  if (mInstances[tilenumber].createModel(surround)) {
     // Set the texture
     //  texture depends on 'visibility' of the tile
     if (surround.left && surround.right && surround.above && surround.below && surround.current &&
       surround.belowLeft && surround.belowRight && surround.aboveLeft && surround.aboveRight) {
       // A roof tile
-      mTiles[tilenumber].setTexture(mRoofTexture);
+      mInstances[tilenumber].setTexture(mRoofTexture);
     }
 
     else {
       // A normal tile
       //  i.e. to be calculated by the tile
-      mTiles[tilenumber].setTexture(mTileTypes[mTiles[tilenumber].getTileType()].getTextureName());
+      mInstances[tilenumber].setTexture(mTypes[mInstances[tilenumber].getTileType()].getTextureName());
     }
 
     // Set the position of the tile
-    mTiles[tilenumber].setPosition(irr::core::vector3df((tilenumber%mWidth) * TILE_SIZE, 0, (tilenumber/mHeight) * TILE_SIZE));
+    mInstances[tilenumber].setPosition(irr::core::vector3df((tilenumber%mWidth) * TILE_SIZE, 0, (tilenumber/mHeight) * TILE_SIZE));
   }
 
   // Sometimes we don't want cave-ins
   //  (e.g. during development)
-  else if (enableCaveIn) {
+  //else if (enableCaveIn) {
+  else {
     // Can't make a tile - illegal layout
     //  causes 'cave-in' effect
     setTileTileType(tilenumber, getTileMineInto(tilenumber));
@@ -145,29 +101,34 @@ void TileManager::recalculate(const irr::u32 &tilenumber, const bool &enableCave
   }
 }
 
+void TileManager::initialiseTypes() {
+  // Nothing to see here
+}
+
 // Initialises the tiles for the first time
-void TileManager::initialiseTiles() {
+void TileManager::initialiseInstances() {
   std::clog << "Initilising tiles" << std::endl;
   createHeightMap();
 
   // For each tile, initialise
   //  initialise, set parent etc.
-  for (irr::u32 i=0; i<mTiles.size(); i++) {
+  for (irr::u32 i=0; i<mInstances.size(); i++) {
 
     // Create the tile model
-    mTiles[i].initialise(pTileNode->getSceneManager(), calculateSurround(i));
-    mTiles[i].setParent(pTileNode);
+    mInstances[i].initialise(pNode->getSceneManager(), calculateSurround(i));
+    mInstances[i].setParent(pNode);
   }
 
   // Once all tiles have been initialised, then we can see what needs
   //  to cave in, etc.
-  for (irr::u32 i=0; i<mTiles.size(); i++) {
+  /*for (irr::u32 i=0; i<mInstances.size(); i++) {
     recalculate(i);
-  }
-}
+  }*/
 
-void TileManager::initialiseTileTypes() {
-  // Nothing to see here
+  for (std::map<irr::u32, Tile>::iterator it = mInstances.begin(); it != mInstances.end(); it++) {
+    it->second.setTileNumber(it->first);
+    recalculate(it->first);
+  }
 }
 
 // Creates the heightmap from the vector of tiles
@@ -178,12 +139,12 @@ void TileManager::createHeightMap() {
   mHeightmap.clear();
 
   // Fill the heightmap with the tile data
-  for (irr::u32 i=0; i<mTiles.size(); i++) {
-    mHeightmap.push_back(mTiles[i].getHeight());
+  for (irr::u32 i=0; i<mInstances.size(); i++) {
+    mHeightmap.push_back(mInstances[i].getHeight());
     //calculateTileCorners(i);
   }
 
-  for (irr::u32 i=0; i<mTiles.size(); i++) {
+  for (irr::u32 i=0; i<mInstances.size(); i++) {
     calculateTileCorners(i);
   }
 }
@@ -209,11 +170,11 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
   above = below = false;
 
   // Current tile (whether solid or not)
-  toReturn.current = mTileTypes[mTiles[tileNumber].getTileType()].getSolid();
+  toReturn.current = mTypes[mInstances[tileNumber].getTileType()].getSolid();
 
   // Below
   if (tileNumber >= mWidth) {
-    toReturn.below = mTileTypes[mTiles[tileNumber - mWidth].getTileType()].getSolid();
+    toReturn.below = mTypes[mInstances[tileNumber - mWidth].getTileType()].getSolid();
     below = true;
   } else {
     // Botton row, assume solid
@@ -224,7 +185,7 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
 
   // Above
   if (tileNumber < (mHeight-1)*mWidth) {
-    toReturn.above = mTileTypes[mTiles[tileNumber + mWidth].getTileType()].getSolid();
+    toReturn.above = mTypes[mInstances[tileNumber + mWidth].getTileType()].getSolid();
     above = true;
   } else {
     // Top row, assume solid
@@ -235,14 +196,14 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
 
   // Left
   if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
-    toReturn.left = mTileTypes[mTiles[tileNumber - 1].getTileType()].getSolid();
+    toReturn.left = mTypes[mInstances[tileNumber - 1].getTileType()].getSolid();
 
     if (above) {
-      toReturn.aboveLeft =  mTileTypes[mTiles[tileNumber + mWidth - 1].getTileType()].getSolid();
+      toReturn.aboveLeft =  mTypes[mInstances[tileNumber + mWidth - 1].getTileType()].getSolid();
     }
 
     if (below) {
-      toReturn.belowLeft =  mTileTypes[mTiles[tileNumber - mWidth - 1].getTileType()].getSolid();
+      toReturn.belowLeft =  mTypes[mInstances[tileNumber - mWidth - 1].getTileType()].getSolid();
     }
 
   } else {
@@ -254,14 +215,14 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
 
   // Right
   if ( (tileNumber + 1) % mWidth != 0) {
-    toReturn.right = mTileTypes[mTiles[tileNumber + 1].getTileType()].getSolid();
+    toReturn.right = mTypes[mInstances[tileNumber + 1].getTileType()].getSolid();
 
     if (above) {
-      toReturn.aboveRight =  mTileTypes[mTiles[tileNumber + mWidth + 1].getTileType()].getSolid();
+      toReturn.aboveRight =  mTypes[mInstances[tileNumber + mWidth + 1].getTileType()].getSolid();
     }
 
     if (below) {
-      toReturn.belowRight =  mTileTypes[mTiles[tileNumber - mWidth + 1].getTileType()].getSolid();
+      toReturn.belowRight =  mTypes[mInstances[tileNumber - mWidth + 1].getTileType()].getSolid();
     }
 
   } else {
@@ -380,16 +341,5 @@ void TileManager::calculateTileCorners(const irr::u32& tileNumber) {
   // Set the corner heights to the average that has been calculated
   //setCornerHeights(c0,c1,c2,c3);
 
-  mTiles[tileNumber].setCornerHeights(cornerHeights);
+  mInstances[tileNumber].setCornerHeights(cornerHeights);
 }
-
-// Converts a tile number into the bottom left position of a tile
-/*irr::core::vector3df TileManager::tileNumberToPosition(const int& tilenumber) {
-  irr::core::vector3df pos;
-  pos.set(
-    (tilenumber % mWidth)*TILE_SIZE,
-    mTiles[tilenumber].getCornerHeightMax(),
-    (tilenumber / mWidth)*TILE_SIZE
-  );
-  return pos;
-}*/

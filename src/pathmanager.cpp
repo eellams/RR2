@@ -27,7 +27,7 @@ void PathManager::add(const irr::u32 &tilenumber,
   }
 
   // If the ID of the path is known
-  //  e.g. when has been already added (serialised from map file)
+  //  e.g. when the path has previously been added (serialised from map file)
   if (knownid == 0) {
     pid = mId;
 

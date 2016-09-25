@@ -252,15 +252,19 @@ int main(int argc, char *argv[]) {
     driver->endScene();
   }
 
-  // Drop the device once we're finished with it
-  device->drop();
-
   // Write to the output file
   ofs.open("testOut.xml");
   boost::archive::xml_oarchive oa(ofs);
   readMap.setPMap(pMap);
   oa << BOOST_SERIALIZATION_NVP(readMap);
-  ofs.flush();
+  //oa.save(BOOST_SERIALIZATION_NVP(readMap));
+
+  //for (int i = 0; i < 1000000000; i++);
+
+  // Drop the device once we're finished with it
+  device->drop();
+  ofs.close();
+  //delete readMap;
 
   std::cout << "Program finished!" << std::endl;
 

@@ -50,11 +50,11 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
 
   // Initialise buildings
   //  needs to be here, as need access to tile heights
-  for (auto& building : pBuildingManager->getBuildings()) {
+  for (auto& building : pBuildingManager->getInstances()) {
     pBuildingManager->add(
       building.second.getTileNumber(),
       building.second.getBuildingType(),
-      pTileManager->getMaxTileHeight(building.second.getTileNumber()),
+      pTileManager->getTileHeight(building.second.getTileNumber()),
       building.second.getBuildingId()
     );
   }
@@ -100,11 +100,12 @@ void Map::setTile(const irr::u32& tileNumber, const irr::u32& tileType, const bo
 template<class Archive>
 void Map::serialize(Archive & ar, const unsigned int version) {
   try {
-    std::map<irr::u32, TileType> TileTypes = pTileManager->getTileTypes();
-    std::vector<Tile> Tiles = pTileManager->getTiles();
+    std::map<irr::u32, TileType> TileTypes = pTileManager->getTypes();
+    //std::vector<Tile> Tiles = pTileManager->getInstances();
+    std::map<irr::u32, Tile> Tiles = pTileManager->getInstances();
 
-    std::map<irr::u32, BuildingType> BuildingTypes = pBuildingManager->getBuildingTypes();
-    std::map<irr::u32, Building> Buildings = pBuildingManager->getBuildings();
+    std::map<irr::u32, BuildingType> BuildingTypes = pBuildingManager->getTypes();
+    std::map<irr::u32, Building> Buildings = pBuildingManager->getInstances();
 
     std::map<irr::u32, PathType> PathTypes = pPathManager->getTypes();
     std::map<irr::u32, Path> Paths = pPathManager->getInstances();
@@ -121,14 +122,14 @@ void Map::serialize(Archive & ar, const unsigned int version) {
     ar & BOOST_SERIALIZATION_NVP(Paths);
     ar & BOOST_SERIALIZATION_NVP(Tiles);
 
-    pTileManager->setTileTypes(TileTypes);
-    pTileManager->setTiles(Tiles);
+    pTileManager->setTypes(TileTypes);
+    pTileManager->setInstances(Tiles);
     pTileManager->setWidth(mWidth);
     pTileManager->setHeight(mHeight);
     pTileManager->setRoofTexture(mRoofTexture);
 
-    pBuildingManager->setBuildingTypes(BuildingTypes);
-    pBuildingManager->setBuildings(Buildings);
+    pBuildingManager->setTypes(BuildingTypes);
+    pBuildingManager->setInstances(Buildings);
     pBuildingManager->setWidth(mWidth);
     pBuildingManager->setHeight(mHeight);
 
@@ -162,7 +163,7 @@ void Map::recalculateAll(const irr::u32 &tileNumber, const bool &enableCaveIn) {
 }
 
 void Map::addBuilding(const irr::u32 &tileNumber, const irr::u32 &buildingType) {
-  pBuildingManager->add(tileNumber, buildingType, pTileManager->getMaxTileHeight(tileNumber));
+  pBuildingManager->add(tileNumber, buildingType, pTileManager->getTileHeight(tileNumber));
 }
 
 void Map::removeBuilding(const irr::u32 &buildingid) {

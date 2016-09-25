@@ -26,7 +26,9 @@ public:
   }
 
   ~Building() {
-    
+    std::clog << "Deleting building " << mBuildingId << std::endl;
+
+    delete pModel;
   }
 
   irr::u32 getBuildingId() const { return mBuildingId; }
@@ -34,9 +36,9 @@ public:
   irr::u32 getTileNumber() const { return mTileNumber; }
 
   void initialise(irr::scene::ISceneNode* parent, const BuildingType& btype, const irr::core::vector3df& pos) {
-    mModel = btype.getModel();
-    mModel.initialise(parent);
-    mModel.setPosition(pos);
+    pModel = new Model(btype.getModel());
+    pModel->initialise(parent);
+    pModel.setPosition(pos);
   }
 
 private:
@@ -55,7 +57,8 @@ private:
   irr::u32 mBuildingType;
   irr::u32 mTileNumber;
 
-  Model mModel;
+  //Model mModel;
+  Model *pModel;
 };
 
 #endif

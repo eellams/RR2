@@ -41,7 +41,7 @@ public:
     return mInstances;
   }
 
-  void initialise(irr::scene::ISceneNode *parentnode) {
+  virtual void initialise(irr::scene::ISceneNode *parentnode) {
     pNode = parentnode->getSceneManager()->addEmptySceneNode();
     pNode->setParent(parentnode);
 

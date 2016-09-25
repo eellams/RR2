@@ -17,6 +17,7 @@ public:
 
   std::string getName() { return mName; }
   Model getModel() const { return mModel; }
+  
 private:
   friend class boost::serialization::access;
 

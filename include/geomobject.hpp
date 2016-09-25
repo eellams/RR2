@@ -25,11 +25,6 @@ public:
     pMeshSceneNode->setMaterialType(irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL);
   }
 
-  inline void remove() {
-    std::clog << pSceneNode << std::endl;
-    if (pSceneNode != NULL) pSceneNode->remove();
-  }
-
   void setParent(irr::scene::ISceneNode* parent);
   void setPosition(const irr::core::vector3df& pos);
   void setTexture(const std::string& tex, const int& texturelayer = 0);

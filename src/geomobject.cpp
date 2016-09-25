@@ -1,35 +1,18 @@
 #include "geomobject.hpp"
 
 GeomObject::GeomObject() :
-  //pMesh(NULL), pMeshSceneNode(NULL), pSelector(NULL), pParent(NULL) {
   pMeshSceneNode(NULL),
   pSceneNode(NULL)
 {
-  //pMesh = new irr::scene::SMesh();
 }
 
 
 GeomObject::~GeomObject() {
   std::clog << "Deleting geomobject" << std::endl;
 
-  //clear();
-
   if (pSceneNode != NULL) {
-
     pSceneNode->remove();
-    //pSceneNode->drop();
-    //delete pSceneNode;
   }
-  /*if (pMeshSceneNode != NULL) {
-    std::clog << "Removing gameobject" << std::endl;
-    pMeshSceneNode->removeAll();
-    pMeshSceneNode->drop();
-    //pMeshSceneNode = NULL;
-  }
-  if (pMesh != NULL) {
-    //pMesh->remove();
-    pMesh->drop();
-  }*/
 }
 
 irr::scene::ITriangleSelector* GeomObject::getTriangleSelector() const {

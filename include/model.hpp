@@ -21,6 +21,8 @@ public:
 
   void initialise(irr::scene::ISceneNode* parent);
 
+  void remove();
+
 private:
   friend class boost::serialization::access;
 

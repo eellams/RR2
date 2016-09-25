@@ -4,10 +4,7 @@
 #include "building.hpp"
 
 BuildingManager::BuildingManager() :
-  mBuildingId(0),
-  mBuildingTypes(),
-  mBuildings(),
-  pBuildingNode(NULL)
+  TiledManager<BuildingType, Building>()
 {
 
 }
@@ -16,108 +13,98 @@ BuildingManager::~BuildingManager() {
 
 }
 
-void BuildingManager::initialise(irr::scene::ISceneNode *parentnode) {
-  pBuildingNode = parentnode->getSceneManager()->addEmptySceneNode();
-  pBuildingNode->setParent(parentnode);
-
-  initialiseBuildingTypes();
-  initialiseBuildings();
-}
-
-void BuildingManager::add(const irr::u32 &tilenumber, const irr::u32 &btypeid, const irr::f32 &bheight, const irr::u32 &knownid) {
-  // TODO add
+// Add a new Building
+//  or initialise a serialised building
+void BuildingManager::add(const irr::u32 &tilenumber, const irr::u32 &tid, const std::array<irr::f32, 4> &cornerheights, const irr::u32 &knownid) {
   irr::core::vector3df pos;
   irr::u32 bid;
+  bool isOccupied;
 
+  // Check if the tile is occupied [by another building] or not
+  isOccupied = false;
+  for (std::map<irr::u32, Building>::iterator it = mInstances.begin(); it != mInstances.end(); it++) {
+    if (it->second.getTileNumber() == tilenumber)
+      isOccupied = true;
+  }
+
+  // If the ID of the building is known
+  //  e.g. whether need to create an entirely new building with new ID
   if (knownid == 0) {
-    bid = mBuildingId;
-    mBuildingId++;
-    mBuildings[bid] = Building(bid, btypeid, tilenumber);
+    bid = mId;
+
+    // Don't add if there is already a building present
+    if (!isOccupied) {
+      mId++;
+      mInstances[bid] = Building(bid, tid, tilenumber);
+    }
   }
   else {
+    // Ensure that mId is always bigger than the highest value on the map
     bid = knownid;
-    if (bid > mBuildingId) mBuildingId = bid + 1;
+    if (bid >= mId) mId = bid + 1;
   }
 
-  std::clog << "Adding new building, bid " << btypeid;
-  std::clog << " (" << mBuildingTypes[btypeid].getName() << "), ";
-  std::clog << " id " << bid << std::endl;
-  std::clog << " on tile " << tilenumber << std::endl;
+  // If the path exists
+  if (mInstances.find(bid) != mInstances.end()) {
+    std::clog << "Adding new building, bid " << tid;
+    std::clog << " (" << mTypes[tid].getName() << "), ";
+    std::clog << " id " << bid << std::endl;
+    std::clog << " on tile " << tilenumber << std::endl;
 
-  pos = tileNumberToPosition(tilenumber);
-  pos.Y = bheight;
+    // Get position
+    //  increase X and Z so that the buiding sits in the middle of the tile
+    pos = tileNumberToPosition(tilenumber);
+    pos.X += 0.5 * TILE_SIZE;
+    pos.Z += 0.5 * TILE_SIZE;
 
-  mBuildings[bid].initialise(
-    pBuildingNode,
-    mBuildingTypes[btypeid],
-    pos
-  );
+    // Ensure that the building is at the correct height
+    pos.Y = *std::max_element(cornerheights.begin(), cornerheights.end());
+
+    // Initialise the building
+    mInstances[bid].initialise(
+      pNode,
+      mTypes[tid],
+      pos
+    );
+  }
 }
 
+// Recaluate by tile number
 void BuildingManager::recalculateByTileNumber(const irr::u32 &tilenumber) {
-  for (std::map<irr::u32, Building>::iterator it = mBuildings.begin(); it != mBuildings.end(); it++) {
+  // Finds buildings by given tile number
+  //  then recalculates the building by building id
+  for (std::map<irr::u32, Building>::iterator it = mInstances.begin(); it != mInstances.end(); it++) {
     if (it->second.getTileNumber() == tilenumber) {
       recalculate(it->second.getTileNumber());
     }
   }
 }
 
+// Recaluates the building
 void BuildingManager::recalculate(const irr::u32 &buildingid) {
   // TODO whatever here
 }
 
+// Removes the building
 void BuildingManager::remove(const irr::u32 &buildingid) {
   std::clog << "Removng building " << buildingid << std::endl;
-  mBuildings.erase(buildingid);
+  std::map<irr::u32, Building>::iterator it = mInstances.find(buildingid);
+  if (it != mInstances.end()) {
+    std::clog << " erasing" << std::endl;
+    mInstances.erase(it);
+  }
+    //mInstances.erase(buildingid);
 }
 
-std::map<irr::u32, Building> BuildingManager::getBuildings() const {
-  return mBuildings;
-}
-
-std::map<irr::u32, BuildingType> BuildingManager::getBuildingTypes() const {
-  return mBuildingTypes;
-}
-
-void BuildingManager::setBuildings(const std::map<irr::u32, Building> &buildings) {
-  mBuildings = buildings;
-}
-
-void BuildingManager::setBuildingTypes(const std::map<irr::u32, BuildingType> &btypes) {
-  mBuildingTypes = btypes;
-}
-
-void BuildingManager::setWidth(const irr::u32 &width) {
-  mWidth = width;
-}
-
-void BuildingManager::setHeight(const irr::u32 &height) {
-  mHeight = height;
-}
-
-void BuildingManager::initialiseBuildingTypes() {
+void BuildingManager::initialiseTypes() {
   // TODO may be needed
   // Nothing to do here
 }
 
-void BuildingManager::initialiseBuildings() {
+void BuildingManager::initialiseInstances() {
   // This is empty, it's functionality is implemented in Map::initialise
   //  this is because, in order to know how high to place the building, the
   //  height of the tile needs to be known.
   //  This height is known in TileManager, which is inaccessible here, but not
   //  in Map (if that makes any sense)
-}
-
-// Converts a tile number into the bottom left position of a tile
-irr::core::vector3df BuildingManager::tileNumberToPosition(const int& tilenumber) {
-  irr::core::vector3df pos;
-  pos.set(
-    (tilenumber % mWidth)*TILE_SIZE,
-    0,
-    (tilenumber / mWidth)*TILE_SIZE
-  );
-
-  pos.X += TILE_SIZE * 0.5;
-  pos.Z += TILE_SIZE * 0.5;
-  return pos;
 }
