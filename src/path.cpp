@@ -39,20 +39,29 @@ Path::~Path() {
   }
 }
 
-irr::u32 Path::getPathId() const { return mPathId; }
-irr::u32 Path::getPathType() const { return mPathType; }
-irr::u32 Path::getTileNumber() const { return mTileNumber; }
-bool Path::getPowered() const { return mPowered; }
+irr::u32 Path::getPathType() const {
+  return mPathType;
+}
+
+irr::u32 Path::getTileNumber() const {
+  return mTileNumber;
+}
+
+bool Path::getPowered() const {
+  return mPowered;
+}
 
 void Path::setTexture(const std::string& tex) {
   pGeom->setTexture(tex);
 }
+
 void Path::setAlpha() {
   pGeom->setAlpha();
 }
 
-void Path::initialise(irr::scene::ISceneNode* parent, const PathType& ptype, const irr::core::vector3df& pos) {
-  std::clog << "Initialising path: " << mPathId << std::endl;
+void Path::initialise(irr::scene::ISceneNode* parent, const irr::u32 &pathid, const irr::core::vector3df &pos) {
+  std::clog << "Initialising path: " << pathid << std::endl;
+  mPathId = pathid;
   pGeom = new GeomObject();
   pGeom->initialise(parent->getSceneManager());
   pGeom->setPosition(pos);

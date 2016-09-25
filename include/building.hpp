@@ -23,7 +23,9 @@ public:
   irr::u32 getBuildingType() const;
   irr::u32 getTileNumber() const;
 
-  void initialise(irr::scene::ISceneNode* parent, const BuildingType& btype, const irr::core::vector3df& pos);
+  void setBuildingId(const irr::u32 &buildingid);
+
+  void initialise(irr::scene::ISceneNode *parent, const irr::u32 &buildingid, const irr::core::vector3df &pos, const Model &model);
 
 private:
   friend class boost::serialization::access;
@@ -32,7 +34,6 @@ private:
   inline void serialize(Archive & ar, const unsigned int version)
   {
     // TODO should it be serialised using X,Y or just tileNumber?
-    ar & BOOST_SERIALIZATION_NVP(mBuildingId);
     ar & BOOST_SERIALIZATION_NVP(mBuildingType);
     ar & BOOST_SERIALIZATION_NVP(mTileNumber);
   }

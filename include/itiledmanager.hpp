@@ -7,18 +7,17 @@
 #include "generic.hpp"
 
 template<class Type, class Instance>
-class TiledManager {
+class ITiledManager {
 public:
-  TiledManager() :
+  ITiledManager() :
     mId(0),
     mTypes(),
     mInstances(),
     pNode(NULL)
   {
-
   }
 
-  TiledManager(const TiledManager &obj) :
+  ITiledManager(const ITiledManager &obj) :
     mId(obj.mId),
     mTypes(obj.mTypes),
     mInstances(obj.mInstances),
@@ -26,7 +25,7 @@ public:
   {
   }
 
-  ~TiledManager() {
+  ~ITiledManager() {
     if (pNode) {
       pNode->removeAll();
       pNode->remove();

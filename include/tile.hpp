@@ -33,12 +33,12 @@ public:
   void setPosition(const irr::core::vector3df& position);
   void setTexture(const std::string& tex);
   void setDebug();
-  void setCornerHeights(const std::array<irr::f32, 4>& cornerHeights);
-  void setTileType(const irr::u32& tileType);
+  void setCornerHeights(const std::array<irr::f32, 4> &cornerHeights);
+  void setTileType(const irr::u32 &tileType);
   void setTileNumber(const irr::u32 &tilenumber);
 
   bool createModel(const struct Surround s);
-  void initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround);
+  void initialise(irr::scene::ISceneManager *pmanager, const irr::u32 &tilenumber, const struct Surround &tilesurround);
 
 private:
   void createTile(const std::array< std::pair<bool,bool>, 4>& points, const irr::u32 noHigh, const bool invertHigh=false);

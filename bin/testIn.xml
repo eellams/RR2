@@ -86,7 +86,6 @@
 			<item class_id="17" tracking_level="0" version="0">
 				<first>1</first>
 				<second class_id="18" tracking_level="0" version="0">
-					<mBuildingId>1</mBuildingId>
 					<mBuildingType>0</mBuildingType>
 					<mTileNumber>46</mTileNumber>
 				</second>

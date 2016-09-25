@@ -1,14 +1,14 @@
 #ifndef _PATH_MANAGER_HPP
 #define _PATH_MANAGER_HPP
 
-#include "tiledmanager.hpp"
+#include "itiledmanager.hpp"
 #include <irrlicht.h>
 #include <map>
 
 class Path;
 class PathType;
 
-class PathManager : public TiledManager<PathType, Path> {
+class PathManager : public ITiledManager<PathType, Path> {
 public:
   PathManager();
   PathManager(const PathManager &obj);

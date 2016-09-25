@@ -1,14 +1,14 @@
 #ifndef _BUILDING_MANAGER_HPP
 #define _BUILDING_MANAGER_HPP
 
-#include "tiledmanager.hpp"
+#include "itiledmanager.hpp"
 #include <irrlicht.h>
 #include <map>
 
 class Building;
 class BuildingType;
 
-class BuildingManager : public TiledManager<BuildingType, Building> {
+class BuildingManager : public ITiledManager<BuildingType, Building> {
 public:
   BuildingManager();
   BuildingManager(const BuildingManager &obj);

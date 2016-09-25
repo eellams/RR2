@@ -72,9 +72,10 @@ void Tile::setTileNumber(const irr::u32 &tilenumber) {
   mTileNumber = tilenumber;
 }
 
-void Tile::initialise(irr::scene::ISceneManager* pmanager, const struct Surround& tilesurround) {
-  std::clog << "Initialising tile: " << mTileNumber << std::endl;
+void Tile::initialise(irr::scene::ISceneManager* pmanager, const irr::u32 &tilenumber, const struct Surround& tilesurround) {
+  std::clog << "Initialising tile: " << tilenumber << std::endl;
   //pGeom->clear();
+  mTileNumber = tilenumber;
   pGeom->initialise(pmanager);
 
   //struct Surround s;

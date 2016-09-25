@@ -132,5 +132,4 @@ void GeomObject::initialise(irr::scene::ISceneManager* pmanager) {
     pSceneNode = pmanager->addEmptySceneNode();
     pMeshSceneNode = pmanager->addMeshSceneNode(pMesh);
     pMeshSceneNode->setParent(pSceneNode);
-    std::clog << "Initialised GeomObject " << pMeshSceneNode << std::endl;
 }

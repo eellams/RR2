@@ -5,12 +5,12 @@
 
 #include <iostream>
 
-PathManager::PathManager() : TiledManager<PathType, Path>() {
+PathManager::PathManager() : ITiledManager<PathType, Path>() {
 
 }
 
 PathManager::PathManager(const PathManager &obj) :
-  TiledManager<PathType, Path>(obj)
+  ITiledManager<PathType, Path>(obj)
 {
 }
 
@@ -64,7 +64,7 @@ void PathManager::add(const irr::u32 &tilenumber,
     pos = tileNumberToPosition(tilenumber);
 
     // Initialise etc.
-    mInstances[pid].initialise(pNode, mTypes[tid], pos);
+    mInstances[pid].initialise(pNode, pid, pos);
     mInstances[pid].createModel(cornerHeights);
     mInstances[pid].setAlpha();
 
@@ -148,13 +148,7 @@ void PathManager::initialiseTypes() {
 
 // Initialise the paths themselves
 void PathManager::initialiseInstances() {
-  std::clog << "Initialising paths" << std::endl;
-
-  // Ensure that paths know their own id
-  //  as it is serialised outside of the Path entry in the save file
-  for (auto &path : mInstances) {
-    path.second.setPathId(path.first);
-  }
+  // TODO
 }
 
 // Turn on all paths that are 'connected' to a powered path

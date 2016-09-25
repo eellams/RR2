@@ -8,7 +8,7 @@
 #include "tilemanager.hpp"
 #include "buildingmanager.hpp"
 
-#include "tiledmanager.hpp"
+#include "itiledmanager.hpp"
 
 #include "pathmanager.hpp"
 
@@ -63,7 +63,7 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
       building.second.getTileNumber(),
       building.second.getBuildingType(),
       pTileManager->getTileHeight(building.second.getTileNumber()),
-      building.second.getBuildingId()
+      building.first
     );
   }
 
@@ -72,7 +72,7 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
       path.second.getTileNumber(),
       path.second.getPathType(),
       pTileManager->getTileHeight(path.second.getTileNumber()),
-      path.second.getPathId()
+      path.first
     );
   }
   pPathManager->recalculatePower();

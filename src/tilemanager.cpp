@@ -3,7 +3,7 @@
 #include "tiletype.hpp"
 
 TileManager::TileManager() :
-  TiledManager<TileType, Tile>(),
+  ITiledManager<TileType, Tile>(),
   mRoofTexture(),
   mHeightmap(),
   pTileSelector(NULL)
@@ -12,7 +12,7 @@ TileManager::TileManager() :
 }
 
 TileManager::TileManager(const TileManager &obj) :
-  TiledManager<TileType, Tile>(obj),
+  ITiledManager<TileType, Tile>(obj),
   mRoofTexture(obj.mRoofTexture),
   mHeightmap(obj.mHeightmap),
   pTileSelector(NULL)
@@ -120,11 +120,14 @@ void TileManager::initialiseInstances() {
 
   // For each tile, initialise
   //  initialise, set parent etc.
-  for (irr::u32 i=0; i<mInstances.size(); i++) {
+  //for (irr::u32 i=0; i<mInstances.size(); i++) {
+  for (auto it = mInstances.begin(); it != mInstances.end(); it++) {
 
     // Create the tile model
-    mInstances[i].initialise(pNode->getSceneManager(), calculateSurround(i));
-    mInstances[i].setParent(pNode);
+    //mInstances[i].initialise(pNode->getSceneManager(), calculateSurround(i), );
+    //mInstances[i].setParent(pNode);
+    it->second.initialise(pNode->getSceneManager(), it->first, calculateSurround(it->first));
+    it->second.setParent(pNode);
   }
 
   // Once all tiles have been initialised, then we can see what needs

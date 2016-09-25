@@ -1,7 +1,7 @@
 #ifndef _TILE_MANAGER_HPP
 #define _TILE_MANAGER_HPP
 
-#include "tiledmanager.hpp"
+#include "itiledmanager.hpp"
 #include <irrlicht.h>
 #include <map>
 #include <vector>
@@ -9,7 +9,7 @@
 class Tile;
 class TileType;
 
-class TileManager : public TiledManager<TileType, Tile> {
+class TileManager : public ITiledManager<TileType, Tile> {
 public:
   TileManager();
   TileManager(const TileManager &obj);

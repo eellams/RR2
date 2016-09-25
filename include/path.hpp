@@ -20,7 +20,6 @@ public:
 
   ~Path();
 
-  irr::u32 getPathId() const;
   std::string getName() const;
   irr::u32 getPathType() const;
   irr::u32 getTileNumber() const;
@@ -28,9 +27,8 @@ public:
 
   void setTexture(const std::string& tex);
   void setAlpha();
-  void setPathId(const irr::u32 &pid) { mPathId = pid; }
 
-  void initialise(irr::scene::ISceneNode* parent, const PathType& ptype, const irr::core::vector3df& pos);
+  void initialise(irr::scene::ISceneNode* parent, const irr::u32 &pathid, const irr::core::vector3df &pos);
   void destroy();
 
   void createModel(const std::array<irr::f32, 4> cornerheights);
