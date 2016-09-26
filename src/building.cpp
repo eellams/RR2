@@ -26,15 +26,10 @@ Building::Building(const Building &obj) :
 }
 
 Building::~Building() {
-  std::clog << "Deleting building " << mBuildingId << std::endl;
   if (pModel != NULL) delete pModel;
 }
 
-irr::u32 Building::getBuildingId() const {
-  return mBuildingId;
-}
-
-irr::u32 Building::getBuildingType() const {
+irr::u32 Building::getTypeId() const {
   return mBuildingType;
 }
 
@@ -42,14 +37,18 @@ irr::u32 Building::getTileNumber() const {
   return mTileNumber;
 }
 
-void Building::setBuildingId(const irr::u32 &buildingid) {
+void Building::setId(const irr::u32 &id) {
+  mBuildingId = id;
+}
+
+void Building::setTypeId(const irr::u32 &buildingid) {
   mBuildingId = buildingid;
 }
 
-void Building::initialise(irr::scene::ISceneNode *parent, const irr::u32 &buildingid, const irr::core::vector3df &pos, const Model &model) {
-  std::clog << "Initalising building " << buildingid << std::endl;
-  mBuildingId = buildingid;
-  pModel = new Model(model);
+void Building::initialise(irr::scene::ISceneNode *parent, const irr::u32 &id, const irr::core::vector3df &pos, const Model *pmodel) {
+  std::clog << "Initalising building " << id << std::endl;
+  mBuildingId = id;
+  pModel = new Model(*pmodel);
   pModel->initialise(parent);
   pModel->setPosition(pos);
 }

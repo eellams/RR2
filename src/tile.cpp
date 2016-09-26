@@ -28,12 +28,12 @@ irr::u32 Tile::getTileNumber() const {
   return mTileNumber;
 }
 
-irr::f32  Tile::getHeight() const {
-  return mHeight;
+irr::u32  Tile::getTypeId() const {
+  return mTileType;
 }
 
-irr::u32  Tile::getTileType() const {
-  return mTileType;
+irr::f32  Tile::getHeight() const {
+  return mHeight;
 }
 
 std::array<irr::f32, 4> Tile::getCornerHeights() const {
@@ -64,7 +64,7 @@ void Tile::setCornerHeights(const std::array<irr::f32, 4>& cornerHeights) {
   mCornerHeights = cornerHeights;
 }
 
-void Tile::setTileType(const irr::u32& tileType) {
+void Tile::setTypeId(const irr::u32& tileType) {
   mTileType = tileType;
 }
 
@@ -74,19 +74,14 @@ void Tile::setTileNumber(const irr::u32 &tilenumber) {
 
 void Tile::initialise(irr::scene::ISceneManager* pmanager, const irr::u32 &tilenumber, const struct Surround& tilesurround) {
   std::clog << "Initialising tile: " << tilenumber << std::endl;
-  //pGeom->clear();
   mTileNumber = tilenumber;
   pGeom->initialise(pmanager);
 
-  //struct Surround s;
-  //s.above = s.below = s.right = s.left = false;
-  //createModel(tilesurround);
+  createModel(tilesurround);
 }
 
 bool Tile::createModel(struct Surround s) {
   std::array< std::pair<bool,bool>, 4> args;
-
-  //mSurround = s;
 
   // TODO I'm sure a loop could be used here...
   //  double TODO as I feel this is important

@@ -1,29 +1,27 @@
-// Copyright (c) 2016 Eddie Ellams All Rights Reserved.
-#ifndef _BUILDING_TYPE_HPP
-#define _BUILDING_TYPE_HPP
+#ifndef _UNIT_TYPE_HPP
+#define _UNIT_TYPE_HPP
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 
 #include <irrlicht.h>
+#include <string>
 
 class Model;
 
-class BuildingType {
+class UnitType {
 public:
-  BuildingType();
-  BuildingType(const BuildingType &obj);
-  ~BuildingType();
+  UnitType();
+  UnitType(const UnitType &obj);
+  ~UnitType();
 
   std::string getName() const;
   Model* getPModel() const;
 
 private:
   friend class boost::serialization::access;
-
   template<class Archive>
-  void serialize(Archive & ar, const unsigned int version)
-  {
+  void serialize(Archive & ar, const unsigned int version) {
     ar & BOOST_SERIALIZATION_NVP(mName);
     ar & BOOST_SERIALIZATION_NVP(pModel);
   }

@@ -18,10 +18,13 @@ class Building;
 class BuildingType;
 class Path;
 class PathType;
+class Unit;
+class UnitType;
 
 class TileManager;
 class BuildingManager;
 class PathManager;
+class UnitManager;
 
 class Map {
 public:
@@ -64,6 +67,7 @@ private:
   TileManager *pTileManager;
   BuildingManager *pBuildingManager;
   PathManager *pPathManager;
+  UnitManager *pUnitManager;
 };
 
 #endif

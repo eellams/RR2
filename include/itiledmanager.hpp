@@ -26,7 +26,7 @@ public:
   }
 
   ~ITiledManager() {
-    if (pNode) {
+    if (pNode != NULL) {
       pNode->removeAll();
       pNode->remove();
     }

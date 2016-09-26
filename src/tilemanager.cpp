@@ -20,7 +20,7 @@ TileManager::TileManager(const TileManager &obj) :
 }
 
 TileManager::~TileManager() {
-  if (pTileSelector) pTileSelector->drop();
+  if (pTileSelector != NULL) pTileSelector->drop();
 }
 
 // Get the tile selector for the Tiles
@@ -36,12 +36,12 @@ struct Surround TileManager::getTileSurround(const irr::u32& tilenumber) {
 
 // Get what a particular tile mines into
 irr::u32 TileManager::getTileMineInto(const irr::u32 &tilenumber) {
-  return mTypes[mInstances[tilenumber].getTileType()].getMineInto();
+  return mTypes[mInstances[tilenumber].getTypeId()].getMineInto();
 }
 
 // Set the tile type of a particular tile
 void TileManager::setTileTileType(const irr::u32& tilenumber, const irr::u32& tiletype) {
-  mInstances[tilenumber].setTileType(tiletype);
+  mInstances[tilenumber].setTypeId(tiletype);
 }
 
 std::array<irr::f32, 4> TileManager::getTileHeight(const irr::u32 &tilenumber) {
@@ -91,7 +91,7 @@ void TileManager::recalculate(const irr::u32 &tilenumber) {//, const bool &enabl
     else {
       // A normal tile
       //  i.e. to be calculated by the tile
-      mInstances[tilenumber].setTexture(mTypes[mInstances[tilenumber].getTileType()].getTextureName());
+      mInstances[tilenumber].setTexture(mTypes[mInstances[tilenumber].getTypeId()].getTextureName());
     }
 
     // Set the position of the tile
@@ -181,11 +181,11 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
   above = below = false;
 
   // Current tile (whether solid or not)
-  toReturn.current = mTypes[mInstances[tileNumber].getTileType()].getSolid();
+  toReturn.current = mTypes[mInstances[tileNumber].getTypeId()].getSolid();
 
   // Below
   if (tileNumber >= mWidth) {
-    toReturn.below = mTypes[mInstances[tileNumber - mWidth].getTileType()].getSolid();
+    toReturn.below = mTypes[mInstances[tileNumber - mWidth].getTypeId()].getSolid();
     below = true;
   } else {
     // Botton row, assume solid
@@ -196,7 +196,7 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
 
   // Above
   if (tileNumber < (mHeight-1)*mWidth) {
-    toReturn.above = mTypes[mInstances[tileNumber + mWidth].getTileType()].getSolid();
+    toReturn.above = mTypes[mInstances[tileNumber + mWidth].getTypeId()].getSolid();
     above = true;
   } else {
     // Top row, assume solid
@@ -207,14 +207,14 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
 
   // Left
   if ((tileNumber > 0) && ((tileNumber) % mWidth != 0)) {
-    toReturn.left = mTypes[mInstances[tileNumber - 1].getTileType()].getSolid();
+    toReturn.left = mTypes[mInstances[tileNumber - 1].getTypeId()].getSolid();
 
     if (above) {
-      toReturn.aboveLeft =  mTypes[mInstances[tileNumber + mWidth - 1].getTileType()].getSolid();
+      toReturn.aboveLeft =  mTypes[mInstances[tileNumber + mWidth - 1].getTypeId()].getSolid();
     }
 
     if (below) {
-      toReturn.belowLeft =  mTypes[mInstances[tileNumber - mWidth - 1].getTileType()].getSolid();
+      toReturn.belowLeft =  mTypes[mInstances[tileNumber - mWidth - 1].getTypeId()].getSolid();
     }
 
   } else {
@@ -226,14 +226,14 @@ struct Surround TileManager::calculateSurround(const irr::u32& tileNumber) {
 
   // Right
   if ( (tileNumber + 1) % mWidth != 0) {
-    toReturn.right = mTypes[mInstances[tileNumber + 1].getTileType()].getSolid();
+    toReturn.right = mTypes[mInstances[tileNumber + 1].getTypeId()].getSolid();
 
     if (above) {
-      toReturn.aboveRight =  mTypes[mInstances[tileNumber + mWidth + 1].getTileType()].getSolid();
+      toReturn.aboveRight =  mTypes[mInstances[tileNumber + mWidth + 1].getTypeId()].getSolid();
     }
 
     if (below) {
-      toReturn.belowRight =  mTypes[mInstances[tileNumber - mWidth + 1].getTileType()].getSolid();
+      toReturn.belowRight =  mTypes[mInstances[tileNumber - mWidth + 1].getTypeId()].getSolid();
     }
 
   } else {

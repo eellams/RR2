@@ -33,13 +33,13 @@ Path::Path(const Path &obj) :
 }
 
 Path::~Path() {
-  std::clog << "Deleting path " << mPathId << std::endl;
   if (pGeom != NULL) {
     pGeom->clear();
+    delete pGeom;
   }
 }
 
-irr::u32 Path::getPathType() const {
+irr::u32 Path::getTypeId() const {
   return mPathType;
 }
 

@@ -56,22 +56,10 @@ int main(int argc, char *argv[]) {
   MyEventReceiver receiver;        // Receiver for events (keypresses etc.)
   std::ifstream ifs;               // For reading the input pMap->file
   std::ofstream ofs;               // For writing the output file
-  SaveFile readMap;                // Where the file is read to
+  SaveFile *pReadMap;                // Where the file is read to
   irr::core::line3d<irr::f32> ray; // Ray used for collision
 
   std::cout << "Program startup!" << std::endl;
-
-  // Demonstrating reading and writing from a config file
-  /*
-  std::ofstream ofs("testOut.xml");
-
-  Map pMap->("Some Name", "Some description", 10, 10);
-  SaveFile MapF(pMap->);
-  boost::archive::xml_oarchive oa(ofs);
-  oa << BOOST_SERIALIZATION_NVP(MapF);
-
-  ofs.flush();
-  */
 
   // Ask user for driver
   //  e.g. OpenGL, DirectX etc.
@@ -99,11 +87,11 @@ int main(int argc, char *argv[]) {
   //  due to default constructors
   //  minor annoyance
   boost::archive::xml_iarchive ia(ifs);
-  ia >> BOOST_SERIALIZATION_NVP(readMap); // Read the map
+  ia >> BOOST_SERIALIZATION_NVP(pReadMap); // Read the map
 
   // TODO this can't be declared at the top of the function
   //Map& pMap->= readMap.mMap;
-  Map *pMap = readMap.getPMap();
+  Map *pMap = pReadMap->getPMap();
 
   // Initialise the pMap->(setup data from the save file)
   pMap->initialise(driver, smgr);
@@ -255,16 +243,17 @@ int main(int argc, char *argv[]) {
   // Write to the output file
   ofs.open("testOut.xml");
   boost::archive::xml_oarchive oa(ofs);
-  readMap.setPMap(pMap);
-  oa << BOOST_SERIALIZATION_NVP(readMap);
-  //oa.save(BOOST_SERIALIZATION_NVP(readMap));
+  pReadMap->setPMap(pMap);
+  oa << BOOST_SERIALIZATION_NVP(pReadMap);
 
-  //for (int i = 0; i < 1000000000; i++);
+  // Delete the map BEFORE dropping the device
+  //  Otherwise we get problems detaching nodes
+  //  (as the scene node has already been deleted)
+  delete pReadMap;
 
   // Drop the device once we're finished with it
   device->drop();
   ofs.close();
-  //delete readMap;
 
   std::cout << "Program finished!" << std::endl;
 

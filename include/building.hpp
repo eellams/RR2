@@ -19,13 +19,13 @@ public:
   Building(const Building &obj);
   ~Building();
 
-  irr::u32 getBuildingId() const;
-  irr::u32 getBuildingType() const;
+  irr::u32 getTypeId() const;
   irr::u32 getTileNumber() const;
 
-  void setBuildingId(const irr::u32 &buildingid);
+  void setId(const irr::u32 &id);
+  void setTypeId(const irr::u32 &buildingid);
 
-  void initialise(irr::scene::ISceneNode *parent, const irr::u32 &buildingid, const irr::core::vector3df &pos, const Model &model);
+  void initialise(irr::scene::ISceneNode *parent, const irr::u32 &buildingid, const irr::core::vector3df &pos, const Model *pmodel);
 
 private:
   friend class boost::serialization::access;

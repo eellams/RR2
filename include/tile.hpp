@@ -23,8 +23,9 @@ public:
 
   // Getters
   irr::u32 getTileNumber()  const;
+  irr::u32 getTypeId() const;
+
   irr::f32 getHeight() const;
-  irr::u32 getTileType() const;
   std::array<irr::f32, 4> getCornerHeights() const;
   irr::scene::ITriangleSelector* getTriangleSelector();
 
@@ -34,7 +35,7 @@ public:
   void setTexture(const std::string& tex);
   void setDebug();
   void setCornerHeights(const std::array<irr::f32, 4> &cornerHeights);
-  void setTileType(const irr::u32 &tileType);
+  void setTypeId(const irr::u32 &tileType);
   void setTileNumber(const irr::u32 &tilenumber);
 
   bool createModel(const struct Surround s);

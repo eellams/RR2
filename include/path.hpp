@@ -17,22 +17,19 @@ public:
   Path();
   Path(const irr::u32 &pid, const irr::u32 &pt, const irr::u32 &tilenumber);
   Path(const Path &obj);
-
   ~Path();
 
-  std::string getName() const;
-  irr::u32 getPathType() const;
+  irr::u32 getTypeId() const;
   irr::u32 getTileNumber() const;
+  std::string getName() const;
   bool getPowered() const;
 
   void setTexture(const std::string& tex);
   void setAlpha();
 
   void initialise(irr::scene::ISceneNode* parent, const irr::u32 &pathid, const irr::core::vector3df &pos);
-  void destroy();
 
   void createModel(const std::array<irr::f32, 4> cornerheights);
-  void createModel();
 
   void turnOff();
   void turnOn();

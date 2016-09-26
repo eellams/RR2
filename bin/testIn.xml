@@ -41,7 +41,7 @@
 				<first>0</first>
 				<second class_id="7" tracking_level="0" version="0">
 					<mName>Test Building</mName>
-					<mModel class_id="8" tracking_level="0" version="0">
+					<pModel class_id="8" tracking_level="0" version="0">
 						<mModelPath>./data/testbuilding/testbuilding.obj</mModelPath>
 						<mPosX>0.000000000e+00</mPosX>
 						<mPosY>0.000000000e+00</mPosY>
@@ -58,7 +58,7 @@
 							<count>0</count>
 							<item_version>0</item_version>
 						</mChildren>
-					</mModel>
+					</pModel>
 				</second>
 			</item>
 		</BuildingTypes>
@@ -80,6 +80,34 @@
 				</second>
 			</item>
 		</PathTypes>
+		<UnitTypes class_id="0" tracking_level="0" version="0">
+			<count>1</count>
+			<item_version>0</item_version>
+			<item class_id="0" tracking_level="0" version="0">
+				<first>1</first>
+				<second>
+					<mName>Test Building</mName>
+					<pModel class_id="8" tracking_level="0" version="0">
+						<mModelPath>./data/testbuilding/testbuilding.obj</mModelPath>
+						<mPosX>0.000000000e+00</mPosX>
+						<mPosY>0.000000000e+00</mPosY>
+						<mPosZ>0.000000000e+00</mPosZ>
+						<mTextures class_id="9" tracking_level="0" version="0">
+							<count>1</count>
+							<item_version>0</item_version>
+							<item class_id="10" tracking_level="0" version="0">
+								<first>0</first>
+								<second>./data/testbuilding/testbuilding.png</second>
+							</item>
+						</mTextures>
+						<mChildren class_id="11" tracking_level="0" version="0">
+							<count>0</count>
+							<item_version>0</item_version>
+						</mChildren>
+					</pModel>
+				</second>
+			</item>
+		</UnitTypes>
 		<Buildings class_id="16" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
@@ -135,6 +163,19 @@
 				</second>
 			</item>
 		</Paths>
+		<Units class_id="0" tracking_level="0" version="0">
+			<count>1</count>
+			<item_version>0</item_version>
+			<item>
+				<first>1</first>
+				<second>
+					<mUnitType>1</mUnitType>
+					<X>10</X>
+					<Y>10</Y>
+					<Z>10</Z>
+				</second>
+			</item>
+		</Units>
 		<Tiles class_id="22" tracking_level="0" version="0">
 			<count>100</count>
 			<item_version>0</item_version>

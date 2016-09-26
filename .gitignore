@@ -2,8 +2,9 @@
 build
 lib/*
 
-# Ignore the executable
+# Ignore the executable and output
 bin/RR2
+bin/testOut.xml
 
 # Ignore Mac specific files
 .DS_Store

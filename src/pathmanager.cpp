@@ -132,13 +132,13 @@ void PathManager::recalculatePower() {
 // Set a path to be conducting
 void PathManager::setPathConducting(const irr::u32 &pathid) {
   mInstances[pathid].turnOn();
-  mInstances[pathid].setTexture(mTypes[mInstances[pathid].getPathType()].getTextureConductingName());
+  mInstances[pathid].setTexture(mTypes[mInstances[pathid].getTypeId()].getTextureConductingName());
 }
 
 // Clear a path from being conducting
 void PathManager::clearPathConducting(const irr::u32 &pathid) {
   mInstances[pathid].turnOff();
-  mInstances[pathid].setTexture(mTypes[mInstances[pathid].getPathType()].getTextureName());
+  mInstances[pathid].setTexture(mTypes[mInstances[pathid].getTypeId()].getTextureName());
 }
 
 // Initialise the path types
@@ -182,7 +182,7 @@ void PathManager::turnOnPathNet(const irr::u32 &pathid) {
     openList.erase(it);
 
     // Turn the path on, if it can be switched on
-    if ( mTypes[mInstances[currentPathId].getPathType()].getConductive()) {
+    if ( mTypes[mInstances[currentPathId].getTypeId()].getConductive()) {
       setPathConducting(currentPathId);
     }
 
@@ -190,7 +190,7 @@ void PathManager::turnOnPathNet(const irr::u32 &pathid) {
     //  these being adjacent tiles that have not already been checked
     for (const irr::u32 &checkid : adjacentPaths) {
       inClosedList = std::find(closedList.begin(), closedList.end(), checkid) != closedList.end();
-      if (!inClosedList && mTypes[mInstances[checkid].getPathType()].getConductive()) {
+      if (!inClosedList && mTypes[mInstances[checkid].getTypeId()].getConductive()) {
         openList.push_back(checkid);
       }
     }

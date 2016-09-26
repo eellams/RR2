@@ -66,12 +66,12 @@ void BuildingManager::add(const irr::u32 &tilenumber, const irr::u32 &tid, const
     pos.Y = *std::max_element(cornerheights.begin(), cornerheights.end());
 
     // Initialise the building
-    mInstances[bid].setBuildingId(bid);
+    mInstances[bid].setId(bid);
     mInstances[bid].initialise(
       pNode,
-      tid,
+      bid,
       pos,
-      mTypes[tid].getModel()
+      mTypes[tid].getPModel()
     );
   }
 }
