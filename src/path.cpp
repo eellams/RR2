@@ -60,7 +60,8 @@ void Path::setAlpha() {
 }
 
 void Path::initialise(irr::scene::ISceneNode* parent, const irr::u32 &pathid, const irr::core::vector3df &pos) {
-  std::clog << "Initialising path: " << pathid << std::endl;
+  std::printf("Initialising path %u", pathid);
+
   mPathId = pathid;
   pGeom = new GeomObject();
   pGeom->initialise(parent->getSceneManager());

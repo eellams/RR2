@@ -114,8 +114,7 @@ void Map::setTile(const irr::u32& tileNumber, const irr::u32& tileType, const bo
   struct Surround newSurround;
   struct Surround oldSurround;
 
-  std::clog << "Setting tile " << tileNumber;
-  std::clog << " to " << tileType << std::endl;
+  std::printf("Setting tile %u to type %u", tileNumber, tileType);
 
   // Store old surround for comparison
   oldSurround = pTileManager->getTileSurround(tileNumber);

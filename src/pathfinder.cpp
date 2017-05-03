@@ -34,16 +34,15 @@ void PathFinder::initialise(const irr::u32 &width, const irr::u32 &height) {
 void PathFinder::updateGrid(const irr::u32 &tid,
   const std::map<irr::u32, irr::f32> &speed)
 {
-  std::clog << "Pathfinder: Setting grid: " << tid << std::endl;
+  std::printf("Setting grid tile %u", tid);
 
-  for (const auto &p : speed) {
-      std::cout << " layer " << p.first << " speed " << p.second << '\n';
-  }
+  for (const auto &p : speed)
+    std::printf(" layer %u speed %f", p.first, p.second);
 
+  // Create the bitmask
   irr::u32 flag = 0;
   for (const auto &i : speed)
     flag |= i.first;
-  std::clog << " pathfinder flag " << flag << std::endl;
 
   mGridFlags[tid] = flag;
   mGrid[tid] = speed;
@@ -56,8 +55,7 @@ std::vector<irr::core::vector2df> PathFinder::findPath (
   const irr::f32 &endY
 )
 {
-  //std::clog << "Pathfinding from (
-  std::printf("Pathfinding from (%u,%u) to (%u,%u)", startX, startY, endX, endY);
+  std::printf("Pathfinding from (%f,%f) to (%f,%f)", startX, startY, endX, endY);
   irr::u32 startTile = 2;
 
   std::vector<std::vector<int> > openList;
