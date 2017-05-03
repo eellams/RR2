@@ -5,6 +5,8 @@
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 
+#include "model.hpp"
+
 #include <irrlicht.h>
 
 class Model;
@@ -16,7 +18,7 @@ public:
   ~BuildingType();
 
   std::string getName() const;
-  Model* getPModel() const;
+  Model* getPModel();
 
 private:
   friend class boost::serialization::access;
@@ -25,11 +27,11 @@ private:
   void serialize(Archive & ar, const unsigned int version)
   {
     ar & BOOST_SERIALIZATION_NVP(mName);
-    ar & BOOST_SERIALIZATION_NVP(pModel);
+    ar & BOOST_SERIALIZATION_NVP(mModel);
   }
 
   std::string mName;
-  Model *pModel;
+  Model mModel;
 };
 
 #endif

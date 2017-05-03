@@ -7,6 +7,7 @@
 #include "map.hpp"
 #include "savefile.hpp"
 #include "rtscamera.h"
+#include "tiletype.hpp"
 
 #include <irrlicht.h>
 #include "driverChoice.h"
@@ -79,6 +80,16 @@ int main(int argc, char *argv[]) {
   driver = device->getVideoDriver();
   smgr = device->getSceneManager();
   device->setWindowCaption(L"Irrlicht Example for SMesh usage.");
+
+  // Sometimes used to check serialization stuff
+  /*std::ofstream ofs2;
+  ofs2.open("testOut2.xml");
+  boost::archive::xml_oarchive ob(ofs2);
+  Map asdf = Map();
+
+  ob << BOOST_SERIALIZATION_NVP(asdf);
+  ofs2.flush();
+  ofs2.close();*/
 
   // Read the pMap->file
   ifs.open("testIn.xml");

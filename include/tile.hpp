@@ -7,7 +7,6 @@
 
 #include <irrlicht.h>
 
-//#include "geomobject.hpp"
 #include "generic.hpp"
 
 #include <iostream>

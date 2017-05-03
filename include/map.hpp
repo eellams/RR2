@@ -25,6 +25,7 @@ class TileManager;
 class BuildingManager;
 class PathManager;
 class UnitManager;
+class PathFinder;
 
 class Map {
 public:
@@ -44,6 +45,7 @@ public:
 
   void addBuilding(const irr::u32& tileNumber, const irr::u32& buildingType);
   void removeBuilding(const irr::u32 &buildingid);
+
   void addPath(const irr::u32 &tilenumber, const irr::u32 &pathtype, const irr::u32 &knownid=0);
   void removePath(const irr::u32 &pathid);
 
@@ -58,16 +60,17 @@ private:
   void recalculateSurroundingTileModels(const int& tileNumber, const bool& enableCaveIn);
 
   // Serialised values
-  std::string mName;
-  std::string mDescription;
-  std::string mRoofTexture;
-  size_t mWidth;
-  size_t mHeight;
+  std::string      mName;
+  std::string      mDescription;
+  std::string      mRoofTexture;
+  size_t           mWidth;
+  size_t           mHeight;
 
-  TileManager *pTileManager;
-  BuildingManager *pBuildingManager;
-  PathManager *pPathManager;
-  UnitManager *pUnitManager;
+  TileManager      *pTileManager;
+  BuildingManager  *pBuildingManager;
+  PathManager      *pPathManager;
+  UnitManager      *pUnitManager;
+  PathFinder       *pPathFinder;
 };
 
 #endif

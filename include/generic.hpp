@@ -9,11 +9,11 @@
 
 #define COLLISION_MASK_TILE 1 << 30
 
-enum MoveType {
-  AIR = 0,
-  GROUND = 1,
-  WATER = 2
-};
+//enum MoveType {
+#define MOVE_TYPE_GROUND  0x01
+#define MOVE_TYPE_WATER   0x02
+#define MOVE_TYPE_AIR     0x04
+//};
 
 struct TrianglePoint {
   irr::core::vector3df pos;

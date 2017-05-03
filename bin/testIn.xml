@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <!DOCTYPE boost_serialization>
 <boost_serialization signature="serialization::archive" version="12">
-<readMap class_id="0" tracking_level="0" version="0">
-	<mMap class_id="1" tracking_level="1" version="0" object_id="_0">
+<pReadMap class_id="0" tracking_level="1" version="0" object_id="_0">
+	<mMap class_id="1" tracking_level="1" version="0" object_id="_1">
 		<mName>Test Map Something-or-other</mName>
 		<mDescription>Some description of this test map</mDescription>
 		<mRoofTexture>./data/tiletextures/roof.png</mRoofTexture>
@@ -19,7 +19,10 @@
 					<mSolid>1</mSolid>
 					<mDrillTime>0.000000000e+00</mDrillTime>
 					<mMineInto>1</mMineInto>
-					<mMoveType>1</mMoveType>
+					<mMoveSpeeds class_id="5" tracking_level="0" version="0">
+						<count>0</count>
+						<item_version>0</item_version>
+					</mMoveSpeeds>
 				</second>
 			</item>
 			<item>
@@ -30,44 +33,55 @@
 					<mSolid>0</mSolid>
 					<mDrillTime>0.000000000e+00</mDrillTime>
 					<mMineInto>1</mMineInto>
-					<mMoveType>1</mMoveType>
+					<mMoveSpeeds>
+						<count>2</count>
+						<item_version>0</item_version>
+						<item class_id="6" tracking_level="0" version="0">
+							<first>1</first>
+							<second>1.000000000e+00</second>
+						</item>
+						<item>
+							<first>4</first>
+							<second>2.000000000e+00</second>
+						</item>
+					</mMoveSpeeds>
 				</second>
 			</item>
 		</TileTypes>
-		<BuildingTypes class_id="5" tracking_level="0" version="0">
+		<BuildingTypes class_id="7" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
-			<item class_id="6" tracking_level="0" version="0">
+			<item class_id="8" tracking_level="0" version="0">
 				<first>0</first>
-				<second class_id="7" tracking_level="0" version="0">
+				<second class_id="9" tracking_level="0" version="0">
 					<mName>Test Building</mName>
-					<pModel class_id="8" tracking_level="0" version="0">
+					<mModel class_id="10" tracking_level="0" version="0">
 						<mModelPath>./data/testbuilding/testbuilding.obj</mModelPath>
 						<mPosX>0.000000000e+00</mPosX>
 						<mPosY>0.000000000e+00</mPosY>
 						<mPosZ>0.000000000e+00</mPosZ>
-						<mTextures class_id="9" tracking_level="0" version="0">
+						<mTextures class_id="11" tracking_level="0" version="0">
 							<count>1</count>
 							<item_version>0</item_version>
-							<item class_id="10" tracking_level="0" version="0">
+							<item class_id="12" tracking_level="0" version="0">
 								<first>0</first>
 								<second>./data/testbuilding/testbuilding.png</second>
 							</item>
 						</mTextures>
-						<mChildren class_id="11" tracking_level="0" version="0">
+						<mChildren class_id="13" tracking_level="0" version="0">
 							<count>0</count>
 							<item_version>0</item_version>
 						</mChildren>
-					</pModel>
+					</mModel>
 				</second>
 			</item>
 		</BuildingTypes>
-		<PathTypes class_id="12" tracking_level="0" version="0">
+		<PathTypes class_id="14" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
-			<item class_id="13" tracking_level="0" version="0">
+			<item class_id="15" tracking_level="0" version="0">
 				<first>0</first>
-				<second class_id="14" tracking_level="0" version="0">
+				<second class_id="16" tracking_level="0" version="0">
 					<mName>Power Path</mName>
 					<mTexture>./data/tiletextures/path_off.png</mTexture>
 					<mTextureConducting>./data/tiletextures/path.png</mTextureConducting>
@@ -80,51 +94,51 @@
 				</second>
 			</item>
 		</PathTypes>
-		<UnitTypes class_id="0" tracking_level="0" version="0">
+		<UnitTypes class_id="18" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
-			<item class_id="0" tracking_level="0" version="0">
+			<item class_id="19" tracking_level="0" version="0">
 				<first>1</first>
-				<second>
+				<second class_id="20" tracking_level="0" version="0">
 					<mName>Test Building</mName>
-					<pModel class_id="8" tracking_level="0" version="0">
+					<mModel>
 						<mModelPath>./data/testbuilding/testbuilding.obj</mModelPath>
 						<mPosX>0.000000000e+00</mPosX>
 						<mPosY>0.000000000e+00</mPosY>
 						<mPosZ>0.000000000e+00</mPosZ>
-						<mTextures class_id="9" tracking_level="0" version="0">
+						<mTextures>
 							<count>1</count>
 							<item_version>0</item_version>
-							<item class_id="10" tracking_level="0" version="0">
+							<item>
 								<first>0</first>
 								<second>./data/testbuilding/testbuilding.png</second>
 							</item>
 						</mTextures>
-						<mChildren class_id="11" tracking_level="0" version="0">
+						<mChildren>
 							<count>0</count>
 							<item_version>0</item_version>
 						</mChildren>
-					</pModel>
+					</mModel>
 				</second>
 			</item>
 		</UnitTypes>
-		<Buildings class_id="16" tracking_level="0" version="0">
+		<Buildings class_id="21" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
-			<item class_id="17" tracking_level="0" version="0">
+			<item class_id="22" tracking_level="0" version="0">
 				<first>1</first>
-				<second class_id="18" tracking_level="0" version="0">
+				<second class_id="23" tracking_level="0" version="0">
 					<mBuildingType>0</mBuildingType>
 					<mTileNumber>46</mTileNumber>
 				</second>
 			</item>
 		</Buildings>
-		<Paths class_id="19" tracking_level="0" version="0">
+		<Paths class_id="24" tracking_level="0" version="0">
 			<count>5</count>
 			<item_version>0</item_version>
-			<item class_id="20" tracking_level="0" version="0">
+			<item class_id="25" tracking_level="0" version="0">
 				<first>1</first>
-				<second class_id="21" tracking_level="0" version="0">
+				<second class_id="26" tracking_level="0" version="0">
 					<mPathType>0</mPathType>
 					<mTileNumber>46</mTileNumber>
 					<mPowered>1</mPowered>
@@ -163,12 +177,12 @@
 				</second>
 			</item>
 		</Paths>
-		<Units class_id="0" tracking_level="0" version="0">
+		<Units class_id="27" tracking_level="0" version="0">
 			<count>1</count>
 			<item_version>0</item_version>
-			<item>
+			<item class_id="28" tracking_level="0" version="0">
 				<first>1</first>
-				<second>
+				<second class_id="29" tracking_level="0" version="0">
 					<mUnitType>1</mUnitType>
 					<X>10</X>
 					<Y>10</Y>
@@ -176,12 +190,12 @@
 				</second>
 			</item>
 		</Units>
-		<Tiles class_id="22" tracking_level="0" version="0">
+		<Tiles class_id="30" tracking_level="0" version="0">
 			<count>100</count>
 			<item_version>0</item_version>
-			<item class_id="23" tracking_level="0" version="0">
+			<item class_id="31" tracking_level="0" version="0">
 				<first>0</first>
-				<second class_id="24" tracking_level="0" version="0">
+				<second class_id="32" tracking_level="0" version="0">
 					<mTileType>0</mTileType>
 					<mHeight>0.000000000e+00</mHeight>
 				</second>
@@ -881,4 +895,4 @@
 			</item>
 		</Tiles>
 	</mMap>
-</readMap>
+</pReadMap>

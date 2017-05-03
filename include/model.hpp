@@ -45,7 +45,7 @@ private:
 
     // Ensure position correct
     //  (when reading from archive)
-    //setPosition(mPosX, mPosY, mPosZ);
+    setPosition(mPosX, mPosY, mPosZ);
   }
 
   void setFlags();

@@ -1,6 +1,7 @@
 #include "tilemanager.hpp"
 #include "tile.hpp"
 #include "tiletype.hpp"
+#include "pathfinder.hpp"
 
 TileManager::TileManager() :
   ITiledManager<TileType, Tile>(),
@@ -55,14 +56,14 @@ void TileManager::setRoofTexture(const std::string& texture) {
 
 // Initialises all tiles and tile types
 //  from their serialised state
-void TileManager::initialise(irr::scene::ISceneNode *parentnode) {
+void TileManager::initialise(irr::scene::ISceneNode *parentnode, PathFinder *pFinder) {
   pNode = parentnode->getSceneManager()->addEmptySceneNode();
   pNode->setParent(parentnode);
 
   createHeightMap();
 
   initialiseTypes();
-  initialiseInstances();
+  initialiseInstances(pFinder);
 
   pTileSelector = pNode->getSceneManager()->createMetaTriangleSelector();
   for (auto child : pNode->getChildren()) {
@@ -74,7 +75,7 @@ void TileManager::initialise(irr::scene::ISceneNode *parentnode) {
 //  changing tile type as required (cave-ins etc.)
 //  recalculating models as required
 // Recursive, will check surrounding tiles if there is a change in a tile
-void TileManager::recalculate(const irr::u32 &tilenumber) {//, const bool &enableCaveIn) {
+void TileManager::recalculate(const irr::u32 &tilenumber, PathFinder *pFinder) {//, const bool &enableCaveIn) {
   struct Surround surround;
 
   surround = calculateSurround(tilenumber);
@@ -96,16 +97,20 @@ void TileManager::recalculate(const irr::u32 &tilenumber) {//, const bool &enabl
 
     // Set the position of the tile
     mInstances[tilenumber].setPosition(irr::core::vector3df((tilenumber%mWidth) * TILE_SIZE, 0, (tilenumber/mHeight) * TILE_SIZE));
+
+    // TODO make speed change depending on tile type
+    pFinder->updateGrid(tilenumber, mTypes[mInstances[tilenumber].getTypeId()].getMoveSpeed());
   }
 
   // Sometimes we don't want cave-ins
   //  (e.g. during development)
   //else if (enableCaveIn) {
+  // }
   else {
     // Can't make a tile - illegal layout
     //  causes 'cave-in' effect
     setTileTileType(tilenumber, getTileMineInto(tilenumber));
-    recalculate(tilenumber);
+    recalculate(tilenumber, pFinder);
   }
 }
 
@@ -114,7 +119,7 @@ void TileManager::initialiseTypes() {
 }
 
 // Initialises the tiles for the first time
-void TileManager::initialiseInstances() {
+void TileManager::initialiseInstances(PathFinder *pFinder) {
   std::clog << "Initilising tiles" << std::endl;
   createHeightMap();
 
@@ -138,7 +143,7 @@ void TileManager::initialiseInstances() {
 
   for (std::map<irr::u32, Tile>::iterator it = mInstances.begin(); it != mInstances.end(); it++) {
     it->second.setTileNumber(it->first);
-    recalculate(it->first);
+    recalculate(it->first, pFinder);
   }
 }
 

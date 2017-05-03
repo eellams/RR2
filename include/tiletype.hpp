@@ -4,8 +4,10 @@
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/map.hpp>
 
 #include <irrlicht.h>
+#include <map>
 
 #include "generic.hpp"
 
@@ -21,6 +23,8 @@ public:
   std::string getTextureName() const;
   irr::f32 getMineInto() const;
 
+  std::map<irr::u32, irr::f32> getMoveSpeed();
+
   // Setters
 
 private:
@@ -34,7 +38,7 @@ private:
     ar & BOOST_SERIALIZATION_NVP(mSolid);
     ar & BOOST_SERIALIZATION_NVP(mDrillTime);
     ar & BOOST_SERIALIZATION_NVP(mMineInto);
-    ar & BOOST_SERIALIZATION_NVP(mMoveType);
+    ar & BOOST_SERIALIZATION_NVP(mMoveSpeeds);
   }
 
   std::string mName;
@@ -42,8 +46,7 @@ private:
   bool mSolid;
   irr::f32 mDrillTime;
   irr::u32 mMineInto;
-
-  MoveType mMoveType;
+  std::map<irr::u32, irr::f32> mMoveSpeeds;
 };
 
 #endif

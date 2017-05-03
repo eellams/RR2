@@ -51,10 +51,8 @@ void BuildingManager::add(const irr::u32 &tilenumber, const irr::u32 &tid, const
 
   // If the path exists
   if (mInstances.find(bid) != mInstances.end()) {
-    std::clog << "Adding new building, bid " << tid;
-    std::clog << " (" << mTypes[tid].getName() << "), ";
-    std::clog << " id " << bid << std::endl;
-    std::clog << " on tile " << tilenumber << std::endl;
+
+    std::printf("Adding new buiding id %u type %u (%s) on tile %u", tid, bid, mTypes[tid].getName().c_str(), tilenumber);
 
     // Get position
     //  increase X and Z so that the buiding sits in the middle of the tile

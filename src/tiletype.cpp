@@ -6,7 +6,7 @@ TileType::TileType() :
   mSolid(false),
   mDrillTime(0),
   mMineInto(0),
-  mMoveType(GROUND)
+  mMoveSpeeds()
 {
 }
 
@@ -16,12 +16,11 @@ TileType::TileType(const TileType &obj) :
   mSolid(obj.mSolid),
   mDrillTime(obj.mDrillTime),
   mMineInto(obj.mMineInto),
-  mMoveType(obj.mMoveType)
+  mMoveSpeeds(obj.mMoveSpeeds)
 {
 }
 
 TileType::~TileType() {
-  
 }
 
 
@@ -39,4 +38,8 @@ std::string TileType::getTextureName() const {
 
 irr::f32 TileType::getMineInto() const {
   return mMineInto;
+}
+
+std::map<irr::u32, irr::f32> TileType::getMoveSpeed() {
+  return mMoveSpeeds;
 }

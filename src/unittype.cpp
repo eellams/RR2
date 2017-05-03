@@ -3,24 +3,23 @@
 
 UnitType::UnitType() :
   mName(""),
-  pModel(new Model())
+  mModel()
 {
 }
 
 UnitType::UnitType(const UnitType &obj) :
   mName(obj.mName),
-  pModel(new Model(*obj.pModel))
+  mModel(obj.mModel)
 {
 }
 
 UnitType::~UnitType() {
-  delete pModel;
 }
 
 std::string UnitType::getName() const {
   return mName;
 }
 
-Model* UnitType::getPModel() const {
-  return pModel;
+Model* UnitType::getPModel() {
+  return &mModel;
 }

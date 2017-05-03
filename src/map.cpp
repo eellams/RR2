@@ -21,7 +21,8 @@ Map::Map() :
   pTileManager(new TileManager()),
   pBuildingManager(new BuildingManager()),
   pPathManager(new PathManager()),
-  pUnitManager(new UnitManager())
+  pUnitManager(new UnitManager()),
+  pPathFinder(new PathFinder())
 {
 }
 
@@ -34,7 +35,8 @@ Map::Map(const Map &obj) :
   pTileManager(new TileManager(*obj.pTileManager)),
   pBuildingManager(new BuildingManager(*obj.pBuildingManager)),
   pPathManager(new PathManager(*obj.pPathManager)),
-  pUnitManager(new UnitManager(*obj.pUnitManager))
+  pUnitManager(new UnitManager(*obj.pUnitManager)),
+  pPathFinder(new PathFinder(*obj.pPathFinder))
 {
 }
 
@@ -44,6 +46,7 @@ Map::~Map() {
   delete pBuildingManager;
   delete pPathManager;
   delete pUnitManager;
+  delete pPathFinder;
 }
 
 std::string Map::getName() const {
@@ -58,7 +61,9 @@ irr::scene::IMetaTriangleSelector* Map::getMetaTriangleSelectorP() const {
 void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager* smgr) {
   std::clog << "Initialising map '" << mName << "'" << std::endl;
 
-  pTileManager->initialise(smgr->getRootSceneNode());
+  pPathFinder->initialise(mWidth, mHeight);
+
+  pTileManager->initialise(smgr->getRootSceneNode(), pPathFinder);
   pBuildingManager->initialise(smgr->getRootSceneNode());
   pPathManager->initialise(smgr->getRootSceneNode());
   pUnitManager->initialise(smgr->getRootSceneNode());
@@ -74,6 +79,7 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
     );
   }
 
+  // Initialise paths
   for (auto& path : pPathManager->getInstances()) {
     pPathManager->add(
       path.second.getTileNumber(),
@@ -82,8 +88,10 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
       path.first
     );
   }
+  // Ensure power is properly set up
   pPathManager->recalculatePower();
 
+  // Initialise units
   for (auto& unit : pUnitManager->getInstances()) {
     pUnitManager->add(
       unit.second.getTypeId(),
@@ -91,6 +99,8 @@ void Map::initialise(irr::video::IVideoDriver* driver, irr::scene::ISceneManager
       unit.first
     );
   }
+
+  pPathFinder->findPath (0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void Map::mineTile(const irr::u32& tileNumber) {
@@ -107,19 +117,22 @@ void Map::setTile(const irr::u32& tileNumber, const irr::u32& tileType, const bo
   std::clog << "Setting tile " << tileNumber;
   std::clog << " to " << tileType << std::endl;
 
+  // Store old surround for comparison
   oldSurround = pTileManager->getTileSurround(tileNumber);
 
+  // Set and update the tile manager
   pTileManager->setTileTileType(tileNumber, tileType);
-  pTileManager->recalculate(tileNumber);
+  pTileManager->recalculate(tileNumber, pPathFinder);
 
+  // If we need to update the surrounding tile's information
   newSurround = pTileManager->getTileSurround(tileNumber);
-
   if (!(oldSurround == newSurround)) {
     recalculateSurroundingTileModels(tileNumber, enableCaveIn);
   }
 }
 
 // Serialisation
+//  not as scary as it looks like
 template<class Archive>
 void Map::serialize(Archive & ar, const unsigned int version) {
   try {
@@ -187,19 +200,22 @@ template void Map::serialize<boost::archive::xml_oarchive>(
 
 // Recalculates everything to do with a specific tile
 void Map::recalculateAll(const irr::u32 &tileNumber, const bool &enableCaveIn) {
-  pTileManager->recalculate(tileNumber);
+  pTileManager->recalculate(tileNumber, pPathFinder);
   pBuildingManager->recalculateByTileNumber(tileNumber);
   pPathManager->recalculateByTileNumber(tileNumber);
 }
 
+// Add a new building
 void Map::addBuilding(const irr::u32 &tileNumber, const irr::u32 &buildingType) {
   pBuildingManager->add(tileNumber, buildingType, pTileManager->getTileHeight(tileNumber));
 }
 
+// Remove a building by id
 void Map::removeBuilding(const irr::u32 &buildingid) {
   pBuildingManager->remove(buildingid);
 }
 
+// Add a new path
 void Map::addPath(const irr::u32 &tilenumber, const irr::u32 &pathtype, const irr::u32 &knownid) {
   // TODO adding paths
   pPathManager->add(
@@ -210,6 +226,7 @@ void Map::addPath(const irr::u32 &tilenumber, const irr::u32 &pathtype, const ir
   );
 }
 
+// Remove a path
 void Map::removePath(const irr::u32& pathid) {
   pPathManager->remove(pathid);
 }

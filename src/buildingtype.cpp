@@ -3,24 +3,24 @@
 
 BuildingType::BuildingType() :
   mName(""),
-  pModel(new Model())
+  mModel()
 {
 }
 
 BuildingType::BuildingType(const BuildingType &obj) :
   mName(obj.mName),
-  pModel(new Model(*obj.pModel))
+  mModel(obj.mModel)
 {
 }
 
 BuildingType::~BuildingType() {
-  delete pModel;
+
 }
 
 std::string BuildingType::getName() const {
   return mName;
 }
 
-Model* BuildingType::getPModel() const {
-  return pModel;
+Model* BuildingType::getPModel() {
+  return &mModel;
 }
