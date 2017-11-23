@@ -52,7 +52,7 @@ void UnitManager::add(const irr::u32 &tid, const irr::core::vector3df &pos, cons
     if (id >= mId) mId = id + 1;
   }
 
-  std::printf("Adding new unit id %u type %u (%s) at position (%f,%f,%f)", id, tid, mTypes[tid].getName().c_str(), pos.X, pos.Y, pos.Z);
+  std::printf("Adding new unit id %u type %u (%s) at position (%f,%f,%f)\r\n", id, tid, mTypes[tid].getName().c_str(), pos.X, pos.Y, pos.Z);
 
   // Initialise the unit
   mInstances[id].setId(id);

@@ -46,7 +46,7 @@ void Building::setTypeId(const irr::u32 &buildingid) {
 }
 
 void Building::initialise(irr::scene::ISceneNode *parent, const irr::u32 &id, const irr::core::vector3df &pos, const Model *pmodel) {
-  std::printf("Intitialising building %u", id);
+  std::printf("Intitialising building %u\r\n", id);
 
   mBuildingId = id;
   pModel = new Model(*pmodel);

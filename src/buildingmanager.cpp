@@ -51,7 +51,7 @@ void BuildingManager::add(const irr::u32 &tilenumber, const irr::u32 &tid, const
 
   // If the path exists
   if (mInstances.find(bid) != mInstances.end()) {
-    std::printf("Adding new buiding id %u type %u (%s) on tile %u", bid, tid, mTypes[tid].getName().c_str(), tilenumber);
+    std::printf("Adding new buiding id %u type %u (%s) on tile %u\r\n", bid, tid, mTypes[tid].getName().c_str(), tilenumber);
 
     // Get position
     //  increase X and Z so that the buiding sits in the middle of the tile
@@ -91,7 +91,7 @@ void BuildingManager::recalculate(const irr::u32 &buildingid) {
 
 // Removes the building
 void BuildingManager::remove(const irr::u32 &buildingid) {
-  std::printf("Removing building %u", buildingid);
+  std::printf("Removing building %u\r\n", buildingid);
 
   std::map<irr::u32, Building>::iterator it = mInstances.find(buildingid);
   if (it != mInstances.end()) {

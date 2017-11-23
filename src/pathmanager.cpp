@@ -55,7 +55,7 @@ void PathManager::add(const irr::u32 &tilenumber,
   //  only wouldn't exist if the ID is not known, and there is already a path
   //  on the tile
   if (mInstances.find(pid) != mInstances.end()) {
-    std::printf("Adding new path id %u type %u (%s) on tile %u", pid, tid, mTypes[tid].getName().c_str(), tilenumber);
+    std::printf("Adding new path id %u type %u (%s) on tile %u\r\n", pid, tid, mTypes[tid].getName().c_str(), tilenumber);
 
     // Get the posiition
     pos = tileNumberToPosition(tilenumber);
@@ -77,7 +77,7 @@ void PathManager::add(const irr::u32 &tilenumber,
 
 // Remove a current path
 void PathManager::remove(const irr::u32 &id){
-  std::printf("Removing path %u", id);
+  std::printf("Removing path %u\r\n", id);
 
   // If the path exists
   if (mInstances.find(id) != mInstances.end()) {
@@ -159,7 +159,7 @@ void PathManager::turnOnPathNet(const irr::u32 &pathid) {
   std::vector<irr::u32> adjacentPaths;
   std::vector<irr::u32>::iterator it;
 
-  std::printf("Turning path %u ON", pathid);
+  std::printf("Turning path %u ON\r\n", pathid);
 
   // Start with this tile
   openList.push_back(pathid);
