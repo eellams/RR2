@@ -41,7 +41,7 @@ void Unit::setTypeId(const irr::u32 &tid) {
 }
 
 void Unit::initialise(irr::scene::ISceneNode *parent, const irr::u32 &id, const irr::core::vector3df &pos, const Model *pmodel) {
-  std::clog << "Initialising unit " << id << std::endl;
+  //std::clog << "Initialising unit " << id << std::endl;
   mUnitId = id;
   pModel = new Model(*pmodel);
   pModel->initialise(parent);
